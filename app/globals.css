@@ -1,0 +1,158 @@
+@import "tailwindcss";
+
+/* --------------------------------------------------------------------------
+   Kirra Dive brand tokens
+   Single source of truth for the palette. Tailwind utilities (bg-surface,
+   text-muted, border-primary, ...) are generated from these below.
+   -------------------------------------------------------------------------- */
+:root {
+  --background: #060606;
+  --surface: #0b1821;
+  --ocean: #0e406e;
+  --primary: #54a0c9;
+  --aqua: #16b6c8;
+  --text: #ffffff;
+  --muted: #cccccc;
+
+  /* Derived tones. Used sparingly for hover states and hairlines. */
+  --primary-bright: #7cc0e2;
+  --hairline: color-mix(in srgb, var(--text) 12%, transparent);
+
+  --header-height: 4.5rem;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --header-height: 5.5rem;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-ocean: var(--ocean);
+  --color-primary: var(--primary);
+  --color-primary-bright: var(--primary-bright);
+  --color-aqua: var(--aqua);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+
+  --font-sans: var(--font-open-sans), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--muted);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: var(--text);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Anchor targets clear the fixed header. */
+  [id] {
+    scroll-margin-top: calc(var(--header-height) + 1.5rem);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--aqua);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background-color: var(--primary);
+    color: var(--background);
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-[82rem] px-5 sm:px-8 lg:px-12;
+  }
+
+  .section-y {
+    @apply py-20 sm:py-28 lg:py-32;
+  }
+
+  .eyebrow {
+    @apply text-xs font-semibold tracking-[0.28em] text-primary uppercase sm:text-sm;
+  }
+
+  .heading-xl {
+    @apply text-[clamp(2.4rem,7.2vw,5.25rem)] leading-[0.95] font-bold tracking-[-0.02em] uppercase;
+  }
+
+  .heading-lg {
+    @apply text-[clamp(1.85rem,4.4vw,3.25rem)] leading-[1.02] font-bold tracking-[-0.01em] uppercase;
+  }
+
+  .heading-sm {
+    @apply text-lg font-bold tracking-[0.06em] uppercase sm:text-xl;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-[0.02em] whitespace-nowrap transition-colors duration-200 select-none;
+  }
+
+  .btn-sm {
+    @apply px-4 py-2.5 text-xs sm:px-5 sm:text-sm;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-background hover:bg-primary-bright;
+  }
+
+  .btn-secondary {
+    @apply border border-white/25 bg-white/5 text-text hover:border-primary hover:bg-primary/10;
+  }
+
+  .surface-panel {
+    @apply rounded-3xl border border-white/10 bg-surface;
+  }
+
+  .field-label {
+    @apply block text-xs font-semibold tracking-[0.16em] text-muted uppercase;
+  }
+
+  .field-input {
+    @apply w-full rounded-2xl border border-white/15 bg-background/60 px-4 py-3 text-base text-text placeholder:text-white/35 transition-colors duration-200 hover:border-white/30 focus:border-primary focus:outline-none;
+  }
+
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-100 focus:rounded-full focus:bg-primary focus:px-5 focus:py-3 focus:text-sm focus:font-semibold focus:text-background;
+  }
+}
+
+/* Respect users who ask for less movement. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
