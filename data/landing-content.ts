@@ -311,10 +311,18 @@ export const courseDates = {
       consent: "Please tick the box so the team can reply to you.",
     },
     submitLabel: "Book online",
+    submittingLabel: "Saving your enquiry…",
     whatsappLabel: "Ask on WhatsApp",
-    /** Phase one only. Replaced by the real POST /api/leads response. */
-    notConnectedNotice:
-      "This form is not connected yet, so nothing was sent. Online booking and WhatsApp are wired up in the next phase.",
+    successNotice:
+      "Thanks — your enquiry is with the Kirra Dive team. We'll be in touch soon.",
+    submitError:
+      "We couldn't save your enquiry. Please try again or contact the team directly.",
+    whatsappPrefill: {
+      greeting: "Hi Kirra Dive,",
+      introduction: "I'm interested in the PADI Open Water Diver course. My name is",
+      preferredDate: "My preferred course date is",
+      experience: "My diving experience is",
+    },
     privacyNote: "Privacy notice to be added before launch.",
   },
 } as const;

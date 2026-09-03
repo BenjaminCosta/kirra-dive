@@ -1,8 +1,8 @@
 # Kirra Dive — PADI Open Water Diver landing page
 
 Single-page landing built with Next.js (App Router), TypeScript and Tailwind CSS v4.
-**Phase one: structure, design system and visual form only.** Nothing is wired to
-Google Sheets, WhatsApp, checkout or analytics yet.
+The enquiry form stores confirmed submissions in Google Sheets before opening
+the optional prefilled WhatsApp chat.
 
 ## Run it
 
@@ -31,15 +31,18 @@ Search for `TO CONFIRM` in `data/landing-content.ts`. In short: price, phone, em
 street address, WhatsApp link, booking link, reviews, course dates, legal pages,
 production domain, and every image in `public/images/`.
 
-## Phase two notes
+## Lead capture setup
 
-- `POST /api/leads` (route handler) receives `LeadPayload`, validates server-side and
-  appends a row to Google Sheets. The browser never talks to Google directly.
-- Credentials arrive through Vercel environment variables — see `.env.example`.
-  No service-account file is ever committed.
-- After the lead is stored, WhatsApp opens with a prefilled message. If WhatsApp
-  fails to open, the lead is already saved.
-- `output: "export"` is deliberately **not** set, so the serverless route can exist.
-- CTAs already carry `data-event` attributes matching `data/tracking.ts`; no analytics
-  library is installed yet.
+1. Create a Google Cloud service account, enable the Google Sheets API and download its
+   JSON key.
+2. Share the lead spreadsheet with the service-account email as an Editor.
+3. Set `GOOGLE_SHEETS_SPREADSHEET_ID`, `GOOGLE_SERVICE_ACCOUNT_EMAIL` and
+   `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY` in `.env.local` and in Vercel. In Vercel, keep
+   the private key on one line using literal `\n` characters.
+4. Add the real `contact.whatsappUrl` in `data/landing-content.ts` to enable the
+   post-submit WhatsApp chat.
+
+`POST /api/leads` validates the submission on the server and appends the lead to the
+`Leads` tab with `RAW` values, so browser input cannot become a spreadsheet formula.
+No credentials reach the client, and the lead is stored before WhatsApp is opened.
 # kirra-dive

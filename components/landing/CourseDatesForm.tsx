@@ -5,7 +5,7 @@ import { AlertCircle, CalendarDays, Info, MessageCircle } from "lucide-react";
 import { contact, courseDates } from "@/data/landing-content";
 import { trackingEvents } from "@/data/tracking";
 import { cn } from "@/lib/cn";
-import type { LeadExperience, LeadFormErrors } from "@/types/lead";
+import type { LeadExperience, LeadFormErrors, LeadPayload } from "@/types/lead";
 
 type FormValues = {
   fullName: string;
@@ -50,18 +50,42 @@ function FieldError({ id, message }: { id: string; message?: string }) {
   );
 }
 
+function openWhatsApp(payload: LeadPayload) {
+  if (!contact.whatsappUrl) return;
+
+  try {
+    const selectedExperience = form.fields.experience.options.find(
+      (option) => option.value === payload.experience,
+    );
+    const message = [
+      form.whatsappPrefill.greeting,
+      `${form.whatsappPrefill.introduction} ${payload.fullName}.`,
+      `${form.whatsappPrefill.preferredDate} ${payload.preferredDate}.`,
+      `${form.whatsappPrefill.experience} ${selectedExperience?.label ?? payload.experience}.`,
+    ].join("\n");
+    const url = new URL(contact.whatsappUrl);
+    url.searchParams.set("text", message);
+    window.open(url.toString(), "_blank", "noopener,noreferrer");
+  } catch {
+    // The enquiry was already stored. A malformed optional WhatsApp URL must not
+    // turn a successful submission into a reported failure.
+  }
+}
+
 export function CourseDatesForm() {
   const baseId = useId();
   const [values, setValues] = useState<FormValues>(initialValues);
   const [errors, setErrors] = useState<LeadFormErrors>({});
   const [showNotice, setShowNotice] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const fieldId = (name: string) => `${baseId}-${name}`;
   const errorId = (name: string) => `${baseId}-${name}-error`;
 
   const whatsappHref = contact.whatsappUrl ?? contact.fallbackAnchors.whatsapp;
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const nextErrors = validate(values);
     setErrors(nextErrors);
@@ -73,12 +97,34 @@ export function CourseDatesForm() {
       return;
     }
 
-    // Phase two replaces this with:
-    //   const payload: LeadPayload = { ...values, experience: values.experience as LeadExperience,
-    //     source: "landing", createdAt: new Date().toISOString() };
-    //   await fetch("/api/leads", { method: "POST", body: JSON.stringify(payload) });
-    // then opens WhatsApp with a prefilled message. The lead is stored either way.
-    setShowNotice(true);
+    const payload: LeadPayload = {
+      ...values,
+      experience: values.experience as LeadExperience,
+      source: "landing",
+      createdAt: new Date().toISOString(),
+    };
+
+    setShowNotice(false);
+    setSubmitError(null);
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) throw new Error("Lead capture failed.");
+
+      setValues(initialValues);
+      setShowNotice(true);
+      openWhatsApp(payload);
+    } catch {
+      setSubmitError(form.submitError);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   function update<K extends keyof FormValues>(key: K, value: FormValues[K]) {
@@ -288,8 +334,9 @@ export function CourseDatesForm() {
               type="submit"
               className="btn btn-primary w-full"
               data-event={trackingEvents.bookOnlineClick}
+              disabled={isSubmitting}
             >
-              {form.submitLabel}
+              {isSubmitting ? form.submittingLabel : form.submitLabel}
             </button>
             <a
               href={whatsappHref}
@@ -308,7 +355,13 @@ export function CourseDatesForm() {
             {showNotice ? (
               <p className="mt-5 flex items-start gap-3 rounded-2xl border border-aqua/30 bg-aqua/5 p-4 text-sm text-text">
                 <Info className="mt-0.5 h-4 w-4 shrink-0 text-aqua" aria-hidden />
-                {form.notConnectedNotice}
+                {form.successNotice}
+              </p>
+            ) : null}
+            {submitError ? (
+              <p role="alert" className="mt-5 flex items-start gap-3 rounded-2xl border border-aqua/30 bg-aqua/5 p-4 text-sm text-text">
+                <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-aqua" aria-hidden />
+                {submitError}
               </p>
             ) : null}
           </div>
