@@ -1,12 +1,10 @@
 import { NextResponse } from "next/server";
 
-import { createGoogleSheetsClient, getGoogleSheetsConfig } from "@/lib/google-sheets";
-import { notifyKirraDiveOfLead } from "@/lib/lead-notification";
+import { appendLead, getAppsScriptConfig } from "@/lib/leads-apps-script";
 import type { LeadExperience, LeadPayload } from "@/types/lead";
 
 export const runtime = "nodejs";
 
-const SHEET_NAME = "Leads";
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 type ValidLead = Required<
@@ -103,11 +101,6 @@ function parseLead(value: unknown): ValidLead | null {
   };
 }
 
-function getUpdatedRow(updatedRange: string | null | undefined) {
-  const match = updatedRange?.match(/![A-Z]+(\d+):/);
-  return match ? Number(match[1]) : null;
-}
-
 export async function POST(request: Request) {
   let body: unknown;
 
@@ -122,60 +115,24 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid lead details." }, { status: 400 });
   }
 
-  const config = getGoogleSheetsConfig();
+  const config = getAppsScriptConfig();
   if (!config) {
-    console.error("Google Sheets lead capture is not configured.");
+    console.error("Lead capture Apps Script is not configured.");
     return NextResponse.json({ error: "Lead capture is unavailable." }, { status: 503 });
   }
 
   const leadId = crypto.randomUUID();
   const receivedAt = new Date().toISOString();
   let leadRow: number | null = null;
-
-  try {
-    const sheets = createGoogleSheetsClient(config);
-    const appendResult = await sheets.spreadsheets.values.append({
-      spreadsheetId: config.spreadsheetId,
-      range: `${SHEET_NAME}!A:R`,
-      valueInputOption: "RAW",
-      insertDataOption: "INSERT_ROWS",
-      requestBody: {
-        values: [
-          [
-            leadId,
-            receivedAt,
-            lead.fullName,
-            lead.phone,
-            lead.email,
-            lead.preferredDate,
-            lead.experience,
-            "New",
-            lead.source,
-            lead.campaign,
-            lead.utmSource,
-            lead.utmMedium,
-            lead.utmCampaign,
-            lead.utmContent,
-            lead.utmTerm,
-            "Yes",
-            "No",
-            "",
-          ],
-        ],
-      },
-    });
-    leadRow = getUpdatedRow(appendResult.data.updates?.updatedRange);
-  } catch (error) {
-    console.error("Unable to append Kirra Dive lead to Google Sheets.", error);
-    return NextResponse.json({ error: "Could not save lead." }, { status: 502 });
-  }
-
   let emailNotified = false;
 
   try {
-    emailNotified = await notifyKirraDiveOfLead({ id: leadId, ...lead });
+    const result = await appendLead(config, { leadId, receivedAt, ...lead });
+    leadRow = result.leadRow;
+    emailNotified = result.emailSent;
   } catch (error) {
-    console.error("Unable to send Kirra Dive lead notification.", error);
+    console.error("Unable to save Kirra Dive lead via Apps Script.", error);
+    return NextResponse.json({ error: "Could not save lead." }, { status: 502 });
   }
 
   return NextResponse.json({ ok: true, leadId, leadRow, emailNotified }, { status: 201 });
