@@ -66,13 +66,15 @@ export function Hero() {
             >
               {hero.primaryCta.label}
             </a>
-            <a
-              href={hero.secondaryCta.href}
-              className="btn btn-secondary"
-              data-event={trackingEvents.heroSecondaryCta}
-            >
-              {hero.secondaryCta.label}
-            </a>
+            {hero.secondaryCta ? (
+              <a
+                href={hero.secondaryCta.href}
+                className="btn btn-secondary"
+                data-event={trackingEvents.heroSecondaryCta}
+              >
+                {hero.secondaryCta.label}
+              </a>
+            ) : null}
           </div>
 
           {/* Risk-reduction line. */}

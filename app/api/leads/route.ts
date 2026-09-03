@@ -1,17 +1,30 @@
-import { google } from "googleapis";
 import { NextResponse } from "next/server";
 
+import { createGoogleSheetsClient, getGoogleSheetsConfig } from "@/lib/google-sheets";
+import { notifyKirraDiveOfLead } from "@/lib/lead-notification";
 import type { LeadExperience, LeadPayload } from "@/types/lead";
 
 export const runtime = "nodejs";
 
 const SHEET_NAME = "Leads";
-const SHEETS_SCOPE = "https://www.googleapis.com/auth/spreadsheets";
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-type ValidLead = Pick<
-  LeadPayload,
-  "fullName" | "phone" | "email" | "preferredDate" | "experience"
+type ValidLead = Required<
+  Pick<
+    LeadPayload,
+    | "fullName"
+    | "phone"
+    | "email"
+    | "preferredDate"
+    | "experience"
+    | "source"
+    | "campaign"
+    | "utmSource"
+    | "utmMedium"
+    | "utmCampaign"
+    | "utmContent"
+    | "utmTerm"
+  >
 >;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -25,6 +38,14 @@ function isValidDate(value: string) {
   return !Number.isNaN(parsed.valueOf()) && parsed.toISOString().slice(0, 10) === value;
 }
 
+function parseOptionalText(value: unknown, maxLength: number) {
+  if (value === undefined || value === null) return "";
+  if (typeof value !== "string") return null;
+
+  const parsed = value.trim();
+  return parsed.length <= maxLength ? parsed : null;
+}
+
 function parseLead(value: unknown): ValidLead | null {
   if (!isRecord(value)) return null;
 
@@ -34,6 +55,13 @@ function parseLead(value: unknown): ValidLead | null {
   const preferredDate =
     typeof value.preferredDate === "string" ? value.preferredDate.trim() : "";
   const experience = value.experience;
+  const source = parseOptionalText(value.source, 80);
+  const campaign = parseOptionalText(value.campaign, 120);
+  const utmSource = parseOptionalText(value.utmSource, 120);
+  const utmMedium = parseOptionalText(value.utmMedium, 120);
+  const utmCampaign = parseOptionalText(value.utmCampaign, 120);
+  const utmContent = parseOptionalText(value.utmContent, 120);
+  const utmTerm = parseOptionalText(value.utmTerm, 120);
 
   const validExperience = experience === "none" || experience === "tried-before";
   const hasConsent = value.consent === true;
@@ -47,7 +75,14 @@ function parseLead(value: unknown): ValidLead | null {
     email.length > 254 ||
     !isValidDate(preferredDate) ||
     !validExperience ||
-    !hasConsent
+    !hasConsent ||
+    source === null ||
+    campaign === null ||
+    utmSource === null ||
+    utmMedium === null ||
+    utmCampaign === null ||
+    utmContent === null ||
+    utmTerm === null
   ) {
     return null;
   }
@@ -58,17 +93,19 @@ function parseLead(value: unknown): ValidLead | null {
     email,
     preferredDate,
     experience: experience as LeadExperience,
+    source: source || "landing",
+    campaign,
+    utmSource,
+    utmMedium,
+    utmCampaign,
+    utmContent,
+    utmTerm,
   };
 }
 
-function getGoogleConfig() {
-  const spreadsheetId = process.env.GOOGLE_SHEETS_SPREADSHEET_ID?.trim();
-  const clientEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL?.trim();
-  const privateKey = process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY?.replace(/\\n/g, "\n");
-
-  if (!spreadsheetId || !clientEmail || !privateKey) return null;
-
-  return { spreadsheetId, clientEmail, privateKey };
+function getUpdatedRow(updatedRange: string | null | undefined) {
+  const match = updatedRange?.match(/![A-Z]+(\d+):/);
+  return match ? Number(match[1]) : null;
 }
 
 export async function POST(request: Request) {
@@ -85,44 +122,61 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid lead details." }, { status: 400 });
   }
 
-  const config = getGoogleConfig();
+  const config = getGoogleSheetsConfig();
   if (!config) {
     console.error("Google Sheets lead capture is not configured.");
     return NextResponse.json({ error: "Lead capture is unavailable." }, { status: 503 });
   }
 
-  try {
-    const auth = new google.auth.GoogleAuth({
-      credentials: {
-        client_email: config.clientEmail,
-        private_key: config.privateKey,
-      },
-      scopes: [SHEETS_SCOPE],
-    });
-    const sheets = google.sheets({ version: "v4", auth });
+  const leadId = crypto.randomUUID();
+  const receivedAt = new Date().toISOString();
+  let leadRow: number | null = null;
 
-    await sheets.spreadsheets.values.append({
+  try {
+    const sheets = createGoogleSheetsClient(config);
+    const appendResult = await sheets.spreadsheets.values.append({
       spreadsheetId: config.spreadsheetId,
-      range: `${SHEET_NAME}!A:F`,
+      range: `${SHEET_NAME}!A:R`,
       valueInputOption: "RAW",
       insertDataOption: "INSERT_ROWS",
       requestBody: {
         values: [
           [
-            new Date().toISOString(),
+            leadId,
+            receivedAt,
             lead.fullName,
             lead.phone,
             lead.email,
             lead.preferredDate,
             lead.experience,
+            "New",
+            lead.source,
+            lead.campaign,
+            lead.utmSource,
+            lead.utmMedium,
+            lead.utmCampaign,
+            lead.utmContent,
+            lead.utmTerm,
+            "Yes",
+            "No",
+            "",
           ],
         ],
       },
     });
+    leadRow = getUpdatedRow(appendResult.data.updates?.updatedRange);
   } catch (error) {
     console.error("Unable to append Kirra Dive lead to Google Sheets.", error);
     return NextResponse.json({ error: "Could not save lead." }, { status: 502 });
   }
 
-  return NextResponse.json({ ok: true }, { status: 201 });
+  let emailNotified = false;
+
+  try {
+    emailNotified = await notifyKirraDiveOfLead({ id: leadId, ...lead });
+  } catch (error) {
+    console.error("Unable to send Kirra Dive lead notification.", error);
+  }
+
+  return NextResponse.json({ ok: true, leadId, leadRow, emailNotified }, { status: 201 });
 }

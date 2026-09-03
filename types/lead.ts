@@ -13,6 +13,12 @@ export type LeadPayload = {
   experience: "none" | "tried-before";
   consent: boolean;
   source?: string;
+  campaign?: string;
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+  utmContent?: string;
+  utmTerm?: string;
   createdAt?: string;
 };
 
@@ -21,5 +27,18 @@ export type LeadExperience = LeadPayload["experience"];
 
 /** Per-field validation messages, keyed by the field they belong to. */
 export type LeadFormErrors = Partial<
-  Record<keyof Omit<LeadPayload, "source" | "createdAt">, string>
+  Record<
+    keyof Omit<
+      LeadPayload,
+      | "source"
+      | "campaign"
+      | "utmSource"
+      | "utmMedium"
+      | "utmCampaign"
+      | "utmContent"
+      | "utmTerm"
+      | "createdAt"
+    >,
+    string
+  >
 >;

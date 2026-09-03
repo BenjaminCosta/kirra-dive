@@ -50,8 +50,14 @@ function FieldError({ id, message }: { id: string; message?: string }) {
   );
 }
 
-function openWhatsApp(payload: LeadPayload) {
-  if (!contact.whatsappUrl) return;
+type SavedLead = {
+  payload: LeadPayload;
+  leadId: string;
+  leadRow: number | null;
+};
+
+function buildWhatsAppHref(payload: LeadPayload) {
+  if (!contact.whatsappUrl) return null;
 
   try {
     const selectedExperience = form.fields.experience.options.find(
@@ -65,11 +71,42 @@ function openWhatsApp(payload: LeadPayload) {
     ].join("\n");
     const url = new URL(contact.whatsappUrl);
     url.searchParams.set("text", message);
-    window.open(url.toString(), "_blank", "noopener,noreferrer");
+    return url.toString();
   } catch {
-    // The enquiry was already stored. A malformed optional WhatsApp URL must not
-    // turn a successful submission into a reported failure.
+    return null;
   }
+}
+
+function trackWhatsAppContinuation(lead: SavedLead) {
+  if (!lead.leadRow) return;
+
+  const body = JSON.stringify({ leadId: lead.leadId, leadRow: lead.leadRow });
+  const blob = new Blob([body], { type: "application/json" });
+
+  if (navigator.sendBeacon("/api/leads/whatsapp", blob)) return;
+
+  void fetch("/api/leads/whatsapp", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body,
+    keepalive: true,
+  });
+}
+
+function getAttribution() {
+  const search = new URLSearchParams(window.location.search);
+  const utmSource = search.get("utm_source") ?? "";
+
+  return {
+    // A simple `source` parameter supports QR codes, hostels, and partner links.
+    source: search.get("source") || utmSource || "landing",
+    campaign: search.get("campaign") ?? search.get("utm_campaign") ?? "",
+    utmSource,
+    utmMedium: search.get("utm_medium") ?? "",
+    utmCampaign: search.get("utm_campaign") ?? "",
+    utmContent: search.get("utm_content") ?? "",
+    utmTerm: search.get("utm_term") ?? "",
+  };
 }
 
 export function CourseDatesForm() {
@@ -79,11 +116,16 @@ export function CourseDatesForm() {
   const [showNotice, setShowNotice] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [savedLead, setSavedLead] = useState<SavedLead | null>(null);
 
   const fieldId = (name: string) => `${baseId}-${name}`;
   const errorId = (name: string) => `${baseId}-${name}-error`;
 
   const whatsappHref = contact.whatsappUrl ?? contact.fallbackAnchors.whatsapp;
+  const bookingHref = contact.bookingUrl ?? contact.fallbackAnchors.booking;
+  const whatsappContinueHref = savedLead
+    ? buildWhatsAppHref(savedLead.payload)
+    : null;
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -100,12 +142,13 @@ export function CourseDatesForm() {
     const payload: LeadPayload = {
       ...values,
       experience: values.experience as LeadExperience,
-      source: "landing",
+      ...getAttribution(),
       createdAt: new Date().toISOString(),
     };
 
     setShowNotice(false);
     setSubmitError(null);
+    setSavedLead(null);
     setIsSubmitting(true);
 
     try {
@@ -115,11 +158,29 @@ export function CourseDatesForm() {
         body: JSON.stringify(payload),
       });
 
-      if (!response.ok) throw new Error("Lead capture failed.");
+      const result: unknown = await response.json();
+
+      if (
+        !response.ok ||
+        typeof result !== "object" ||
+        result === null ||
+        !(
+          "leadId" in result &&
+          typeof result.leadId === "string" &&
+          "leadRow" in result &&
+          (typeof result.leadRow === "number" || result.leadRow === null)
+        )
+      ) {
+        throw new Error("Lead capture failed.");
+      }
 
       setValues(initialValues);
+      setSavedLead({
+        payload,
+        leadId: result.leadId,
+        leadRow: result.leadRow,
+      });
       setShowNotice(true);
-      openWhatsApp(payload);
     } catch {
       setSubmitError(form.submitError);
     } finally {
@@ -333,30 +394,56 @@ export function CourseDatesForm() {
             <button
               type="submit"
               className="btn btn-primary w-full"
-              data-event={trackingEvents.bookOnlineClick}
+              data-event={trackingEvents.leadSubmit}
               disabled={isSubmitting}
             >
               {isSubmitting ? form.submittingLabel : form.submitLabel}
             </button>
             <a
-              href={whatsappHref}
+              href={bookingHref}
               className="btn btn-secondary w-full"
-              data-event={trackingEvents.whatsappClick}
+              data-event={trackingEvents.bookOnlineClick}
             >
-              <MessageCircle className="h-4 w-4" aria-hidden />
-              {form.whatsappLabel}
+              {form.bookingLabel}
             </a>
+            {contact.whatsappUrl ? (
+              <a
+                href={whatsappHref}
+                className="btn btn-secondary w-full sm:col-span-2 lg:col-span-1 xl:col-span-2"
+                data-event={trackingEvents.whatsappClick}
+              >
+                <MessageCircle className="h-4 w-4" aria-hidden />
+                {form.whatsappLabel}
+              </a>
+            ) : null}
           </div>
 
           <p className="mt-4 text-xs text-muted">{form.privacyNote}</p>
 
-          {/* Development notice. Not a confirmation: nothing has been sent. */}
           <div role="status" aria-live="polite">
-            {showNotice ? (
-              <p className="mt-5 flex items-start gap-3 rounded-2xl border border-aqua/30 bg-aqua/5 p-4 text-sm text-text">
+            {showNotice && savedLead ? (
+              <div className="mt-5 rounded-2xl border border-aqua/30 bg-aqua/5 p-4 text-sm text-text">
+                <div className="flex items-start gap-3">
                 <Info className="mt-0.5 h-4 w-4 shrink-0 text-aqua" aria-hidden />
-                {form.successNotice}
-              </p>
+                  <div>
+                    <p className="font-semibold">{form.successTitle}</p>
+                    <p className="mt-1 text-muted">{form.successNotice}</p>
+                  </div>
+                </div>
+                {whatsappContinueHref ? (
+                  <a
+                    href={whatsappContinueHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-secondary mt-4 w-full sm:w-auto"
+                    data-event={trackingEvents.whatsappContinue}
+                    onClick={() => trackWhatsAppContinuation(savedLead)}
+                  >
+                    <MessageCircle className="h-4 w-4" aria-hidden />
+                    {form.whatsappContinueLabel}
+                  </a>
+                ) : null}
+              </div>
             ) : null}
             {submitError ? (
               <p role="alert" className="mt-5 flex items-start gap-3 rounded-2xl border border-aqua/30 bg-aqua/5 p-4 text-sm text-text">

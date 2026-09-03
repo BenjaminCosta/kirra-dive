@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { courseJourney } from "@/data/landing-content";
+import { trackingEvents } from "@/data/tracking";
 
 export function CourseJourney() {
   return (
@@ -44,6 +45,14 @@ export function CourseJourney() {
             </li>
           ))}
         </ol>
+
+        <a
+          href={courseJourney.cta.href}
+          className="btn btn-secondary mt-12"
+          data-event={trackingEvents.courseJourneyCta}
+        >
+          {courseJourney.cta.label}
+        </a>
       </div>
     </section>
   );

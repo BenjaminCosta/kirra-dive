@@ -5,9 +5,8 @@
  * ----------------------
  * Anything Kirra Dive still has to confirm is either `null` (the UI then
  * renders a neutral "to be confirmed" state instead of a link) or contains the
- * literal text "to be confirmed". Nothing on this page invents a price, a
- * phone number, a review or a policy. Search this file for "TO CONFIRM"
- * before launch.
+ * literal text "to be confirmed". Search this file for "TO CONFIRM" before
+ * launch.
  */
 
 import type { LeadExperience } from "@/types/lead";
@@ -37,20 +36,19 @@ export const siteConfig = {
 } as const;
 
 /**
- * Contact details and outbound links.
- * All of these are deliberately null until Kirra Dive confirms them, and the
- * UI falls back to an on-page anchor rather than a made-up number or URL.
+ * Contact details and outbound links verified against Kirra Dive's public site.
+ * WhatsApp remains unset until Kirra Dive confirms its WhatsApp Business number.
  */
 export const contact = {
-  phone: null as string | null, // TO CONFIRM
-  email: null as string | null, // TO CONFIRM
+  phone: "+61 7 5536 6622",
+  email: "dive@kirradive.com",
   addressLines: [
-    "Tweed Heads, NSW", // TO CONFIRM: full street address
+    "U1/133 Wharf St",
+    "Tweed Heads NSW 2485",
   ],
-  /** Phase two: https://wa.me/<number>?text=... */
+  /** Add the verified https://wa.me/<number> Business URL before launch. */
   whatsappUrl: null as string | null, // TO CONFIRM
-  /** Phase two: DiveShop360 booking URL. */
-  bookingUrl: null as string | null, // TO CONFIRM
+  bookingUrl: "https://kirradive.com/courses/open-water-scuba-course-3days-",
   fallbackAnchors: {
     whatsapp: "#contact",
     booking: "#course-dates",
@@ -81,7 +79,7 @@ export const navLinks = [
 
 export const header = {
   ctaLabel: "Book now",
-  ctaHref: "#course-dates",
+  ctaHref: contact.bookingUrl ?? contact.fallbackAnchors.booking,
   homeLabel: "Kirra Dive — back to top",
   menuOpenLabel: "Open menu",
   menuCloseLabel: "Close menu",
@@ -93,7 +91,9 @@ export const hero = {
   subheading:
     "From your first breath underwater to internationally recognised certification.",
   primaryCta: { label: "Check course dates", href: "#course-dates" },
-  secondaryCta: { label: "Ask a question", href: "#contact" },
+  secondaryCta: contact.whatsappUrl
+    ? { label: "Ask on WhatsApp", href: contact.whatsappUrl }
+    : null,
   /** Risk-reduction line. Not a guarantee or a commercial policy. */
   reassurance:
     "Beginner-friendly training with patient, experienced instructors.",
@@ -131,6 +131,7 @@ export const courseJourney = {
   heading: "From first breath to certified diver",
   intro:
     "Every course follows the same path. You cover the theory in your own time, practise each skill in confined water until it feels ordinary, then put it all together on your open-water dives.",
+  cta: { label: "View upcoming dates", href: "#course-dates" },
   stages: [
     {
       id: "pool-skills",
@@ -215,8 +216,8 @@ export const included = {
   valuePanel: {
     priceLabel: pricing.from,
     priceNote: pricing.note,
-    ctaLabel: "Check course dates",
-    ctaHref: "#course-dates",
+    ctaLabel: "Book online",
+    ctaHref: contact.bookingUrl ?? contact.fallbackAnchors.booking,
     beginnerHeadingLines: ["New to diving?", "That's exactly who this is for."],
     beginnerBody:
       "Most people who start this course have never breathed underwater. Instructors teach at the pace of the group, and nobody is pushed past what they are comfortable with.",
@@ -310,11 +311,13 @@ export const courseDates = {
       experience: "Please choose one option.",
       consent: "Please tick the box so the team can reply to you.",
     },
-    submitLabel: "Book online",
+    submitLabel: "Send enquiry",
     submittingLabel: "Saving your enquiry…",
+    bookingLabel: "Book online",
     whatsappLabel: "Ask on WhatsApp",
-    successNotice:
-      "Thanks — your enquiry is with the Kirra Dive team. We'll be in touch soon.",
+    successTitle: "Thanks, we’ve received your enquiry.",
+    successNotice: "The Kirra Dive team will contact you shortly.",
+    whatsappContinueLabel: "Want a faster response? Continue on WhatsApp",
     submitError:
       "We couldn't save your enquiry. Please try again or contact the team directly.",
     whatsappPrefill: {

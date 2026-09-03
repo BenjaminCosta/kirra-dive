@@ -48,14 +48,16 @@ export function MobileStickyCTA() {
           <CalendarDays className="h-4 w-4" aria-hidden />
           {stickyCta.datesLabel}
         </a>
-        <a
-          href={whatsappHref}
-          className="btn btn-sm btn-secondary flex-1"
-          data-event={trackingEvents.whatsappClick}
-        >
-          <MessageCircle className="h-4 w-4" aria-hidden />
-          {stickyCta.whatsappLabel}
-        </a>
+        {contact.whatsappUrl ? (
+          <a
+            href={whatsappHref}
+            className="btn btn-sm btn-secondary flex-1"
+            data-event={trackingEvents.whatsappClick}
+          >
+            <MessageCircle className="h-4 w-4" aria-hidden />
+            {stickyCta.whatsappLabel}
+          </a>
+        ) : null}
       </nav>
     </div>
   );
