@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { markWhatsAppContinuedInAppsScript } from "@/lib/leads-apps-script";
+import { getAppsScriptConfig, markWhatsappContinued } from "@/lib/leads-apps-script";
 
 export const runtime = "nodejs";
 
@@ -42,13 +42,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid tracking details." }, { status: 400 });
   }
 
+  const config = getAppsScriptConfig();
+  if (!config) {
+    return NextResponse.json({ error: "Lead capture is unavailable." }, { status: 503 });
+  }
+
   try {
-    const tracked = await markWhatsAppContinuedInAppsScript(payload.leadId, payload.leadRow);
-    if (!tracked) {
-      return NextResponse.json({ error: "Lead capture is unavailable." }, { status: 503 });
-    }
+    await markWhatsappContinued(config, payload);
   } catch (error) {
-    console.error("Unable to record WhatsApp continuation through Apps Script.", error);
+    console.error("Unable to record WhatsApp continuation.", error);
     return NextResponse.json({ error: "Could not record WhatsApp continuation." }, { status: 502 });
   }
 

@@ -1,9 +1,8 @@
 # Kirra Dive — PADI Open Water Diver landing page
 
 Single-page landing built with Next.js (App Router), TypeScript and Tailwind CSS v4.
-The enquiry form is validated in Vercel, saved in Google Sheets and notified to
-Kirra Dive with Google Apps Script/MailApp, then offers an optional prefilled
-WhatsApp chat.
+The enquiry form stores confirmed submissions in Google Sheets, optionally
+notifies Kirra Dive by email, then offers an optional prefilled WhatsApp chat.
 
 ## Run it
 
@@ -34,15 +33,23 @@ production domain, and every image in `public/images/`.
 
 ## Lead capture setup
 
-1. Bind the script in [`apps-script/Code.gs`](apps-script/Code.gs) to the **Kirra Dive —
-   Leads** spreadsheet and deploy it as a Web App. Full setup details are in
-   [`apps-script/README.md`](apps-script/README.md).
-2. Set `LEADS_APPS_SCRIPT_URL` and `LEADS_APPS_SCRIPT_SECRET` in Vercel for both
-   Preview and Production.
-3. Add the real `contact.whatsappUrl` in `data/landing-content.ts` to enable the
+Leads are stored by a Google Apps Script Web App bound to the Leads spreadsheet — it
+appends the row and emails Kirra Dive itself (`MailApp`), so this app never holds a
+Google service-account key or a separate email provider. Full deploy steps:
+[apps-script/README.md](./apps-script/README.md). Short version:
+
+1. Paste `apps-script/Code.gs` into the Leads spreadsheet's Apps Script editor
+   (Extensions → Apps Script) and set `NOTIFY_EMAIL` to the real inbox.
+2. Set a `SHARED_SECRET` Script Property (a random string you generate yourself —
+   never paste it into a chat).
+3. Deploy → Web app → Execute as: Me → Who has access: Anyone. Copy the `.../exec` URL.
+4. Set `LEADS_APPS_SCRIPT_URL` and `LEADS_APPS_SCRIPT_SECRET` in `.env.local` and in
+   Vercel (same secret value as step 2).
+5. Add the real `contact.whatsappUrl` in `data/landing-content.ts` to enable the
    post-submit WhatsApp chat.
 
-`POST /api/leads` validates the submission on the server before forwarding it to
-Apps Script. The Apps Script writes the `Leads` tab as plain text, sends the internal
-email and records attribution/UTM fields. No Google or mail credentials reach the client.
+`POST /api/leads` validates the submission on the server, then calls the Apps Script to
+append the lead. Each lead starts as `New` and includes attribution/UTM fields. No
+Google credentials reach the client or live in this repo, and the lead is stored before
+email notification or WhatsApp is offered.
 # kirra-dive

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { submitLeadToAppsScript } from "@/lib/leads-apps-script";
+import { appendLead, getAppsScriptConfig } from "@/lib/leads-apps-script";
 import type { LeadExperience, LeadPayload } from "@/types/lead";
 
 export const runtime = "nodejs";
@@ -115,24 +115,25 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid lead details." }, { status: 400 });
   }
 
+  const config = getAppsScriptConfig();
+  if (!config) {
+    console.error("Lead capture Apps Script is not configured.");
+    return NextResponse.json({ error: "Lead capture is unavailable." }, { status: 503 });
+  }
+
   const leadId = crypto.randomUUID();
   const receivedAt = new Date().toISOString();
+  let leadRow: number | null = null;
+  let emailNotified = false;
 
   try {
-    const savedLead = await submitLeadToAppsScript({
-      id: leadId,
-      receivedAt,
-      ...lead,
-    });
-
-    if (!savedLead) {
-      console.error("Apps Script lead capture is not configured.");
-      return NextResponse.json({ error: "Lead capture is unavailable." }, { status: 503 });
-    }
-
-    return NextResponse.json({ ok: true, ...savedLead }, { status: 201 });
+    const result = await appendLead(config, { leadId, receivedAt, ...lead });
+    leadRow = result.leadRow;
+    emailNotified = result.emailSent;
   } catch (error) {
-    console.error("Unable to save Kirra Dive lead through Apps Script.", error);
+    console.error("Unable to save Kirra Dive lead via Apps Script.", error);
     return NextResponse.json({ error: "Could not save lead." }, { status: 502 });
   }
+
+  return NextResponse.json({ ok: true, leadId, leadRow, emailNotified }, { status: 201 });
 }

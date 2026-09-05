@@ -1,7 +1,59 @@
-const APP_SCRIPT_HOSTS = new Set(["script.google.com", "script.googleusercontent.com"]);
+/**
+ * Client for the Google Apps Script Web App that owns the Leads spreadsheet.
+ * The script appends the row and emails Kirra Dive itself (MailApp), so this
+ * app never holds a Google service-account key. See apps-script/README.md.
+ */
 
-export type AppsScriptLead = {
-  id: string;
+export type AppsScriptConfig = {
+  url: string;
+  secret: string;
+};
+
+export function getAppsScriptConfig(): AppsScriptConfig | null {
+  const url = process.env.LEADS_APPS_SCRIPT_URL?.trim();
+  const secret = process.env.LEADS_APPS_SCRIPT_SECRET?.trim();
+
+  if (!url || !secret) return null;
+  return { url, secret };
+}
+
+type AppsScriptResponse =
+  | { ok: true; [key: string]: unknown }
+  | { ok: false; error?: string };
+
+/**
+ * Apps Script Web Apps always answer with HTTP 200 + a JSON body (an
+ * exception inside doPost produces an HTML error page instead), so success
+ * is read from the `ok` field, not the HTTP status.
+ */
+async function callAppsScript(
+  config: AppsScriptConfig,
+  body: Record<string, unknown>,
+) {
+  const response = await fetch(config.url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ...body, secret: config.secret }),
+    redirect: "follow",
+  });
+
+  let data: AppsScriptResponse;
+  try {
+    data = (await response.json()) as AppsScriptResponse;
+  } catch {
+    throw new Error(`Apps Script returned a non-JSON response (status ${response.status}).`);
+  }
+
+  if (!data.ok) {
+    const message = "error" in data && data.error ? data.error : `Apps Script request failed (status ${response.status}).`;
+    throw new Error(message);
+  }
+
+  return data;
+}
+
+export type AppendLeadInput = {
+  leadId: string;
   receivedAt: string;
   fullName: string;
   phone: string;
@@ -17,98 +69,16 @@ export type AppsScriptLead = {
   utmTerm: string;
 };
 
-type AppsScriptConfig = {
-  url: string;
-  secret: string;
-};
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null;
+export async function appendLead(config: AppsScriptConfig, lead: AppendLeadInput) {
+  const data = await callAppsScript(config, { type: "lead", ...lead });
+  const leadRow = typeof data.leadRow === "number" ? data.leadRow : null;
+  const emailSent = data.emailSent === true;
+  return { leadRow, emailSent };
 }
 
-function getAppsScriptConfig(): AppsScriptConfig | null {
-  const url = process.env.LEADS_APPS_SCRIPT_URL?.trim();
-  const secret = process.env.LEADS_APPS_SCRIPT_SECRET?.trim();
-
-  if (!url || !secret) return null;
-
-  try {
-    const parsedUrl = new URL(url);
-    if (parsedUrl.protocol !== "https:" || !APP_SCRIPT_HOSTS.has(parsedUrl.hostname)) {
-      return null;
-    }
-  } catch {
-    return null;
-  }
-
-  return { url, secret };
-}
-
-async function postToAppsScript(config: AppsScriptConfig, body: Record<string, unknown>) {
-  let response: Response;
-
-  try {
-    response = await fetch(config.url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ secret: config.secret, ...body }),
-      cache: "no-store",
-      redirect: "follow",
-      signal: AbortSignal.timeout(15_000),
-    });
-  } catch (error) {
-    console.error("Kirra Dive Apps Script request failed.", error);
-    throw new Error("Apps Script request failed.");
-  }
-
-  const responseText = await response.text();
-  let payload: unknown;
-
-  try {
-    payload = JSON.parse(responseText);
-  } catch {
-    throw new Error("Apps Script returned an invalid response.");
-  }
-
-  if (!response.ok || !isRecord(payload) || payload.ok !== true) {
-    throw new Error("Apps Script rejected the request.");
-  }
-
-  return payload;
-}
-
-export async function submitLeadToAppsScript(lead: AppsScriptLead) {
-  const config = getAppsScriptConfig();
-  if (!config) return null;
-
-  const response = await postToAppsScript(config, {
-    action: "create_lead",
-    lead,
-  });
-
-  const leadId = typeof response.leadId === "string" ? response.leadId : "";
-  const leadRow = typeof response.leadRow === "number" ? response.leadRow : null;
-
-  if (leadId !== lead.id) {
-    throw new Error("Apps Script returned an unexpected lead ID.");
-  }
-
-  return {
-    leadId,
-    leadRow,
-    emailNotified: response.emailNotified === true,
-  };
-}
-
-export async function markWhatsAppContinuedInAppsScript(leadId: string, leadRow: number) {
-  const config = getAppsScriptConfig();
-  if (!config) return null;
-
-  await postToAppsScript(config, {
-    action: "mark_whatsapp_continued",
-    leadId,
-    leadRow,
-  });
-
-  return true;
+export async function markWhatsappContinued(
+  config: AppsScriptConfig,
+  params: { leadId: string; leadRow: number },
+) {
+  await callAppsScript(config, { type: "whatsapp", ...params });
 }
