@@ -168,7 +168,7 @@ export const trustSignals: ReadonlyArray<{
 
 export const courseJourney = {
   eyebrow: "The course",
-  heading: "From first breath to certified diver",
+  headingLines: ["From first breath", "to certified diver"],
   intro:
     "Every course follows the same path. You cover the theory in your own time, practise each skill in confined water until it feels ordinary, then put it all together on your open-water dives.",
   cta: { label: "View upcoming dates", href: "#course-dates" },
@@ -176,6 +176,7 @@ export const courseJourney = {
     {
       id: "pool-skills",
       step: "01",
+      icon: "life-buoy",
       title: "Pool Skills",
       description:
         "Confined water is where it clicks. Mask, regulator, buoyancy — one skill at a time, in shallow water, with an instructor beside you.",
@@ -188,6 +189,7 @@ export const courseJourney = {
     {
       id: "ocean-dives",
       step: "02",
+      icon: "waves",
       title: "Ocean Dives",
       description:
         "Your open-water dives take place in a living marine environment, in a small group, at the pace of the divers in it.",
@@ -200,6 +202,7 @@ export const courseJourney = {
     {
       id: "certification",
       step: "03",
+      icon: "graduation-cap",
       title: "PADI Certification",
       description:
         "Once your skills and dives are signed off, you are a certified PADI Open Water Diver — free to dive with a buddy anywhere in the world.",
