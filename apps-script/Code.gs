@@ -72,7 +72,7 @@ function handleLead(body) {
       "Yes",
       "No",
       "",
-    ]);
+    ].map(asLiteralCellValue));
     leadRow = sheet.getLastRow();
   } finally {
     lock.releaseLock();
@@ -80,6 +80,18 @@ function handleLead(body) {
 
   var emailSent = sendLeadNotification(body);
   return { ok: true, leadRow: leadRow, emailSent: emailSent };
+}
+
+/**
+ * Sheets treats formula-like input as executable formulas. In locales where
+ * `+`/`-` start formulas, that includes normal international phone numbers.
+ * Prefixing with an apostrophe stores the incoming value as plain text while
+ * leaving the displayed cell value unchanged. The email still uses `body`,
+ * so it always contains the exact value the visitor supplied.
+ */
+function asLiteralCellValue(value) {
+  var text = value == null ? "" : String(value);
+  return /^[=+\-@]/.test(text) ? "'" + text : text;
 }
 
 function handleWhatsapp(body) {
