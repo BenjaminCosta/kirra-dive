@@ -1,11 +1,8 @@
 import { NextResponse } from "next/server";
 
-import { createGoogleSheetsClient, getGoogleSheetsConfig } from "@/lib/google-sheets";
+import { markWhatsAppContinuedInAppsScript } from "@/lib/leads-apps-script";
 
 export const runtime = "nodejs";
-
-const SHEET_NAME = "Leads";
-const WHATSAPP_CONTINUED_COLUMN = "Q";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
@@ -45,30 +42,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid tracking details." }, { status: 400 });
   }
 
-  const config = getGoogleSheetsConfig();
-  if (!config) {
-    return NextResponse.json({ error: "Lead capture is unavailable." }, { status: 503 });
-  }
-
   try {
-    const sheets = createGoogleSheetsClient(config);
-    const idCheck = await sheets.spreadsheets.values.get({
-      spreadsheetId: config.spreadsheetId,
-      range: `${SHEET_NAME}!A${payload.leadRow}:A${payload.leadRow}`,
-    });
-
-    if (idCheck.data.values?.[0]?.[0] !== payload.leadId) {
-      return NextResponse.json({ error: "Lead not found." }, { status: 404 });
+    const tracked = await markWhatsAppContinuedInAppsScript(payload.leadId, payload.leadRow);
+    if (!tracked) {
+      return NextResponse.json({ error: "Lead capture is unavailable." }, { status: 503 });
     }
-
-    await sheets.spreadsheets.values.update({
-      spreadsheetId: config.spreadsheetId,
-      range: `${SHEET_NAME}!${WHATSAPP_CONTINUED_COLUMN}${payload.leadRow}`,
-      valueInputOption: "RAW",
-      requestBody: { values: [["Yes"]] },
-    });
   } catch (error) {
-    console.error("Unable to record WhatsApp continuation.", error);
+    console.error("Unable to record WhatsApp continuation through Apps Script.", error);
     return NextResponse.json({ error: "Could not record WhatsApp continuation." }, { status: 502 });
   }
 

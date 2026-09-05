@@ -1,9 +1,9 @@
 /**
  * Shape of a course enquiry.
  *
- * Phase two: the form POSTs this to /api/leads, the route handler validates it
- * on the server and appends a row to Google Sheets. Nothing here is sent from
- * the browser to Google directly, and no credentials ever reach the client.
+ * The form POSTs this to /api/leads. The route handler validates it, then sends
+ * it server-to-server to the Apps Script Web App. Nothing here is sent from the
+ * browser to Google directly, and no credentials ever reach the client.
  */
 export type LeadPayload = {
   fullName: string;
