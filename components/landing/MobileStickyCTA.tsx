@@ -7,21 +7,30 @@ import { trackingEvents } from "@/data/tracking";
 import { cn } from "@/lib/cn";
 
 /**
- * Mobile-only bar. It steps out of the way once the enquiry form is on screen,
- * so it never sits on top of the thing it is pointing at.
+ * Mobile-only bar. It steps out of the way once the enquiry form or the
+ * footer is on screen, so it never duplicates the CTAs already there.
  */
 export function MobileStickyCTA() {
   const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
-    const target = document.getElementById("course-dates");
-    if (!target) return;
+    const targets = ["course-dates", "site-footer"]
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+    if (targets.length === 0) return;
 
+    const visible = new Set<Element>();
     const observer = new IntersectionObserver(
-      ([entry]) => setHidden(entry.isIntersecting),
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) visible.add(entry.target);
+          else visible.delete(entry.target);
+        }
+        setHidden(visible.size > 0);
+      },
       { rootMargin: "0px 0px -25% 0px" },
     );
-    observer.observe(target);
+    targets.forEach((target) => observer.observe(target));
     return () => observer.disconnect();
   }, []);
 
@@ -48,16 +57,14 @@ export function MobileStickyCTA() {
           <CalendarDays className="h-4 w-4" aria-hidden />
           {stickyCta.datesLabel}
         </a>
-        {contact.whatsappUrl ? (
-          <a
-            href={whatsappHref}
-            className="btn btn-sm btn-secondary flex-1"
-            data-event={trackingEvents.whatsappClick}
-          >
-            <MessageCircle className="h-4 w-4" aria-hidden />
-            {stickyCta.whatsappLabel}
-          </a>
-        ) : null}
+        <a
+          href={whatsappHref}
+          className="btn btn-sm btn-secondary flex-1"
+          data-event={trackingEvents.whatsappClick}
+        >
+          <MessageCircle className="h-4 w-4" aria-hidden />
+          {stickyCta.whatsappLabel}
+        </a>
       </nav>
     </div>
   );

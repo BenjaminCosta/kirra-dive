@@ -86,6 +86,7 @@ export const navLinks = [
 export const header = {
   ctaLabel: "Book now",
   ctaHref: contact.bookingUrl ?? contact.fallbackAnchors.booking,
+  whatsappLabel: "Ask on WhatsApp",
   homeLabel: "Kirra Dive — back to top",
   menuOpenLabel: "Open menu",
   menuCloseLabel: "Close menu",
@@ -411,14 +412,29 @@ export const footer = {
     "A Tweed Heads dive centre teaching people to dive since 1988.",
   contactHeading: "Contact",
   exploreHeading: "Explore",
-  legalHeading: "Legal",
+  /** Mirrors the header nav, plus a FAQ entry that has no page yet. */
+  exploreLinks: [
+    { label: "The Course", href: "#the-course" },
+    { label: "The Experience", href: "#the-experience" },
+    { label: "Reviews", href: "#reviews" },
+    { label: "Dates", href: "#course-dates" },
+    { label: "FAQ", href: null },
+  ] as ReadonlyArray<{ label: string; href: string | null }>,
+  whatsappLabel: "WhatsApp number to be confirmed",
   phoneLabel: "Phone to be confirmed",
   emailLabel: "Email to be confirmed",
   addressHeading: "Where to find us",
+  /** Shown only once a real PADI dive centre number is confirmed. */
   padi: {
+    confirmed: false,
     label: "PADI Dive Centre",
     note: "Dive centre number and accreditation details to be confirmed.",
   },
+  /** Shown only once a real profile URL exists for that platform. */
+  socialLinks: [
+    { label: "Instagram", href: null },
+    { label: "Facebook", href: null },
+  ] as ReadonlyArray<{ label: string; href: string | null }>,
   legalLinks: [
     { label: "Privacy policy", href: null },
     { label: "Terms and conditions", href: null },
