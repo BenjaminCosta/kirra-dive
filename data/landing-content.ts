@@ -91,9 +91,15 @@ export const hero = {
   subheading:
     "From your first breath underwater to internationally recognised certification.",
   primaryCta: { label: "Check course dates", href: "#course-dates" },
-  secondaryCta: contact.whatsappUrl
-    ? { label: "Ask on WhatsApp", href: contact.whatsappUrl }
-    : null,
+  /**
+   * Shown in the hero regardless of whether the real WhatsApp number is
+   * confirmed yet, unlike the sticky bar / enquiry form CTAs — falls back to
+   * the #contact anchor until `contact.whatsappUrl` is set.
+   */
+  secondaryCta: {
+    label: "Ask on WhatsApp",
+    href: contact.whatsappUrl ?? contact.fallbackAnchors.whatsapp,
+  },
   /** Risk-reduction line. Not a guarantee or a commercial policy. */
   reassurance:
     "Beginner-friendly training with patient, experienced instructors.",
@@ -103,6 +109,40 @@ export const hero = {
     alt: "Sunlight filtering down through deep blue ocean water above a dark reef.",
   },
 } as const;
+
+/**
+ * Compact trust row shown inside the hero itself. Distinct from
+ * `trustSignals` below (the overlapping cards after the hero) — the two will
+ * be reconciled once the rest of the page is redesigned to match.
+ */
+export type HeroSignalIcon = "since" | "globe" | "users" | "user";
+
+export const heroTrustSignals: ReadonlyArray<{
+  icon: HeroSignalIcon;
+  label: string;
+  detail: string;
+}> = [
+  {
+    icon: "since",
+    label: "Since 1988",
+    detail: "Diving education you can trust",
+  },
+  {
+    icon: "globe",
+    label: "PADI Dive Centre",
+    detail: "PADI certified dive centre",
+  },
+  {
+    icon: "users",
+    label: "Beginners Welcome",
+    detail: "Perfect for first time divers",
+  },
+  {
+    icon: "user",
+    label: "Local Instructors",
+    detail: "Experienced, passionate team",
+  },
+];
 
 export const trustSignals: ReadonlyArray<{
   icon: IconName;
