@@ -339,14 +339,16 @@ export const reviews = {
 
 export const courseDates = {
   eyebrow: "Book your course",
-  heading: "Ready to take your first breath?",
+  headingLines: ["Ready to take", "your first breath?"],
   body: "Choose a date, book online, or talk to the Kirra Dive team.",
+  upcomingLabel: "Upcoming courses",
   /** Real course dates go here. Empty renders the fallback line below. */
   upcoming: [] as ReadonlyArray<{ id: string; label: string; note: string }>,
   upcomingFallback:
     "Upcoming course dates to be confirmed. Send an enquiry and the team will come back with the next available course.",
   form: {
     legend: "Course enquiry",
+    introNote: "Fill in your details and we'll be in touch soon.",
     fields: {
       fullName: { label: "Full name", placeholder: "Jane Smith" },
       phone: {

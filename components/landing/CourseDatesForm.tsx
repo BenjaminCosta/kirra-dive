@@ -1,7 +1,16 @@
 "use client";
 
-import { useId, useState, type FormEvent } from "react";
-import { AlertCircle, CalendarDays, Info, MessageCircle } from "lucide-react";
+import { useId, useState, type FormEvent, type ReactNode } from "react";
+import {
+  AlertCircle,
+  ArrowRight,
+  CalendarDays,
+  Info,
+  Mail,
+  MessageCircle,
+  Send,
+  User,
+} from "lucide-react";
 import { contact, courseDates } from "@/data/landing-content";
 import { trackingEvents } from "@/data/tracking";
 import { cn } from "@/lib/cn";
@@ -47,6 +56,34 @@ function FieldError({ id, message }: { id: string; message?: string }) {
       <AlertCircle className="h-4 w-4 shrink-0 text-aqua" aria-hidden />
       {message}
     </p>
+  );
+}
+
+/** Icon box + divider + label, used for the two intro strips in this section. */
+function SectionIntro({
+  icon,
+  label,
+  description,
+}: {
+  icon: ReactNode;
+  label: string;
+  description?: string;
+}) {
+  return (
+    <div className="flex items-start gap-4">
+      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/15 text-primary">
+        {icon}
+      </span>
+      <span className="h-11 w-px shrink-0 bg-white/10" aria-hidden />
+      <div>
+        <p className="text-sm font-bold tracking-[0.14em] text-text uppercase">
+          {label}
+        </p>
+        {description ? (
+          <p className="mt-1.5 text-sm text-muted">{description}</p>
+        ) : null}
+      </div>
+    </div>
   );
 }
 
@@ -199,17 +236,28 @@ export function CourseDatesForm() {
       className="section-y"
       data-event={trackingEvents.courseDatesView}
     >
-      <div className="container-page grid gap-12 lg:grid-cols-2 lg:gap-16">
+      <div className="container-page grid gap-10 lg:grid-cols-2 lg:gap-16">
         <div>
           <p className="eyebrow">{courseDates.eyebrow}</p>
-          <h2 className="heading-lg mt-4">{courseDates.heading}</h2>
-          <p className="mt-6 max-w-lg text-lg text-muted">{courseDates.body}</p>
+          <h2 className="heading-lg mt-4">
+            {courseDates.headingLines.map((line) => (
+              <span key={line} className="block">
+                {line}
+              </span>
+            ))}
+          </h2>
+          <p className="mt-6 max-w-lg text-muted sm:text-lg">{courseDates.body}</p>
 
-          <div className="mt-10 rounded-2xl border border-white/10 bg-surface/50 p-6">
-            <p className="flex items-center gap-2.5 text-sm font-bold tracking-[0.14em] text-text uppercase">
-              <CalendarDays className="h-4 w-4 text-primary" aria-hidden />
-              Upcoming courses
-            </p>
+          <div className="surface-panel mt-9 p-6">
+            <SectionIntro
+              icon={<CalendarDays className="h-5 w-5" aria-hidden />}
+              label={courseDates.upcomingLabel}
+              description={
+                courseDates.upcoming.length > 0
+                  ? undefined
+                  : courseDates.upcomingFallback
+              }
+            />
             {courseDates.upcoming.length > 0 ? (
               <ul className="mt-4 divide-y divide-white/10">
                 {courseDates.upcoming.map((date) => (
@@ -222,11 +270,7 @@ export function CourseDatesForm() {
                   </li>
                 ))}
               </ul>
-            ) : (
-              <p className="mt-3 text-sm text-muted">
-                {courseDates.upcomingFallback}
-              </p>
-            )}
+            ) : null}
           </div>
         </div>
 
@@ -236,91 +280,130 @@ export function CourseDatesForm() {
           data-event={trackingEvents.leadSubmit}
           className="surface-panel p-6 sm:p-8"
         >
-          <fieldset className="border-0 p-0">
+          <SectionIntro
+            icon={<Mail className="h-5 w-5" aria-hidden />}
+            label={form.legend}
+            description={form.introNote}
+          />
+
+          <fieldset className="mt-7 border-0 p-0">
             <legend className="sr-only">{form.legend}</legend>
 
-            <div className="grid gap-5">
+            <div className="grid gap-4">
               <div>
-                <label className="field-label" htmlFor={fieldId("fullName")}>
+                <label className="sr-only" htmlFor={fieldId("fullName")}>
                   {form.fields.fullName.label}
                 </label>
-                <input
-                  id={fieldId("fullName")}
-                  name="fullName"
-                  type="text"
-                  autoComplete="name"
-                  required
-                  placeholder={form.fields.fullName.placeholder}
-                  value={values.fullName}
-                  onChange={(event) => update("fullName", event.target.value)}
-                  aria-invalid={Boolean(errors.fullName)}
-                  aria-describedby={errors.fullName ? errorId("fullName") : undefined}
-                  className={cn("field-input mt-2", errors.fullName && "border-aqua")}
-                />
+                <div className="relative">
+                  <User
+                    className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-muted"
+                    aria-hidden
+                  />
+                  <input
+                    id={fieldId("fullName")}
+                    name="fullName"
+                    type="text"
+                    autoComplete="name"
+                    required
+                    placeholder={form.fields.fullName.label}
+                    value={values.fullName}
+                    onChange={(event) => update("fullName", event.target.value)}
+                    aria-invalid={Boolean(errors.fullName)}
+                    aria-describedby={errors.fullName ? errorId("fullName") : undefined}
+                    className={cn(
+                      "field-input py-4 pl-12",
+                      errors.fullName && "border-aqua",
+                    )}
+                  />
+                </div>
                 <FieldError id={errorId("fullName")} message={errors.fullName} />
               </div>
 
               <div>
-                <label className="field-label" htmlFor={fieldId("phone")}>
+                <label className="sr-only" htmlFor={fieldId("phone")}>
                   {form.fields.phone.label}
                 </label>
-                <input
-                  id={fieldId("phone")}
-                  name="phone"
-                  type="tel"
-                  autoComplete="tel"
-                  required
-                  placeholder={form.fields.phone.placeholder}
-                  value={values.phone}
-                  onChange={(event) => update("phone", event.target.value)}
-                  aria-invalid={Boolean(errors.phone)}
-                  aria-describedby={errors.phone ? errorId("phone") : undefined}
-                  className={cn("field-input mt-2", errors.phone && "border-aqua")}
-                />
+                <div className="relative">
+                  <MessageCircle
+                    className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-muted"
+                    aria-hidden
+                  />
+                  <input
+                    id={fieldId("phone")}
+                    name="phone"
+                    type="tel"
+                    autoComplete="tel"
+                    required
+                    placeholder={form.fields.phone.label}
+                    value={values.phone}
+                    onChange={(event) => update("phone", event.target.value)}
+                    aria-invalid={Boolean(errors.phone)}
+                    aria-describedby={errors.phone ? errorId("phone") : undefined}
+                    className={cn(
+                      "field-input py-4 pl-12",
+                      errors.phone && "border-aqua",
+                    )}
+                  />
+                </div>
                 <FieldError id={errorId("phone")} message={errors.phone} />
               </div>
 
               <div>
-                <label className="field-label" htmlFor={fieldId("email")}>
+                <label className="sr-only" htmlFor={fieldId("email")}>
                   {form.fields.email.label}
                 </label>
-                <input
-                  id={fieldId("email")}
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  placeholder={form.fields.email.placeholder}
-                  value={values.email}
-                  onChange={(event) => update("email", event.target.value)}
-                  aria-invalid={Boolean(errors.email)}
-                  aria-describedby={errors.email ? errorId("email") : undefined}
-                  className={cn("field-input mt-2", errors.email && "border-aqua")}
-                />
+                <div className="relative">
+                  <Mail
+                    className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-muted"
+                    aria-hidden
+                  />
+                  <input
+                    id={fieldId("email")}
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    placeholder={form.fields.email.label}
+                    value={values.email}
+                    onChange={(event) => update("email", event.target.value)}
+                    aria-invalid={Boolean(errors.email)}
+                    aria-describedby={errors.email ? errorId("email") : undefined}
+                    className={cn(
+                      "field-input py-4 pl-12",
+                      errors.email && "border-aqua",
+                    )}
+                  />
+                </div>
                 <FieldError id={errorId("email")} message={errors.email} />
               </div>
 
               <div>
-                <label className="field-label" htmlFor={fieldId("preferredDate")}>
+                <label className="sr-only" htmlFor={fieldId("preferredDate")}>
                   {form.fields.preferredDate.label}
                 </label>
-                <input
-                  id={fieldId("preferredDate")}
-                  name="preferredDate"
-                  type="date"
-                  required
-                  value={values.preferredDate}
-                  onChange={(event) => update("preferredDate", event.target.value)}
-                  aria-invalid={Boolean(errors.preferredDate)}
-                  aria-describedby={cn(
-                    `${baseId}-date-hint`,
-                    errors.preferredDate ? errorId("preferredDate") : "",
-                  ).trim()}
-                  className={cn(
-                    "field-input mt-2 [color-scheme:dark]",
-                    errors.preferredDate && "border-aqua",
-                  )}
-                />
+                <div className="relative">
+                  <CalendarDays
+                    className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-muted"
+                    aria-hidden
+                  />
+                  <input
+                    id={fieldId("preferredDate")}
+                    name="preferredDate"
+                    type="date"
+                    required
+                    value={values.preferredDate}
+                    onChange={(event) => update("preferredDate", event.target.value)}
+                    aria-invalid={Boolean(errors.preferredDate)}
+                    aria-describedby={cn(
+                      `${baseId}-date-hint`,
+                      errors.preferredDate ? errorId("preferredDate") : "",
+                    ).trim()}
+                    className={cn(
+                      "field-input py-4 pl-12 [color-scheme:dark]",
+                      errors.preferredDate && "border-aqua",
+                    )}
+                  />
+                </div>
                 <p id={`${baseId}-date-hint`} className="mt-2 text-sm text-muted">
                   {form.fields.preferredDate.hint}
                 </p>
@@ -337,15 +420,13 @@ export function CourseDatesForm() {
                   errors.experience ? errorId("experience") : undefined
                 }
               >
-                <legend className="field-label">
-                  {form.fields.experience.legend}
-                </legend>
+                <legend className="eyebrow">{form.fields.experience.legend}</legend>
                 <div className="mt-3 grid gap-3 sm:grid-cols-2">
                   {form.fields.experience.options.map((option, index) => (
                     <label
                       key={option.value}
                       className={cn(
-                        "flex cursor-pointer items-center gap-3 rounded-2xl border px-4 py-3 text-sm transition-colors",
+                        "flex cursor-pointer items-center gap-3 rounded-full border px-4 py-3.5 text-sm transition-colors",
                         values.experience === option.value
                           ? "border-primary bg-primary/10 text-text"
                           : "border-white/15 text-muted hover:border-white/30",
@@ -359,7 +440,7 @@ export function CourseDatesForm() {
                         value={option.value}
                         checked={values.experience === option.value}
                         onChange={() => update("experience", option.value)}
-                        className="h-4 w-4 accent-[var(--primary)]"
+                        className="h-5 w-5 accent-[var(--primary)]"
                       />
                       {option.label}
                     </label>
@@ -386,43 +467,51 @@ export function CourseDatesForm() {
                   {form.fields.consent.label}
                 </label>
                 <FieldError id={errorId("consent")} message={errors.consent} />
+                <p className="mt-2 pl-7 text-xs text-muted">{form.privacyNote}</p>
               </div>
             </div>
           </fieldset>
 
-          <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+          <div className="mt-7 flex flex-col gap-3">
             <button
               type="submit"
               className="btn btn-primary w-full"
               data-event={trackingEvents.leadSubmit}
               disabled={isSubmitting}
             >
+              <Send className="h-4 w-4" aria-hidden />
               {isSubmitting ? form.submittingLabel : form.submitLabel}
             </button>
             <a
-              href={bookingHref}
+              href={whatsappHref}
               className="btn btn-secondary w-full"
-              data-event={trackingEvents.bookOnlineClick}
+              data-event={trackingEvents.whatsappClick}
             >
-              {form.bookingLabel}
+              <MessageCircle className="h-4 w-4" aria-hidden />
+              {form.whatsappLabel}
             </a>
-            {contact.whatsappUrl ? (
-              <a
-                href={whatsappHref}
-                className="btn btn-secondary w-full sm:col-span-2 lg:col-span-1 xl:col-span-2"
-                data-event={trackingEvents.whatsappClick}
-              >
-                <MessageCircle className="h-4 w-4" aria-hidden />
-                {form.whatsappLabel}
-              </a>
-            ) : null}
           </div>
 
-          <p className="mt-4 text-xs text-muted">{form.privacyNote}</p>
+          <div className="mt-6 flex items-center gap-3" aria-hidden>
+            <span className="h-px flex-1 bg-white/10" />
+            <span className="text-xs font-semibold tracking-[0.16em] text-muted uppercase">
+              Or
+            </span>
+            <span className="h-px flex-1 bg-white/10" />
+          </div>
+
+          <a
+            href={bookingHref}
+            className="mt-6 flex items-center justify-center gap-1.5 text-sm font-semibold text-primary transition-colors hover:text-primary-bright"
+            data-event={trackingEvents.bookOnlineClick}
+          >
+            {form.bookingLabel}
+            <ArrowRight className="h-4 w-4" aria-hidden />
+          </a>
 
           <div role="status" aria-live="polite">
             {showNotice && savedLead ? (
-              <div className="mt-5 rounded-2xl border border-aqua/30 bg-aqua/5 p-4 text-sm text-text">
+              <div className="mt-6 rounded-2xl border border-aqua/30 bg-aqua/5 p-4 text-sm text-text">
                 <div className="flex items-start gap-3">
                 <Info className="mt-0.5 h-4 w-4 shrink-0 text-aqua" aria-hidden />
                   <div>
@@ -446,7 +535,7 @@ export function CourseDatesForm() {
               </div>
             ) : null}
             {submitError ? (
-              <p role="alert" className="mt-5 flex items-start gap-3 rounded-2xl border border-aqua/30 bg-aqua/5 p-4 text-sm text-text">
+              <p role="alert" className="mt-6 flex items-start gap-3 rounded-2xl border border-aqua/30 bg-aqua/5 p-4 text-sm text-text">
                 <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-aqua" aria-hidden />
                 {submitError}
               </p>
