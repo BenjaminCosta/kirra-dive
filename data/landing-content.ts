@@ -218,11 +218,8 @@ export const courseJourney = {
 export const cookIsland = {
   eyebrow: "The experience",
   kicker: "Cook Island Aquatic Reserve",
-  heading: "Your underwater classroom",
-  body: [
-    "Your training dives happen in a protected marine reserve off the Tweed coast, not in a swimming pool with a view.",
-    "It is shallow, sheltered and full of life, which makes it a forgiving place to learn and a genuinely good first dive site.",
-  ],
+  headingLines: ["Your underwater", "classroom"],
+  body: "Your open-water dives happen in a protected marine reserve off the Tweed coast — shallow, sheltered and full of life.",
   wildlife: {
     lead: "Divers here regularly see:",
     items: ["Sea turtles", "Rays", "Tropical fish", "Reef life"],
@@ -235,6 +232,16 @@ export const cookIsland = {
     alt: "Underwater view of a shallow reef in dappled sunlight.",
   },
 } as const;
+
+/** Compact attribute row shown under the immersive Cook Island break. */
+export const cookIslandAttributes: ReadonlyArray<{
+  icon: IconName;
+  label: string;
+}> = [
+  { icon: "waves", label: "Open water training" },
+  { icon: "shell", label: "Local marine reserve" },
+  { icon: "sun", label: "Conditions dependent" },
+];
 
 export const included = {
   eyebrow: "What you get",
