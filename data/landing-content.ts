@@ -298,10 +298,17 @@ export type Review = {
 
 export const reviews = {
   eyebrow: "Social proof",
-  heading: "Real students. Real first dives.",
+  headingLines: ["Real students.", "Real first dives."],
   /** Visible while the reviews below are placeholders. Remove with them. */
   placeholderNote:
     "Placeholder reviews. Real, attributed reviews to be added before launch.",
+  /** Overall Google Reviews trust badge. Score is a template placeholder, not a real figure. */
+  googleBadge: {
+    label: "Google Reviews",
+    note: "Reviews from real divers",
+    score: "X.X", // TO CONFIRM
+    scoreNote: "Rating to be confirmed",
+  },
   featured: {
     id: "featured",
     quote: "Review to be confirmed",
