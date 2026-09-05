@@ -21,7 +21,11 @@ export type IconName =
   | "graduation-cap"
   | "shell"
   | "fish"
-  | "sun";
+  | "sun"
+  | "users"
+  | "droplets"
+  | "glasses"
+  | "award";
 
 export const siteConfig = {
   name: "Kirra Dive",
@@ -58,6 +62,8 @@ export const contact = {
 /** Shown next to the price everywhere it appears. */
 export const pricing = {
   from: "From A$XXX", // TO CONFIRM
+  /** Just the figure, for layouts that show "From" and the amount separately. */
+  amount: "A$XXX", // TO CONFIRM
   note: "Course fee to be confirmed.",
 } as const;
 
@@ -249,14 +255,14 @@ export const included = {
   intro:
     "The course covers the learning, the water time and the certification itself.",
   items: [
-    "PADI eLearning and study materials",
-    "Confined water training",
-    "Four open-water dives",
-    "Scuba equipment",
-    "PADI certification",
-    "Small-group instruction",
-    "Ongoing support",
-  ],
+    { icon: "graduation-cap", label: "PADI eLearning and study materials" },
+    { icon: "waves", label: "Confined water training" },
+    { icon: "droplets", label: "Four open-water dives" },
+    { icon: "glasses", label: "Scuba equipment" },
+    { icon: "award", label: "PADI certification" },
+    { icon: "users", label: "Small-group instruction" },
+    { icon: "life-buoy", label: "Ongoing support" },
+  ] as ReadonlyArray<{ icon: IconName; label: string }>,
   /**
    * Deliberately not "everything included" or "no hidden extras" — that claim
    * can only be made once every cost is confirmed.
@@ -264,11 +270,15 @@ export const included = {
   itemsNote:
     "Inclusions and any additional costs to be confirmed before booking.",
   valuePanel: {
-    priceLabel: pricing.from,
-    priceNote: pricing.note,
-    ctaLabel: "Book online",
-    ctaHref: contact.bookingUrl ?? contact.fallbackAnchors.booking,
-    beginnerHeadingLines: ["New to diving?", "That's exactly who this is for."],
+    ctaLabel: "Check course dates",
+    ctaHref: "#course-dates",
+    /** Shown alongside the primary CTA, same fallback as the hero. */
+    secondaryCta: {
+      label: "Ask on WhatsApp",
+      href: contact.whatsappUrl ?? contact.fallbackAnchors.whatsapp,
+    },
+    beginnerEyebrow: "New to diving?",
+    beginnerHeadingLines: ["That's exactly", "who this is for."],
     beginnerBody:
       "Most people who start this course have never breathed underwater. Instructors teach at the pace of the group, and nobody is pushed past what they are comfortable with.",
   },
