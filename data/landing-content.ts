@@ -21,7 +21,11 @@ export type IconName =
   | "graduation-cap"
   | "shell"
   | "fish"
-  | "sun";
+  | "sun"
+  | "users"
+  | "droplets"
+  | "glasses"
+  | "award";
 
 export const siteConfig = {
   name: "Kirra Dive",
@@ -58,6 +62,8 @@ export const contact = {
 /** Shown next to the price everywhere it appears. */
 export const pricing = {
   from: "From A$XXX", // TO CONFIRM
+  /** Just the figure, for layouts that show "From" and the amount separately. */
+  amount: "A$XXX", // TO CONFIRM
   note: "Course fee to be confirmed.",
 } as const;
 
@@ -80,6 +86,7 @@ export const navLinks = [
 export const header = {
   ctaLabel: "Book now",
   ctaHref: contact.bookingUrl ?? contact.fallbackAnchors.booking,
+  whatsappLabel: "Ask on WhatsApp",
   homeLabel: "Kirra Dive — back to top",
   menuOpenLabel: "Open menu",
   menuCloseLabel: "Close menu",
@@ -91,9 +98,15 @@ export const hero = {
   subheading:
     "From your first breath underwater to internationally recognised certification.",
   primaryCta: { label: "Check course dates", href: "#course-dates" },
-  secondaryCta: contact.whatsappUrl
-    ? { label: "Ask on WhatsApp", href: contact.whatsappUrl }
-    : null,
+  /**
+   * Shown in the hero regardless of whether the real WhatsApp number is
+   * confirmed yet, unlike the sticky bar / enquiry form CTAs — falls back to
+   * the #contact anchor until `contact.whatsappUrl` is set.
+   */
+  secondaryCta: {
+    label: "Ask on WhatsApp",
+    href: contact.whatsappUrl ?? contact.fallbackAnchors.whatsapp,
+  },
   /** Risk-reduction line. Not a guarantee or a commercial policy. */
   reassurance:
     "Beginner-friendly training with patient, experienced instructors.",
@@ -103,6 +116,40 @@ export const hero = {
     alt: "Sunlight filtering down through deep blue ocean water above a dark reef.",
   },
 } as const;
+
+/**
+ * Compact trust row shown inside the hero itself. Distinct from
+ * `trustSignals` below (the overlapping cards after the hero) — the two will
+ * be reconciled once the rest of the page is redesigned to match.
+ */
+export type HeroSignalIcon = "since" | "globe" | "users" | "user";
+
+export const heroTrustSignals: ReadonlyArray<{
+  icon: HeroSignalIcon;
+  label: string;
+  detail: string;
+}> = [
+  {
+    icon: "since",
+    label: "Since 1988",
+    detail: "Diving education you can trust",
+  },
+  {
+    icon: "globe",
+    label: "PADI Dive Centre",
+    detail: "PADI certified dive centre",
+  },
+  {
+    icon: "users",
+    label: "Beginners Welcome",
+    detail: "Perfect for first time divers",
+  },
+  {
+    icon: "user",
+    label: "Local Instructors",
+    detail: "Experienced, passionate team",
+  },
+];
 
 export const trustSignals: ReadonlyArray<{
   icon: IconName;
@@ -128,7 +175,7 @@ export const trustSignals: ReadonlyArray<{
 
 export const courseJourney = {
   eyebrow: "The course",
-  heading: "From first breath to certified diver",
+  headingLines: ["From first breath", "to certified diver"],
   intro:
     "Every course follows the same path. You cover the theory in your own time, practise each skill in confined water until it feels ordinary, then put it all together on your open-water dives.",
   cta: { label: "View upcoming dates", href: "#course-dates" },
@@ -136,6 +183,7 @@ export const courseJourney = {
     {
       id: "pool-skills",
       step: "01",
+      icon: "life-buoy",
       title: "Pool Skills",
       description:
         "Confined water is where it clicks. Mask, regulator, buoyancy — one skill at a time, in shallow water, with an instructor beside you.",
@@ -148,6 +196,7 @@ export const courseJourney = {
     {
       id: "ocean-dives",
       step: "02",
+      icon: "waves",
       title: "Ocean Dives",
       description:
         "Your open-water dives take place in a living marine environment, in a small group, at the pace of the divers in it.",
@@ -160,6 +209,7 @@ export const courseJourney = {
     {
       id: "certification",
       step: "03",
+      icon: "graduation-cap",
       title: "PADI Certification",
       description:
         "Once your skills and dives are signed off, you are a certified PADI Open Water Diver — free to dive with a buddy anywhere in the world.",
@@ -175,11 +225,8 @@ export const courseJourney = {
 export const cookIsland = {
   eyebrow: "The experience",
   kicker: "Cook Island Aquatic Reserve",
-  heading: "Your underwater classroom",
-  body: [
-    "Your training dives happen in a protected marine reserve off the Tweed coast, not in a swimming pool with a view.",
-    "It is shallow, sheltered and full of life, which makes it a forgiving place to learn and a genuinely good first dive site.",
-  ],
+  headingLines: ["Your underwater", "classroom"],
+  body: "Your open-water dives happen in a protected marine reserve off the Tweed coast — shallow, sheltered and full of life.",
   wildlife: {
     lead: "Divers here regularly see:",
     items: ["Sea turtles", "Rays", "Tropical fish", "Reef life"],
@@ -193,20 +240,30 @@ export const cookIsland = {
   },
 } as const;
 
+/** Compact attribute row shown under the immersive Cook Island break. */
+export const cookIslandAttributes: ReadonlyArray<{
+  icon: IconName;
+  label: string;
+}> = [
+  { icon: "waves", label: "Open water training" },
+  { icon: "shell", label: "Local marine reserve" },
+  { icon: "sun", label: "Conditions dependent" },
+];
+
 export const included = {
   eyebrow: "What you get",
   heading: "What's included",
   intro:
     "The course covers the learning, the water time and the certification itself.",
   items: [
-    "PADI eLearning and study materials",
-    "Confined water training",
-    "Four open-water dives",
-    "Scuba equipment",
-    "PADI certification",
-    "Small-group instruction",
-    "Ongoing support",
-  ],
+    { icon: "graduation-cap", label: "PADI eLearning and study materials" },
+    { icon: "waves", label: "Confined water training" },
+    { icon: "droplets", label: "Four open-water dives" },
+    { icon: "glasses", label: "Scuba equipment" },
+    { icon: "award", label: "PADI certification" },
+    { icon: "users", label: "Small-group instruction" },
+    { icon: "life-buoy", label: "Ongoing support" },
+  ] as ReadonlyArray<{ icon: IconName; label: string }>,
   /**
    * Deliberately not "everything included" or "no hidden extras" — that claim
    * can only be made once every cost is confirmed.
@@ -214,11 +271,15 @@ export const included = {
   itemsNote:
     "Inclusions and any additional costs to be confirmed before booking.",
   valuePanel: {
-    priceLabel: pricing.from,
-    priceNote: pricing.note,
-    ctaLabel: "Book online",
-    ctaHref: contact.bookingUrl ?? contact.fallbackAnchors.booking,
-    beginnerHeadingLines: ["New to diving?", "That's exactly who this is for."],
+    ctaLabel: "Check course dates",
+    ctaHref: "#course-dates",
+    /** Shown alongside the primary CTA, same fallback as the hero. */
+    secondaryCta: {
+      label: "Ask on WhatsApp",
+      href: contact.whatsappUrl ?? contact.fallbackAnchors.whatsapp,
+    },
+    beginnerEyebrow: "New to diving?",
+    beginnerHeadingLines: ["That's exactly", "who this is for."],
     beginnerBody:
       "Most people who start this course have never breathed underwater. Instructors teach at the pace of the group, and nobody is pushed past what they are comfortable with.",
   },
@@ -238,10 +299,17 @@ export type Review = {
 
 export const reviews = {
   eyebrow: "Social proof",
-  heading: "Real students. Real first dives.",
+  headingLines: ["Real students.", "Real first dives."],
   /** Visible while the reviews below are placeholders. Remove with them. */
   placeholderNote:
     "Placeholder reviews. Real, attributed reviews to be added before launch.",
+  /** Overall Google Reviews trust badge. Score is a template placeholder, not a real figure. */
+  googleBadge: {
+    label: "Google Reviews",
+    note: "Reviews from real divers",
+    score: "X.X", // TO CONFIRM
+    scoreNote: "Rating to be confirmed",
+  },
   featured: {
     id: "featured",
     quote: "Review to be confirmed",
@@ -272,14 +340,16 @@ export const reviews = {
 
 export const courseDates = {
   eyebrow: "Book your course",
-  heading: "Ready to take your first breath?",
+  headingLines: ["Ready to take", "your first breath?"],
   body: "Choose a date, book online, or talk to the Kirra Dive team.",
+  upcomingLabel: "Upcoming courses",
   /** Real course dates go here. Empty renders the fallback line below. */
   upcoming: [] as ReadonlyArray<{ id: string; label: string; note: string }>,
   upcomingFallback:
     "Upcoming course dates to be confirmed. Send an enquiry and the team will come back with the next available course.",
   form: {
     legend: "Course enquiry",
+    introNote: "Fill in your details and we'll be in touch soon.",
     fields: {
       fullName: { label: "Full name", placeholder: "Jane Smith" },
       phone: {
@@ -342,14 +412,29 @@ export const footer = {
     "A Tweed Heads dive centre teaching people to dive since 1988.",
   contactHeading: "Contact",
   exploreHeading: "Explore",
-  legalHeading: "Legal",
+  /** Mirrors the header nav, plus a FAQ entry that has no page yet. */
+  exploreLinks: [
+    { label: "The Course", href: "#the-course" },
+    { label: "The Experience", href: "#the-experience" },
+    { label: "Reviews", href: "#reviews" },
+    { label: "Dates", href: "#course-dates" },
+    { label: "FAQ", href: null },
+  ] as ReadonlyArray<{ label: string; href: string | null }>,
+  whatsappLabel: "WhatsApp number to be confirmed",
   phoneLabel: "Phone to be confirmed",
   emailLabel: "Email to be confirmed",
   addressHeading: "Where to find us",
+  /** Shown only once a real PADI dive centre number is confirmed. */
   padi: {
+    confirmed: false,
     label: "PADI Dive Centre",
     note: "Dive centre number and accreditation details to be confirmed.",
   },
+  /** Shown only once a real profile URL exists for that platform. */
+  socialLinks: [
+    { label: "Instagram", href: null },
+    { label: "Facebook", href: null },
+  ] as ReadonlyArray<{ label: string; href: string | null }>,
   legalLinks: [
     { label: "Privacy policy", href: null },
     { label: "Terms and conditions", href: null },
