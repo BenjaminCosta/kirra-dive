@@ -177,7 +177,7 @@ export function ReviewsSection() {
   const { googleBadge } = reviews;
 
   return (
-    <section id="reviews" className="section-y border-y border-white/5 bg-surface/25">
+    <section id="reviews" className="relative section-y">
       <div className="container-page">
         <header className="max-w-2xl">
           <p className="eyebrow">{reviews.eyebrow}</p>

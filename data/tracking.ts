@@ -16,7 +16,6 @@ export const trackingEvents = {
   whatsappClick: "whatsapp_click",
   whatsappContinue: "whatsapp_continue",
   leadSubmit: "lead_submit",
-  stickyDatesClick: "sticky_dates_click",
 } as const;
 
 export type TrackingEvent = (typeof trackingEvents)[keyof typeof trackingEvents];

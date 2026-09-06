@@ -51,8 +51,8 @@ export function Footer() {
   );
 
   return (
-    <footer id="site-footer" className="border-t border-white/10 bg-background">
-      <div className="container-page py-14 sm:py-16">
+    <footer id="site-footer" className="relative">
+      <div className="container-page pt-10 pb-14 sm:pt-12 sm:pb-16">
         <div className="flex items-center gap-3">
           <KirraLogo className="h-11 w-11 shrink-0" decorative />
           <span className="leading-tight">

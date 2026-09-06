@@ -4,7 +4,6 @@ import {
   Droplets,
   Glasses,
   GraduationCap,
-  Heart,
   Info,
   LifeBuoy,
   MessageCircle,
@@ -29,7 +28,7 @@ export function IncludedSection() {
   const { valuePanel } = included;
 
   return (
-    <section id="whats-included" className="section-y">
+    <section id="whats-included" className="section-overlap section-y">
       <div className="container-page">
         <div className="max-w-2xl">
           <p className="eyebrow">{included.eyebrow}</p>
@@ -60,18 +59,21 @@ export function IncludedSection() {
         </p>
 
         {/* Pricing — the one prominent, full-width surface in this section. */}
-        <div className="relative mt-12 overflow-hidden rounded-3xl border border-white/10">
-          {/*
-            PLACEHOLDER IMAGE: dark oceanic gradient stands in for real
-            photography behind the pricing card until that asset is ready.
-          */}
-          <div
+        <div className="scene mt-12 rounded-3xl border border-white/10">
+          {/* AI-generated stock photo — replace with real photography. */}
+          <img
+            src={valuePanel.image.src}
+            alt=""
             aria-hidden
-            className="absolute inset-0 -z-10 bg-[linear-gradient(115deg,var(--background)_0%,var(--background)_45%,var(--ocean)_100%)]"
+            className="scene-photo object-[75%_50%]"
           />
           <div
             aria-hidden
-            className="absolute inset-0 -z-10 bg-[radial-gradient(55%_75%_at_100%_50%,color-mix(in_srgb,var(--aqua)_30%,transparent)_0%,transparent_70%)]"
+            className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(115deg,var(--background)_0%,color-mix(in_srgb,var(--background)_92%,transparent)_50%,color-mix(in_srgb,var(--background)_55%,transparent)_100%)]"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(55%_75%_at_100%_50%,color-mix(in_srgb,var(--aqua)_15%,transparent)_0%,transparent_70%)]"
           />
 
           <div className="p-7 sm:p-10">
@@ -102,29 +104,6 @@ export function IncludedSection() {
           </div>
         </div>
 
-        {/* New to diving — second, calmer surface. */}
-        <div className="surface-panel relative mt-6 overflow-hidden p-7 sm:p-10">
-          <div
-            aria-hidden
-            className="absolute top-7 right-7 sm:top-9 sm:right-9"
-          >
-            <span className="absolute -top-6 right-2 h-1 w-1 rounded-full border border-primary/40" />
-            <span className="absolute -top-3 -right-1 h-1.5 w-1.5 rounded-full border border-primary/50" />
-            <span className="flex h-14 w-14 items-center justify-center rounded-full border border-primary/40">
-              <Heart className="h-6 w-6 text-primary" />
-            </span>
-          </div>
-
-          <p className="eyebrow">{valuePanel.beginnerEyebrow}</p>
-          <h3 className="heading-lg mt-3 max-w-sm">
-            {valuePanel.beginnerHeadingLines.map((line) => (
-              <span key={line} className="block">
-                {line}
-              </span>
-            ))}
-          </h3>
-          <p className="mt-4 max-w-md text-muted">{valuePanel.beginnerBody}</p>
-        </div>
       </div>
     </section>
   );

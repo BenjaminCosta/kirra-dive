@@ -15,24 +15,23 @@ export function CookIslandFeature() {
   return (
     <section
       id="the-experience"
-      className="relative isolate flex min-h-[92svh] items-end overflow-hidden"
+      className="scene section-overlap flex min-h-[92svh] items-end"
     >
-      {/*
-        PLACEHOLDER BACKGROUND: a dark oceanic gradient stands in for the real
-        reef photography (see `cookIsland.image`) until that asset is ready.
-      */}
-      <div
+      {/* Scene 2 of 3. AI-generated stock photo — replace with real Cook Island reef photography. */}
+      <img
+        src={cookIsland.image.src}
+        alt=""
         aria-hidden
-        className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,var(--ocean)_0%,var(--background)_65%,var(--background)_100%)]"
+        className="scene-photo object-[50%_30%]"
       />
+      {/* Resolves out of the dark above it, and back into it below. */}
+      <div aria-hidden className="scene-fade-in" />
+      <div aria-hidden className="scene-fade-out" />
+      <div aria-hidden className="scene-glow" />
+      {/* Extra weight at the foot of the scene, where the type sits. */}
       <div
         aria-hidden
-        className="absolute inset-0 -z-10 bg-[radial-gradient(70%_55%_at_50%_0%,color-mix(in_srgb,var(--aqua)_32%,transparent)_0%,transparent_65%)]"
-      />
-      {/* Strong gradient keeps the overlaid type legible over the "photo". */}
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-10 bg-linear-to-t from-background via-background/85 to-transparent"
+        className="pointer-events-none absolute inset-0 -z-10 bg-linear-to-t from-background via-background/80 to-transparent"
       />
 
       <div className="container-page relative pb-16 sm:pb-20">

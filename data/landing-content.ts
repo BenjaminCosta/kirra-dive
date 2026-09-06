@@ -13,9 +13,6 @@ import type { LeadExperience } from "@/types/lead";
 
 /** Icon keys are mapped to Lucide components inside each section. */
 export type IconName =
-  | "anchor"
-  | "badge-check"
-  | "heart-handshake"
   | "waves"
   | "life-buoy"
   | "graduation-cap"
@@ -25,7 +22,9 @@ export type IconName =
   | "users"
   | "droplets"
   | "glasses"
-  | "award";
+  | "award"
+  | "shield-check"
+  | "heart";
 
 export const siteConfig = {
   name: "Kirra Dive",
@@ -111,17 +110,13 @@ export const hero = {
   reassurance:
     "Beginner-friendly training with patient, experienced instructors.",
   image: {
-    // PLACEHOLDER IMAGE: replace with real Kirra Dive photography, ~16:10.
-    src: "/images/hero-underwater.jpg",
-    alt: "Sunlight filtering down through deep blue ocean water above a dark reef.",
+    // STOCK IMAGE: AI-generated placeholder, replace with real Kirra Dive photography.
+    src: "/images/hero-diver-sunbeams.jpg",
+    alt: "Diver descending through sunbeams above a coral reef.",
   },
 } as const;
 
-/**
- * Compact trust row shown inside the hero itself. Distinct from
- * `trustSignals` below (the overlapping cards after the hero) — the two will
- * be reconciled once the rest of the page is redesigned to match.
- */
+/** Compact trust row shown inside the hero itself. */
 export type HeroSignalIcon = "since" | "globe" | "users" | "user";
 
 export const heroTrustSignals: ReadonlyArray<{
@@ -151,28 +146,6 @@ export const heroTrustSignals: ReadonlyArray<{
   },
 ];
 
-export const trustSignals: ReadonlyArray<{
-  icon: IconName;
-  label: string;
-  detail: string;
-}> = [
-  {
-    icon: "anchor",
-    label: "Since 1988",
-    detail: "Teaching divers on the Tweed for over three decades.",
-  },
-  {
-    icon: "badge-check",
-    label: "PADI Dive Centre",
-    detail: "Certification recognised at dive centres worldwide.",
-  },
-  {
-    icon: "heart-handshake",
-    label: "Beginners welcome",
-    detail: "No experience needed — most students start from zero.",
-  },
-];
-
 export const courseJourney = {
   eyebrow: "The course",
   headingLines: ["From first breath", "to certified diver"],
@@ -188,8 +161,8 @@ export const courseJourney = {
       description:
         "Confined water is where it clicks. Mask, regulator, buoyancy — one skill at a time, in shallow water, with an instructor beside you.",
       image: {
-        // PLACEHOLDER IMAGE: 4:3 confined water training shot.
-        src: "/images/journey-pool-skills.jpg",
+        // STOCK IMAGE: AI-generated placeholder, replace with a real training photo.
+        src: "/images/pool-training-skills.jpg",
         alt: "Student diver practising skills in calm, shallow training water.",
       },
     },
@@ -201,9 +174,9 @@ export const courseJourney = {
       description:
         "Your open-water dives take place in a living marine environment, in a small group, at the pace of the divers in it.",
       image: {
-        // PLACEHOLDER IMAGE: 4:3 open water dive shot.
-        src: "/images/journey-ocean-dives.jpg",
-        alt: "Divers descending through blue water on an open-water training dive.",
+        // STOCK IMAGE: AI-generated placeholder, replace with a real open-water dive photo.
+        src: "/images/divers-pair-descending.jpg",
+        alt: "Two divers descending together along a reef wall on an open-water dive.",
       },
     },
     {
@@ -214,9 +187,9 @@ export const courseJourney = {
       description:
         "Once your skills and dives are signed off, you are a certified PADI Open Water Diver — free to dive with a buddy anywhere in the world.",
       image: {
-        // PLACEHOLDER IMAGE: 4:3 certification / post-dive shot.
-        src: "/images/journey-certification.jpg",
-        alt: "Diver looking up towards the surface at the end of a dive.",
+        // STOCK IMAGE: AI-generated placeholder, replace with a real certification / post-dive shot.
+        src: "/images/reef-canyon-turtle-beams.jpg",
+        alt: "Sunlit reef canyon opening onto open water, a turtle crossing it.",
       },
     },
   ],
@@ -234,9 +207,9 @@ export const cookIsland = {
   /** Required honesty line. Do not soften or remove. */
   disclaimer: "Wildlife encounters are possible, never guaranteed.",
   image: {
-    // PLACEHOLDER IMAGE: replace with Cook Island Aquatic Reserve photography.
-    src: "/images/cook-island-reserve.jpg",
-    alt: "Underwater view of a shallow reef in dappled sunlight.",
+    // STOCK IMAGE: AI-generated placeholder, replace with real Cook Island Aquatic Reserve photography.
+    src: "/images/cook-island-turtle.jpg",
+    alt: "Sea turtle swimming past a sunlit reef, fish trailing behind it.",
   },
 } as const;
 
@@ -278,10 +251,34 @@ export const included = {
       label: "Ask on WhatsApp",
       href: contact.whatsappUrl ?? contact.fallbackAnchors.whatsapp,
     },
-    beginnerEyebrow: "New to diving?",
-    beginnerHeadingLines: ["That's exactly", "who this is for."],
-    beginnerBody:
-      "Most people who start this course have never breathed underwater. Instructors teach at the pace of the group, and nobody is pushed past what they are comfortable with.",
+    image: {
+      // STOCK IMAGE: AI-generated placeholder, replace with real photography.
+      // Chosen for its large, near-black area: it reads as texture behind the
+      // price, not as a scene of its own.
+      src: "/images/reef-wall-deep-dark.jpg",
+      alt: "Deep reef wall dropping away into dark blue water.",
+    },
+  },
+} as const;
+
+/**
+ * The page's softer, fourth visual moment: a half-width photograph beside the
+ * reassurance copy, rather than another full-bleed background.
+ */
+export const goodHands = {
+  eyebrow: "New to diving?",
+  headingLines: ["That's exactly", "who this is for."],
+  body: "Most people who start this course have never breathed underwater. Instructors teach at the pace of the group, and nobody is pushed past what they are comfortable with.",
+  /** Restatements of copy already on this page — no new claims. */
+  points: [
+    { icon: "shield-check", label: "No previous experience needed" },
+    { icon: "users", label: "Small-group instruction" },
+    { icon: "heart", label: "Taught at the pace of the group" },
+  ] as ReadonlyArray<{ icon: IconName; label: string }>,
+  image: {
+    // STOCK IMAGE: AI-generated placeholder, replace with a real instructor photo.
+    src: "/images/divers-pair-reef-drift.jpg",
+    alt: "Two divers swimming side by side over a shallow, sunlit reef.",
   },
 } as const;
 
@@ -339,9 +336,9 @@ export const reviews = {
 } as const;
 
 export const courseDates = {
-  eyebrow: "Book your course",
-  headingLines: ["Ready to take", "your first breath?"],
-  body: "Choose a date, book online, or talk to the Kirra Dive team.",
+  eyebrow: "Check dates & enquire",
+  headingLines: ["Start your", "diving journey"],
+  body: "Send an enquiry and the team will come back with the next available dates.",
   upcomingLabel: "Upcoming courses",
   /** Real course dates go here. Empty renders the fallback line below. */
   upcoming: [] as ReadonlyArray<{ id: string; label: string; note: string }>,
@@ -400,11 +397,24 @@ export const courseDates = {
   },
 } as const;
 
-export const stickyCta = {
-  datesLabel: "View dates",
-  datesHref: "#course-dates",
-  whatsappLabel: "Ask on WhatsApp",
-  label: "Quick actions",
+/**
+ * The last of the three full-bleed scenes. Closes the page by going back to
+ * the water it opened on.
+ */
+export const finalCta = {
+  eyebrow: "Same ocean. A brighter you.",
+  headingLines: ["Ready to take", "your first breath?"],
+  body: "Choose a date, book online, or talk to the Kirra Dive team.",
+  primaryCta: { label: "Check course dates", href: "#course-dates" },
+  secondaryCta: {
+    label: "Ask on WhatsApp",
+    href: contact.whatsappUrl ?? contact.fallbackAnchors.whatsapp,
+  },
+  image: {
+    // STOCK IMAGE: AI-generated placeholder, replace with real photography.
+    src: "/images/manta-deep-wall-dark.jpg",
+    alt: "Manta ray gliding along a deep reef wall in dark blue water.",
+  },
 } as const;
 
 export const footer = {

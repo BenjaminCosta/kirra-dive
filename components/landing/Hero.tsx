@@ -16,18 +16,30 @@ const signalIcons: Record<Exclude<HeroSignalIcon, "since">, typeof Globe> = {
 
 export function Hero() {
   return (
-    <section id="top" className="relative isolate overflow-hidden pb-14 sm:pb-16">
-      {/*
-        PLACEHOLDER BACKGROUND: a dark oceanic gradient stands in for the real
-        hero photo/video (see `hero.image`) until that asset is ready.
-      */}
-      <div
+    <section id="top" className="scene pb-14 sm:pb-16">
+      {/* Scene 1 of 3. AI-generated stock photo — replace with real Kirra Dive photography. */}
+      <img
+        src={hero.image.src}
+        alt=""
         aria-hidden
-        className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,var(--ocean)_0%,var(--background)_60%,var(--background)_100%)]"
+        className="scene-photo object-[75%_20%]"
       />
+      {/* Diagonal scrim: keeps the text column legible, leaves the diver visible on the right. */}
       <div
         aria-hidden
-        className="absolute inset-0 -z-10 bg-[radial-gradient(65%_45%_at_82%_0%,color-mix(in_srgb,var(--aqua)_28%,transparent)_0%,transparent_70%)]"
+        className="absolute inset-0 -z-10 bg-[linear-gradient(115deg,var(--background)_12%,color-mix(in_srgb,var(--background)_78%,transparent)_34%,color-mix(in_srgb,var(--background)_25%,transparent)_58%,transparent_78%)]"
+      />
+      {/* Top scrim: keeps the header and eyebrow readable against bright water. */}
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,color-mix(in_srgb,var(--background)_55%,transparent)_0%,transparent_24%)]"
+      />
+      {/* Shared fade-out: the water dissolves into the page ground behind the
+          trust row, so the next section can start inside it. */}
+      <div aria-hidden className="scene-fade-out" />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(65%_45%_at_82%_0%,color-mix(in_srgb,var(--aqua)_14%,transparent)_0%,transparent_70%)]"
       />
 
       <div className="container-page relative pt-[calc(var(--header-height)+2rem)]">
@@ -90,7 +102,7 @@ export function Hero() {
           </p>
         </div>
 
-        <ul className="mt-8 grid grid-cols-4 divide-x divide-white/10 rounded-3xl border border-white/15 py-6">
+        <ul className="mt-10 grid grid-cols-4 divide-x divide-white/10 border-t border-white/10 pt-8">
           {heroTrustSignals.map((signal) => {
             const Icon = signal.icon === "since" ? null : signalIcons[signal.icon];
             return (

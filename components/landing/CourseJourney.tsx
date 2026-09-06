@@ -11,7 +11,7 @@ const stageIcons: Partial<Record<IconName, LucideIcon>> = {
 
 export function CourseJourney() {
   return (
-    <section id="the-course" className="section-y">
+    <section id="the-course" className="section-overlap section-y">
       <div className="container-page">
         <header className="max-w-2xl">
           <p className="eyebrow">{courseJourney.eyebrow}</p>
@@ -55,18 +55,12 @@ export function CourseJourney() {
                   {stage.step}
                 </span>
 
-                {/*
-                  PLACEHOLDER IMAGE: dark oceanic gradient stands in for
-                  `stage.image` until real photography is ready.
-                */}
+                {/* AI-generated stock photo — replace with real course photography. */}
                 <div className="relative aspect-4/3 w-full overflow-hidden rounded-2xl border border-white/10">
-                  <div
-                    aria-hidden
-                    className="absolute inset-0 bg-[linear-gradient(160deg,var(--ocean)_0%,var(--background)_100%)]"
-                  />
-                  <div
-                    aria-hidden
-                    className="absolute inset-0 bg-[radial-gradient(55%_55%_at_25%_20%,color-mix(in_srgb,var(--aqua)_22%,transparent)_0%,transparent_75%)]"
+                  <img
+                    src={stage.image.src}
+                    alt={stage.image.alt}
+                    className="absolute inset-0 h-full w-full object-cover"
                   />
                 </div>
 

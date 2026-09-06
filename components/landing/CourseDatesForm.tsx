@@ -233,7 +233,7 @@ export function CourseDatesForm() {
   return (
     <section
       id="course-dates"
-      className="section-y"
+      className="relative pt-8 pb-20 sm:pt-10 sm:pb-28 lg:pb-32"
       data-event={trackingEvents.courseDatesView}
     >
       <div className="container-page grid gap-10 lg:grid-cols-2 lg:gap-16">
