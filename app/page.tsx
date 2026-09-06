@@ -7,7 +7,6 @@ import { GoodHands } from "@/components/landing/GoodHands";
 import { Header } from "@/components/landing/Header";
 import { Hero } from "@/components/landing/Hero";
 import { IncludedSection } from "@/components/landing/IncludedSection";
-import { OfficialOfferings } from "@/components/landing/OfficialOfferings";
 import { ReviewsSection } from "@/components/landing/ReviewsSection";
 
 export default function HomePage() {
@@ -18,7 +17,6 @@ export default function HomePage() {
         <Hero />
         <CourseJourney />
         <CookIslandFeature />
-        <OfficialOfferings />
         <IncludedSection />
         <GoodHands />
         <ReviewsSection />

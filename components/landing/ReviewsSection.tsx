@@ -1,5 +1,5 @@
-import { GoogleReviews } from "./GoogleReviews";
 import { reviews } from "@/data/landing-content";
+import { ReviewsFeed } from "./ReviewsFeed";
 
 export function ReviewsSection() {
   return (
@@ -17,7 +17,7 @@ export function ReviewsSection() {
           <p className="mt-5 text-sm text-muted">{reviews.sourceNote}</p>
         </header>
 
-        <GoogleReviews />
+        <ReviewsFeed />
       </div>
     </section>
   );

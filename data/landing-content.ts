@@ -69,7 +69,6 @@ export const seasonalBadge = {
 export const navLinks = [
   { label: "The Course", href: "#the-course" },
   { label: "Cook Island", href: "#the-experience" },
-  { label: "Dive & Snorkel", href: "#official-experiences" },
   { label: "Reviews", href: "#reviews" },
   { label: "Contact", href: "#contact" },
 ] as const;
@@ -262,9 +261,11 @@ export const goodHands = {
 } as const;
 
 export const reviews = {
-  eyebrow: "Google Maps reviews",
-  headingLines: ["Dive with confidence.", "Hear it from guests."],
-  sourceNote: "Live ratings and reviews from Google Maps.",
+  eyebrow: "Social proof",
+  headingLines: ["Real students.", "Real first dives."],
+  sourceNote: "Feedback from Kirra Dive guests, supplied by Google Maps.",
+  badgeLabel: "Google Maps reviews",
+  badgeNote: "Feedback from real divers",
   fallbackLabel: "Read reviews on Google Maps",
 } as const;
 
@@ -363,7 +364,6 @@ export const footer = {
   exploreLinks: [
     { label: "The Course", href: "#the-course" },
     { label: "Cook Island", href: "#the-experience" },
-    { label: "Dive & Snorkel", href: "#official-experiences" },
     { label: "Reviews", href: "#reviews" },
     { label: "Contact", href: "#contact" },
   ],
@@ -391,34 +391,4 @@ export const footer = {
   ],
   copyright: (year: number) =>
     `© ${year} Kirra Dive. ${siteConfig.suburb}. All rights reserved.`,
-} as const;
-
-export const officialOfferings = {
-  eyebrow: "Official Kirra Dive experiences",
-  heading: "More ways to get in the water",
-  intro:
-    "Explore the current activities published by Kirra Dive — all with live availability and booking on the official site.",
-  items: [
-    {
-      title: "Snorkel with the Turtles",
-      description:
-        "Guided snorkelling tours to Cook Island for swimmers aged 10 and over. Boat trip, snorkel guide, safety briefing and flotation equipment are included.",
-      href: "https://kirradive.com/charters/snorkel-with-the-turtles-cook-island-",
-      label: "Explore snorkelling",
-    },
-    {
-      title: "Cook Island certified dives",
-      description:
-        "Single and double scuba dives for certified divers, with sites ranging from entry-level reefs to advanced locations around the island.",
-      href: "https://kirradive.com/charters/cook-single-scuba-dive-certified-m-99-",
-      label: "Explore certified dives",
-    },
-    {
-      title: "PADI courses",
-      description:
-        "From Discover Scuba and Open Water through Advanced, Rescue and professional-level training.",
-      href: "https://kirradive.com/courses",
-      label: "Explore all courses",
-    },
-  ],
 } as const;
