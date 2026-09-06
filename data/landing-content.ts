@@ -36,14 +36,14 @@ export const contact = {
     "U1/133 Wharf St",
     "Tweed Heads NSW 2485",
   ],
-  hours: "9:00 am–4:00 pm",
+  hours: "Wed–Fri: 9:00 am–4:00 pm · Sat–Sun: 8:00 am–3:00 pm",
   timeZoneNote: "Kirra Dive operates on Queensland time.",
   locationNote: "Opposite the boat ramp, near Tweed Marina.",
   mapUrl:
     "https://maps.google.com/?cid=2530544569852056384&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAMYASAF&hl=en&gl=US&source=embed",
   whatsappUrl: null as string | null,
   bookingUrl: "https://kirradive.com/courses/open-water-scuba-course-3days-",
-  courseCalendarUrl: "https://kirradive.com/calendar/courses",
+  courseCalendarUrl: "https://kirradive.com/calendar",
   fallbackAnchors: {
     whatsapp: "#contact",
     booking: "#course-dates",
@@ -261,51 +261,11 @@ export const goodHands = {
   },
 } as const;
 
-export type Review = {
-  id: string;
-  quote: string;
-  name: string;
-  /** Where the review was published. */
-  source: string;
-  date: string;
-  url: string;
-  rating: number | null;
-};
-
 export const reviews = {
-  eyebrow: "From the official site",
-  headingLines: ["Guest reviews.", "From Kirra Dive."],
-  sourceNote: "Published on Kirra Dive's official activity and course pages.",
-  featured: {
-    id: "featured",
-    quote: "Thanks for the great experience! I’m stoked I am now a scuba diver.",
-    name: "Louise",
-    source: "PADI Open Water (3 days)",
-    date: "30 Apr 2025",
-    url: contact.bookingUrl,
-    rating: null,
-  } satisfies Review,
-  secondary: [
-    {
-      id: "secondary-1",
-      quote:
-        "Great dive shop and really helpful staff. I felt really comfortable in the water by the end.",
-      name: "Jake Browie",
-      source: "PADI Open Water (3 days)",
-      date: "30 Apr 2025",
-      url: contact.bookingUrl,
-      rating: null,
-    },
-    {
-      id: "secondary-2",
-      quote: "I had Ella as my instructor and felt comfortable and excited.",
-      name: "Ethan B",
-      source: "PADI Discover Scuba Diving",
-      date: "5 Sep 2025",
-      url: "https://kirradive.com/courses/try-dive-river",
-      rating: null,
-    },
-  ] satisfies Review[],
+  eyebrow: "Google Maps reviews",
+  headingLines: ["Dive with confidence.", "Hear it from guests."],
+  sourceNote: "Live ratings and reviews from Google Maps.",
+  fallbackLabel: "Read reviews on Google Maps",
 } as const;
 
 export const courseDates = {

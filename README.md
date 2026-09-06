@@ -43,10 +43,25 @@ Google service-account key or a separate email provider. Full deploy steps:
 4. Set `LEADS_APPS_SCRIPT_URL` and `LEADS_APPS_SCRIPT_SECRET` in `.env.local` and in
    Vercel (same secret value as step 2).
 5. Add the real `contact.whatsappUrl` in `data/landing-content.ts` to enable the
-   post-submit WhatsApp chat.
+   post-submit WhatsApp chat. Do not assume the landline has WhatsApp Business.
 
 `POST /api/leads` validates the submission on the server, then calls the Apps Script to
 append the lead. Each lead starts as `New` and includes attribution/UTM fields. No
 Google credentials reach the client or live in this repo, and the lead is stored before
 email notification or WhatsApp is offered.
+
+## Live Google Maps reviews
+
+`GET /api/reviews` reads Kirra Dive's rating and reviews directly from Places API (New).
+It does not cache or store Google Maps content, and the page includes Google Maps and
+reviewer attribution with a link back to each review.
+
+1. In Google Cloud, enable billing and **Places API (New)** for the project.
+2. Add `GOOGLE_MAPS_API_KEY` to `.env.local` and to the production environment. Keep
+   it server-only and restrict it to Places API (New).
+3. Optionally add `GOOGLE_MAPS_PLACE_ID` to avoid the route's exact-name lookup before
+   it requests the Place Details.
+
+Without the server key, the website deliberately shows only the link to the official
+Google Maps listing — never an invented rating, review count or review text.
 # kirra-dive
