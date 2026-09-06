@@ -223,9 +223,18 @@ export function CourseDatesForm() {
                 ))}
               </ul>
             ) : (
-              <p className="mt-3 text-sm text-muted">
-                {courseDates.upcomingFallback}
-              </p>
+              <div className="mt-3">
+                <p className="text-sm text-muted">{courseDates.upcomingFallback}</p>
+                <a
+                  href={courseDates.calendarCta.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-flex text-sm font-semibold text-primary transition-colors hover:text-primary-bright"
+                >
+                  {courseDates.calendarCta.label}
+                  <span className="sr-only"> (opens in a new tab)</span>
+                </a>
+              </div>
             )}
           </div>
         </div>

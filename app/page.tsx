@@ -6,6 +6,7 @@ import { Header } from "@/components/landing/Header";
 import { Hero } from "@/components/landing/Hero";
 import { IncludedSection } from "@/components/landing/IncludedSection";
 import { MobileStickyCTA } from "@/components/landing/MobileStickyCTA";
+import { OfficialOfferings } from "@/components/landing/OfficialOfferings";
 import { ReviewsSection } from "@/components/landing/ReviewsSection";
 import { TrustBar } from "@/components/landing/TrustBar";
 
@@ -19,6 +20,7 @@ export default function HomePage() {
         <TrustBar />
         <CourseJourney />
         <CookIslandFeature />
+        <OfficialOfferings />
         <IncludedSection />
         <ReviewsSection />
         <CourseDatesForm />

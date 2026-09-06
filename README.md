@@ -24,12 +24,9 @@ public/images/  placeholder photography (replace with real Kirra Dive shots)
 ```
 
 All copy lives in `data/landing-content.ts`. Nothing is hard-coded inside components.
-
-## Placeholders to replace
-
-Search for `TO CONFIRM` in `data/landing-content.ts`. In short: price, phone, email,
-street address, WhatsApp link, booking link, reviews, course dates, legal pages,
-production domain, and every image in `public/images/`.
+Contact details, course information, external booking links, social channels and the
+Google Maps link are verified against Kirra Dive's official channels. Photography in
+`public/images/` should be replaced with Kirra Dive-owned photography before launch.
 
 ## Lead capture setup
 
