@@ -1,13 +1,4 @@
-/**
- * Every word, link and image path on the landing page lives here.
- *
- * PLACEHOLDER CONVENTION
- * ----------------------
- * Anything Kirra Dive still has to confirm is either `null` (the UI then
- * renders a neutral "to be confirmed" state instead of a link) or contains the
- * literal text "to be confirmed". Search this file for "TO CONFIRM" before
- * launch.
- */
+/** Every word, link and image path on the landing page lives here. */
 
 import type { LeadExperience } from "@/types/lead";
 
@@ -31,17 +22,13 @@ export const siteConfig = {
   established: "1988",
   suburb: "Tweed Heads, NSW",
   courseName: "PADI Open Water Diver Course",
-  // TO CONFIRM: production domain, used for metadataBase and Open Graph URLs.
-  url: "https://kirradive.example",
-  metaTitle: "PADI Open Water Diver Course | Kirra Dive, Tweed Heads",
+  url: "https://kirradive.com",
+  metaTitle: "Scuba Diving, Snorkelling & PADI Courses | Kirra Dive",
   metaDescription:
-    "Learn to dive with Kirra Dive in Tweed Heads. The PADI Open Water Diver course takes you from your first breath underwater to internationally recognised certification. Diving since 1988.",
+    "Kirra Dive in Tweed Heads offers PADI courses, Cook Island dives and snorkelling tours. Established in 1988.",
 } as const;
 
-/**
- * Contact details and outbound links verified against Kirra Dive's public site.
- * WhatsApp remains unset until Kirra Dive confirms its WhatsApp Business number.
- */
+/** Contact details and links published by Kirra Dive. */
 export const contact = {
   phone: "+61 7 5536 6622",
   email: "dive@kirradive.com",
@@ -49,9 +36,14 @@ export const contact = {
     "U1/133 Wharf St",
     "Tweed Heads NSW 2485",
   ],
-  /** Add the verified https://wa.me/<number> Business URL before launch. */
-  whatsappUrl: null as string | null, // TO CONFIRM
+  hours: "9:00 am–4:00 pm",
+  timeZoneNote: "Kirra Dive operates on Queensland time.",
+  locationNote: "Opposite the boat ramp, near Tweed Marina.",
+  mapUrl:
+    "https://maps.google.com/?cid=2530544569852056384&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAMYASAF&hl=en&gl=US&source=embed",
+  whatsappUrl: null as string | null,
   bookingUrl: "https://kirradive.com/courses/open-water-scuba-course-3days-",
+  courseCalendarUrl: "https://kirradive.com/calendar/courses",
   fallbackAnchors: {
     whatsapp: "#contact",
     booking: "#course-dates",
@@ -60,10 +52,9 @@ export const contact = {
 
 /** Shown next to the price everywhere it appears. */
 export const pricing = {
-  from: "From A$XXX", // TO CONFIRM
-  /** Just the figure, for layouts that show "From" and the amount separately. */
-  amount: "A$XXX", // TO CONFIRM
-  note: "Course fee to be confirmed.",
+  from: "A$595",
+  amount: "A$595",
+  note: "PADI Open Water course (3 days).",
 } as const;
 
 /**
@@ -77,38 +68,33 @@ export const seasonalBadge = {
 
 export const navLinks = [
   { label: "The Course", href: "#the-course" },
-  { label: "The Experience", href: "#the-experience" },
+  { label: "Cook Island", href: "#the-experience" },
+  { label: "Dive & Snorkel", href: "#official-experiences" },
   { label: "Reviews", href: "#reviews" },
-  { label: "Dates", href: "#course-dates" },
+  { label: "Contact", href: "#contact" },
 ] as const;
 
 export const header = {
-  ctaLabel: "Book now",
+  ctaLabel: "Book course",
   ctaHref: contact.bookingUrl ?? contact.fallbackAnchors.booking,
-  whatsappLabel: "Ask on WhatsApp",
+  whatsappLabel: "Contact Kirra Dive",
   homeLabel: "Kirra Dive — back to top",
   menuOpenLabel: "Open menu",
   menuCloseLabel: "Close menu",
 } as const;
 
 export const hero = {
-  eyebrow: "PADI Open Water Diver Course",
-  headingLines: ["Learn to dive.", "Discover another world."],
+  eyebrow: "PADI Open Water (3 days)",
+  headingLines: ["Learn to dive.", "Start local."],
   subheading:
-    "From your first breath underwater to internationally recognised certification.",
-  primaryCta: { label: "Check course dates", href: "#course-dates" },
-  /**
-   * Shown in the hero regardless of whether the real WhatsApp number is
-   * confirmed yet, unlike the sticky bar / enquiry form CTAs — falls back to
-   * the #contact anchor until `contact.whatsappUrl` is set.
-   */
+    "Online theory, indoor-pool training and shore dives at Tweed Heads — leading to an internationally recognised PADI certification.",
+  primaryCta: { label: "Book PADI Open Water", href: contact.bookingUrl },
   secondaryCta: {
-    label: "Ask on WhatsApp",
-    href: contact.whatsappUrl ?? contact.fallbackAnchors.whatsapp,
+    label: "Contact Kirra Dive",
+    href: "#contact",
   },
-  /** Risk-reduction line. Not a guarantee or a commercial policy. */
   reassurance:
-    "Beginner-friendly training with patient, experienced instructors.",
+    "Runs over 3–4 days, with flexible scheduling available.",
   image: {
     // STOCK IMAGE: AI-generated placeholder, replace with real Kirra Dive photography.
     src: "/images/hero-diver-sunbeams.jpg",
@@ -127,39 +113,39 @@ export const heroTrustSignals: ReadonlyArray<{
   {
     icon: "since",
     label: "Since 1988",
-    detail: "Diving education you can trust",
+    detail: "On the Tweed",
   },
   {
     icon: "globe",
-    label: "PADI Dive Centre",
-    detail: "PADI certified dive centre",
+    label: "PADI training",
+    detail: "Beginner to professional",
   },
   {
     icon: "users",
     label: "Beginners Welcome",
-    detail: "Perfect for first time divers",
+    detail: "No experience needed",
   },
   {
     icon: "user",
-    label: "Local Instructors",
-    detail: "Experienced, passionate team",
+    label: "Train locally",
+    detail: "Pool and shore dives",
   },
 ];
 
 export const courseJourney = {
   eyebrow: "The course",
-  headingLines: ["From first breath", "to certified diver"],
+  headingLines: ["From online theory", "to open water"],
   intro:
-    "Every course follows the same path. You cover the theory in your own time, practise each skill in confined water until it feels ordinary, then put it all together on your open-water dives.",
-  cta: { label: "View upcoming dates", href: "#course-dates" },
+    "Kirra Dive's PADI Open Water course combines self-paced online theory, indoor-pool training and shore-based ocean dives. The course runs over three to four days.",
+  cta: { label: "View live course dates", href: contact.courseCalendarUrl },
   stages: [
     {
       id: "pool-skills",
       step: "01",
       icon: "life-buoy",
-      title: "Pool Skills",
+      title: "Online theory & pool skills",
       description:
-        "Confined water is where it clicks. Mask, regulator, buoyancy — one skill at a time, in shallow water, with an instructor beside you.",
+        "Complete the theory online at your own pace, then build core scuba skills with a certified instructor at the Tweed Regional Aquatic Centre indoor pool.",
       image: {
         // STOCK IMAGE: AI-generated placeholder, replace with a real training photo.
         src: "/images/pool-training-skills.jpg",
@@ -170,9 +156,9 @@ export const courseJourney = {
       id: "ocean-dives",
       step: "02",
       icon: "waves",
-      title: "Ocean Dives",
+      title: "Ocean dives",
       description:
-        "Your open-water dives take place in a living marine environment, in a small group, at the pace of the divers in it.",
+        "Take those skills into the calm, shallow waters of Jack Evans Boat Harbour for your open-water training dives.",
       image: {
         // STOCK IMAGE: AI-generated placeholder, replace with a real open-water dive photo.
         src: "/images/divers-pair-descending.jpg",
@@ -183,9 +169,9 @@ export const courseJourney = {
       id: "certification",
       step: "03",
       icon: "graduation-cap",
-      title: "PADI Certification",
+      title: "Certified to dive",
       description:
-        "Once your skills and dives are signed off, you are a certified PADI Open Water Diver — free to dive with a buddy anywhere in the world.",
+        "On completion, qualify as a PADI Open Water Diver — certified to dive independently to 18 metres around the world.",
       image: {
         // STOCK IMAGE: AI-generated placeholder, replace with a real certification / post-dive shot.
         src: "/images/reef-canyon-turtle-beams.jpg",
@@ -196,16 +182,16 @@ export const courseJourney = {
 } as const;
 
 export const cookIsland = {
-  eyebrow: "The experience",
-  kicker: "Cook Island Aquatic Reserve",
-  headingLines: ["Your underwater", "classroom"],
-  body: "Your open-water dives happen in a protected marine reserve off the Tweed coast — shallow, sheltered and full of life.",
+  eyebrow: "Cook Island",
+  kicker: "Optional course upgrade",
+  headingLines: ["Make Cook Island", "your final dive"],
+  body: "For an additional A$100, eligible Open Water students can upgrade their final dive to a boat dive at Cook Island, weather and confidence permitting.",
   wildlife: {
     lead: "Divers here regularly see:",
     items: ["Sea turtles", "Rays", "Tropical fish", "Reef life"],
   },
-  /** Required honesty line. Do not soften or remove. */
-  disclaimer: "Wildlife encounters are possible, never guaranteed.",
+  disclaimer:
+    "Conditions and wildlife sightings vary. The Cook Island upgrade is subject to weather and diver confidence.",
   image: {
     // STOCK IMAGE: AI-generated placeholder, replace with real Cook Island Aquatic Reserve photography.
     src: "/images/cook-island-turtle.jpg",
@@ -218,38 +204,32 @@ export const cookIslandAttributes: ReadonlyArray<{
   icon: IconName;
   label: string;
 }> = [
-  { icon: "waves", label: "Open water training" },
-  { icon: "shell", label: "Local marine reserve" },
-  { icon: "sun", label: "Conditions dependent" },
+  { icon: "waves", label: "Optional boat dive" },
+  { icon: "shell", label: "800m off the coast" },
+  { icon: "sun", label: "Weather dependent" },
 ];
 
 export const included = {
   eyebrow: "What you get",
-  heading: "What's included",
+  heading: "What is included",
   intro:
-    "The course covers the learning, the water time and the certification itself.",
+    "The official course includes the essentials needed to learn, train and qualify.",
   items: [
-    { icon: "graduation-cap", label: "PADI eLearning and study materials" },
-    { icon: "waves", label: "Confined water training" },
-    { icon: "droplets", label: "Four open-water dives" },
-    { icon: "glasses", label: "Scuba equipment" },
-    { icon: "award", label: "PADI certification" },
-    { icon: "users", label: "Small-group instruction" },
-    { icon: "life-buoy", label: "Ongoing support" },
+    { icon: "graduation-cap", label: "Online theory and training materials" },
+    { icon: "glasses", label: "Use of scuba equipment" },
+    { icon: "waves", label: "Indoor-pool training" },
+    { icon: "droplets", label: "Shore-based open-water training dives" },
+    { icon: "life-buoy", label: "Flexible dates where available" },
+    { icon: "award", label: "PADI certification on completion" },
   ] as ReadonlyArray<{ icon: IconName; label: string }>,
-  /**
-   * Deliberately not "everything included" or "no hidden extras" — that claim
-   * can only be made once every cost is confirmed.
-   */
   itemsNote:
-    "Inclusions and any additional costs to be confirmed before booking.",
+    "Review the PADI medical questionnaire before booking. A “Yes” response may require medical clearance.",
   valuePanel: {
-    ctaLabel: "Check course dates",
-    ctaHref: "#course-dates",
-    /** Shown alongside the primary CTA, same fallback as the hero. */
+    ctaLabel: "Book PADI Open Water",
+    ctaHref: contact.bookingUrl,
     secondaryCta: {
-      label: "Ask on WhatsApp",
-      href: contact.whatsappUrl ?? contact.fallbackAnchors.whatsapp,
+      label: "Contact Kirra Dive",
+      href: "#contact",
     },
     image: {
       // STOCK IMAGE: AI-generated placeholder, replace with real photography.
@@ -268,12 +248,11 @@ export const included = {
 export const goodHands = {
   eyebrow: "New to diving?",
   headingLines: ["That's exactly", "who this is for."],
-  body: "Most people who start this course have never breathed underwater. Instructors teach at the pace of the group, and nobody is pushed past what they are comfortable with.",
-  /** Restatements of copy already on this page — no new claims. */
+  body: "Kirra Dive also runs a beginner Discover Scuba Diving experience at the Tweed Regional Aquatic Centre indoor pool. No prior experience is needed.",
   points: [
     { icon: "shield-check", label: "No previous experience needed" },
-    { icon: "users", label: "Small-group instruction" },
-    { icon: "heart", label: "Taught at the pace of the group" },
+    { icon: "users", label: "For ages 10 and over" },
+    { icon: "heart", label: "Learn basic skills in the pool" },
   ] as ReadonlyArray<{ icon: IconName; label: string }>,
   image: {
     // STOCK IMAGE: AI-generated placeholder, replace with a real instructor photo.
@@ -286,64 +265,62 @@ export type Review = {
   id: string;
   quote: string;
   name: string;
-  /** Where the review was published, e.g. "Google". */
+  /** Where the review was published. */
   source: string;
-  /** Link to the original review. Null until a real review is added. */
-  url: string | null;
-  /** 1–5. Null renders an empty, clearly unrated state. */
+  date: string;
+  url: string;
   rating: number | null;
 };
 
 export const reviews = {
-  eyebrow: "Social proof",
-  headingLines: ["Real students.", "Real first dives."],
-  /** Visible while the reviews below are placeholders. Remove with them. */
-  placeholderNote:
-    "Placeholder reviews. Real, attributed reviews to be added before launch.",
-  /** Overall Google Reviews trust badge. Score is a template placeholder, not a real figure. */
-  googleBadge: {
-    label: "Google Reviews",
-    note: "Reviews from real divers",
-    score: "X.X", // TO CONFIRM
-    scoreNote: "Rating to be confirmed",
-  },
+  eyebrow: "From the official site",
+  headingLines: ["Guest reviews.", "From Kirra Dive."],
+  sourceNote: "Published on Kirra Dive's official activity and course pages.",
   featured: {
     id: "featured",
-    quote: "Review to be confirmed",
-    name: "Name to be confirmed",
-    source: "Source to be confirmed",
-    url: null,
+    quote: "Thanks for the great experience! I’m stoked I am now a scuba diver.",
+    name: "Louise",
+    source: "PADI Open Water (3 days)",
+    date: "30 Apr 2025",
+    url: contact.bookingUrl,
     rating: null,
   } satisfies Review,
   secondary: [
     {
       id: "secondary-1",
-      quote: "Review to be confirmed",
-      name: "Name to be confirmed",
-      source: "Source to be confirmed",
-      url: null,
+      quote:
+        "Great dive shop and really helpful staff. I felt really comfortable in the water by the end.",
+      name: "Jake Browie",
+      source: "PADI Open Water (3 days)",
+      date: "30 Apr 2025",
+      url: contact.bookingUrl,
       rating: null,
     },
     {
       id: "secondary-2",
-      quote: "Review to be confirmed",
-      name: "Name to be confirmed",
-      source: "Source to be confirmed",
-      url: null,
+      quote: "I had Ella as my instructor and felt comfortable and excited.",
+      name: "Ethan B",
+      source: "PADI Discover Scuba Diving",
+      date: "5 Sep 2025",
+      url: "https://kirradive.com/courses/try-dive-river",
       rating: null,
     },
   ] satisfies Review[],
 } as const;
 
 export const courseDates = {
-  eyebrow: "Check dates & enquire",
-  headingLines: ["Start your", "diving journey"],
-  body: "Send an enquiry and the team will come back with the next available dates.",
-  upcomingLabel: "Upcoming courses",
-  /** Real course dates go here. Empty renders the fallback line below. */
+  eyebrow: "Book your course",
+  headingLines: ["Ready to take", "your first breath?"],
+  body:
+    "Check live availability on Kirra Dive's official booking calendar, or send the team an enquiry.",
+  upcomingLabel: "Live course dates",
   upcoming: [] as ReadonlyArray<{ id: string; label: string; note: string }>,
   upcomingFallback:
-    "Upcoming course dates to be confirmed. Send an enquiry and the team will come back with the next available course.",
+    "Live course dates and availability are shown on Kirra Dive's official booking calendar. All times are Queensland time.",
+  calendarCta: {
+    label: "Open the live course calendar",
+    href: contact.courseCalendarUrl,
+  },
   form: {
     legend: "Course enquiry",
     introNote: "Fill in your details and we'll be in touch soon.",
@@ -393,7 +370,8 @@ export const courseDates = {
       preferredDate: "My preferred course date is",
       experience: "My diving experience is",
     },
-    privacyNote: "Privacy notice to be added before launch.",
+    privacyNote:
+      "For live availability and immediate booking, use the official Kirra Dive booking link.",
   },
 } as const;
 
@@ -404,11 +382,11 @@ export const courseDates = {
 export const finalCta = {
   eyebrow: "Same ocean. A brighter you.",
   headingLines: ["Ready to take", "your first breath?"],
-  body: "Choose a date, book online, or talk to the Kirra Dive team.",
-  primaryCta: { label: "Check course dates", href: "#course-dates" },
+  body: "Check live availability, book online, or contact the Kirra Dive team.",
+  primaryCta: { label: "Book PADI Open Water", href: contact.bookingUrl },
   secondaryCta: {
-    label: "Ask on WhatsApp",
-    href: contact.whatsappUrl ?? contact.fallbackAnchors.whatsapp,
+    label: "Contact Kirra Dive",
+    href: "#contact",
   },
   image: {
     // STOCK IMAGE: AI-generated placeholder, replace with real photography.
@@ -419,38 +397,68 @@ export const finalCta = {
 
 export const footer = {
   tagline:
-    "A Tweed Heads dive centre teaching people to dive since 1988.",
-  contactHeading: "Contact",
-  exploreHeading: "Explore",
-  /** Mirrors the header nav, plus a FAQ entry that has no page yet. */
+    "PADI courses, Cook Island dives and snorkelling from Tweed Heads since 1988.",
+  contactHeading: "Official contact",
+  exploreHeading: "Explore Kirra Dive",
   exploreLinks: [
     { label: "The Course", href: "#the-course" },
-    { label: "The Experience", href: "#the-experience" },
+    { label: "Cook Island", href: "#the-experience" },
+    { label: "Dive & Snorkel", href: "#official-experiences" },
     { label: "Reviews", href: "#reviews" },
-    { label: "Dates", href: "#course-dates" },
-    { label: "FAQ", href: null },
-  ] as ReadonlyArray<{ label: string; href: string | null }>,
-  whatsappLabel: "WhatsApp number to be confirmed",
-  phoneLabel: "Phone to be confirmed",
-  emailLabel: "Email to be confirmed",
-  addressHeading: "Where to find us",
-  /** Shown only once a real PADI dive centre number is confirmed. */
+    { label: "Contact", href: "#contact" },
+  ],
+  whatsappLabel: "Call or email the team",
+  phoneLabel: "Phone",
+  emailLabel: "Email",
+  mapLabel: "Open in Google Maps",
   padi: {
-    confirmed: false,
-    label: "PADI Dive Centre",
-    note: "Dive centre number and accreditation details to be confirmed.",
+    confirmed: true,
+    label: "PADI courses and dive experiences",
+    note: "Discover Scuba, Open Water, Advanced, Rescue and professional training are listed on the official site.",
   },
-  /** Shown only once a real profile URL exists for that platform. */
   socialLinks: [
-    { label: "Instagram", href: null },
-    { label: "Facebook", href: null },
-  ] as ReadonlyArray<{ label: string; href: string | null }>,
+    { label: "Instagram", href: "https://www.instagram.com/kirradiveonthetweed/" },
+    { label: "Facebook", href: "https://www.facebook.com/KirraDive/" },
+  ],
   legalLinks: [
-    { label: "Privacy policy", href: null },
-    { label: "Terms and conditions", href: null },
-    { label: "Diving medical information", href: null },
-  ] as ReadonlyArray<{ label: string; href: string | null }>,
-  linkPlaceholderNote: "Page to be added",
+    { label: "Official website", href: siteConfig.url },
+    { label: "Live course calendar", href: contact.courseCalendarUrl },
+    {
+      label: "PADI medical questionnaire",
+      href:
+        "https://www.padi.com/sites/default/files/documents/2020-08/10346E_Diver_Medical_Form.pdf",
+    },
+  ],
   copyright: (year: number) =>
     `© ${year} Kirra Dive. ${siteConfig.suburb}. All rights reserved.`,
+} as const;
+
+export const officialOfferings = {
+  eyebrow: "Official Kirra Dive experiences",
+  heading: "More ways to get in the water",
+  intro:
+    "Explore the current activities published by Kirra Dive — all with live availability and booking on the official site.",
+  items: [
+    {
+      title: "Snorkel with the Turtles",
+      description:
+        "Guided snorkelling tours to Cook Island for swimmers aged 10 and over. Boat trip, snorkel guide, safety briefing and flotation equipment are included.",
+      href: "https://kirradive.com/charters/snorkel-with-the-turtles-cook-island-",
+      label: "Explore snorkelling",
+    },
+    {
+      title: "Cook Island certified dives",
+      description:
+        "Single and double scuba dives for certified divers, with sites ranging from entry-level reefs to advanced locations around the island.",
+      href: "https://kirradive.com/charters/cook-single-scuba-dive-certified-m-99-",
+      label: "Explore certified dives",
+    },
+    {
+      title: "PADI courses",
+      description:
+        "From Discover Scuba and Open Water through Advanced, Rescue and professional-level training.",
+      href: "https://kirradive.com/courses",
+      label: "Explore all courses",
+    },
+  ],
 } as const;

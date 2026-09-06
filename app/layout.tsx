@@ -26,7 +26,6 @@ export const metadata: Metadata = {
     description: siteConfig.metaDescription,
     images: [
       {
-        // PLACEHOLDER: swap for a real 1200x630 Kirra Dive share image.
         url: "/images/og-cover.jpg",
         width: 1200,
         height: 630,

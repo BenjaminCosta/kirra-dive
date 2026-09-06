@@ -270,7 +270,17 @@ export function CourseDatesForm() {
                   </li>
                 ))}
               </ul>
-            ) : null}
+            ) : (
+              <a
+                href={courseDates.calendarCta.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-5 inline-flex text-sm font-semibold text-primary transition-colors hover:text-primary-bright"
+              >
+                {courseDates.calendarCta.label}
+                <span className="sr-only"> (opens in a new tab)</span>
+              </a>
+            )}
           </div>
         </div>
 

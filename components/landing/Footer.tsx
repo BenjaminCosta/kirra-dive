@@ -1,4 +1,4 @@
-import { BadgeCheck, Mail, MapPin, MessageCircle } from "lucide-react";
+import { BadgeCheck, Clock3, ExternalLink, Mail, MapPin, Phone } from "lucide-react";
 import { contact, footer, siteConfig } from "@/data/landing-content";
 import { KirraLogo } from "./KirraLogo";
 
@@ -46,9 +46,6 @@ const socialIcons: Record<string, typeof InstagramIcon> = {
 
 export function Footer() {
   const year = new Date().getFullYear();
-  const confirmedSocialLinks = footer.socialLinks.filter(
-    (link): link is { label: string; href: string } => Boolean(link.href),
-  );
 
   return (
     <footer id="site-footer" className="relative">
@@ -75,16 +72,12 @@ export function Footer() {
             <ul className="mt-5 space-y-3 text-sm">
               {footer.exploreLinks.map((link) => (
                 <li key={link.label}>
-                  {link.href ? (
-                    <a
-                      href={link.href}
-                      className="text-muted transition-colors hover:text-text"
-                    >
-                      {link.label}
-                    </a>
-                  ) : (
-                    <span className="text-white/30">{link.label}</span>
-                  )}
+                  <a
+                    href={link.href}
+                    className="text-muted transition-colors hover:text-text"
+                  >
+                    {link.label}
+                  </a>
                 </li>
               ))}
             </ul>
@@ -96,45 +89,54 @@ export function Footer() {
             </h2>
             <ul className="mt-5 space-y-4 text-sm">
               <li className="flex items-start gap-2.5">
-                <MessageCircle
-                  className="mt-0.5 h-4 w-4 shrink-0 text-primary"
-                  aria-hidden
-                />
-                {contact.whatsappUrl ? (
-                  <a
-                    href={contact.whatsappUrl}
-                    className="text-text transition-colors hover:text-primary"
-                  >
-                    WhatsApp
-                  </a>
-                ) : (
-                  <span className="text-muted">{footer.whatsappLabel}</span>
-                )}
+                <Phone className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden />
+                <a
+                  href={`tel:${contact.phone.replace(/\s/g, "")}`}
+                  className="text-text transition-colors hover:text-primary"
+                >
+                  {contact.phone}
+                </a>
               </li>
               <li className="flex items-start gap-2.5">
                 <Mail className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden />
-                {contact.email ? (
-                  <a
-                    href={`mailto:${contact.email}`}
-                    className="text-text break-all transition-colors hover:text-primary"
-                  >
-                    {contact.email}
-                  </a>
-                ) : (
-                  <span className="text-muted">{footer.emailLabel}</span>
-                )}
+                <a
+                  href={`mailto:${contact.email}`}
+                  className="text-text break-all transition-colors hover:text-primary"
+                >
+                  {contact.email}
+                </a>
               </li>
               <li className="flex items-start gap-2.5">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden />
-                <address className="space-y-1 text-muted not-italic">
-                  {contact.addressLines.map((line) => (
-                    <span key={line} className="block">
-                      {line}
-                    </span>
-                  ))}
-                </address>
+                <div>
+                  <address className="space-y-1 text-muted not-italic">
+                    {contact.addressLines.map((line) => (
+                      <span key={line} className="block">
+                        {line}
+                      </span>
+                    ))}
+                  </address>
+                  <a
+                    href={contact.mapUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 inline-flex items-center gap-1.5 text-primary transition-colors hover:text-primary-bright"
+                  >
+                    {footer.mapLabel}
+                    <ExternalLink className="h-3.5 w-3.5" aria-hidden />
+                    <span className="sr-only">(opens in a new tab)</span>
+                  </a>
+                </div>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <Clock3 className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden />
+                <span className="text-muted">
+                  <span className="block text-text">{contact.hours}</span>
+                  <span className="mt-1 block">{contact.timeZoneNote}</span>
+                </span>
               </li>
             </ul>
+            <p className="mt-5 text-xs text-muted">{contact.locationNote}</p>
           </div>
         </div>
 
@@ -152,26 +154,22 @@ export function Footer() {
 
         <div className="mt-10 flex flex-col gap-6 border-t border-white/10 pt-8 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-muted">
-            {footer.legalLinks.map((link) =>
-              link.href ? (
+            {footer.legalLinks.map((link) => (
                 <a
                   key={link.label}
                   href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="transition-colors hover:text-text"
                 >
                   {link.label}
                 </a>
-              ) : (
-                <span key={link.label} className="text-white/30">
-                  {link.label}
-                </span>
-              ),
-            )}
+            ))}
           </div>
 
-          {confirmedSocialLinks.length > 0 ? (
+          {footer.socialLinks.length > 0 ? (
             <div className="flex items-center gap-4">
-              {confirmedSocialLinks.map((link) => {
+              {footer.socialLinks.map((link) => {
                 const Icon = socialIcons[link.label];
                 return (
                   <a
