@@ -1,6 +1,72 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
+# ==========================================================================
+# Secrets and credentials
+#
+# GitHub push protection rejects the whole push when it finds one of these,
+# so the cost of a miss is a blocked branch and a rewritten commit. Patterns
+# here are deliberately broad: a false positive costs one `git add -f`, a
+# false negative costs a key rotation.
+#
+# Note that .gitignore only protects files that are NOT already tracked. If
+# something secret was committed once, ignoring it later changes nothing —
+# it has to be removed with `git rm --cached` first.
+# ==========================================================================
+
+# Environment files. .env.example is the only one that ships.
+.env*
+!.env.example
+
+# Google Cloud service-account keys.
+# The console downloads them as <project-id>-<12 hex key id>.json, which no
+# keyword-based pattern catches — that exact shape is what got committed once.
+*-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f].json
+*service-account*.json
+*service_account*.json
+*serviceaccount*.json
+*credentials*.json
+gcp-*.json
+gha-creds-*.json
+
+# Google OAuth client secrets, as downloaded from the console.
+client_secret*.json
+*.apps.googleusercontent.com.json
+
+# clasp (Apps Script CLI) stores OAuth tokens here. .clasp.json itself only
+# holds the script id and is safe to commit if you want it.
+.clasprc.json
+
+# Private keys, certificates and keystores.
+*.pem
+*.key
+*.p8
+*.p12
+*.pfx
+*.crt
+*.cer
+*.der
+*.jks
+*.keystore
+*.ppk
+
+# SSH keys that wandered into the repo.
+id_rsa*
+id_dsa*
+id_ecdsa*
+id_ed25519*
+
+# Cloud CLI state and catch-all secret drops.
+.aws/
+.gcloud/
+secrets/
+.secrets/
+*.secret
+# Can carry a registry auth token.
+.npmrc
+
+# ==========================================================================
+# Dependencies
+# ==========================================================================
 /node_modules
 /.pnp
 .pnp.*
@@ -10,42 +76,67 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing
-/coverage
-
-# next.js
+# ==========================================================================
+# Build output and caches
+# ==========================================================================
 /.next/
 /out/
-
-# production
 /build
+/coverage
+.turbo
+.swc/
+.cache/
+.eslintcache
+*.tsbuildinfo
+next-env.d.ts
 
-# misc
-.DS_Store
-*.pem
+# ==========================================================================
+# Hosting
+# ==========================================================================
+.vercel
+.netlify
 
-# debug
+# ==========================================================================
+# Logs
+# ==========================================================================
+*.log
+logs/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
-!.env.example
+# ==========================================================================
+# Editors and tooling
+#
+# .vscode is ignored except the files a team genuinely shares. Everything a
+# VS Code extension generates for itself — project_explorer caches and the
+# like — stays local.
+# ==========================================================================
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/tasks.json
+.idea/
+*.iml
+.zed/
+.fleet/
+.claude/settings.local.json
+*.swp
+*.swo
+*~
+*.sublime-workspace
+*.sublime-project
 
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
-
-# Google service account credentials (phase two — never commit these)
-*service-account*.json
-*credentials*.json
-gcp-*.json
-
-# Google Cloud downloads service-account keys as <project-id>-<key-id>.json,
-# which none of the patterns above catch.
-kirra-dive-leads-*.json
+# ==========================================================================
+# OS cruft
+# ==========================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
