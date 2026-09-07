@@ -20,6 +20,17 @@
   --primary-bright: #7cc0e2;
   --hairline: color-mix(in srgb, var(--text) 12%, transparent);
 
+  /* The single light-blue fill behind every primary control. Defined once so
+     the header CTA, the hero buttons and the enquiry submit read as the same
+     control rather than three different blues. */
+  --primary-fill-from: #3ea3dd;
+  --primary-fill-to: #1d78b9;
+  --primary-fill: linear-gradient(
+    180deg,
+    var(--primary-fill-from) 0%,
+    var(--primary-fill-to) 100%
+  );
+
   --header-height: 4.5rem;
 
   /* How far a section lifts into the fade of the scene above it, so the page
@@ -154,6 +165,43 @@
     );
   }
 
+  /*
+   * Long-form scenes. The enquiry section carries a photograph like the three
+   * scenes above, but it is several viewports tall, so the percentage fades
+   * would wash out its headline. These dissolve over a fixed distance instead:
+   * the water runs edge to edge behind the whole section and melts back into
+   * the ground at the top and bottom rather than sitting inside a card.
+   */
+  .scene-dissolve {
+    @apply pointer-events-none absolute inset-0 -z-10;
+    background:
+      linear-gradient(
+        to bottom,
+        var(--background) 0,
+        color-mix(in srgb, var(--background) 55%, transparent) 3rem,
+        transparent 9rem
+      ),
+      linear-gradient(
+        to top,
+        var(--background) 0,
+        color-mix(in srgb, var(--background) 60%, transparent) 4rem,
+        transparent 12rem
+      );
+  }
+
+  /* Shade under the dissolve, so type holds contrast over the brightest water
+     while the sunbeams stay readable at the top of the section. */
+  .scene-shade {
+    @apply pointer-events-none absolute inset-0 -z-10;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--background) 14%, transparent) 0%,
+      color-mix(in srgb, var(--background) 40%, transparent) 24%,
+      color-mix(in srgb, var(--background) 62%, transparent) 55%,
+      color-mix(in srgb, var(--background) 70%, transparent) 100%
+    );
+  }
+
   /* Lifts a section into the tail of the fade above it. */
   .section-overlap {
     margin-top: calc(-1 * var(--overlap));
@@ -176,7 +224,7 @@
   }
 
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-[0.02em] whitespace-nowrap transition-colors duration-200 select-none;
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold tracking-[0.02em] whitespace-nowrap transition-[color,background-color,border-color,filter,transform] duration-200 select-none;
   }
 
   .btn-sm {
@@ -184,7 +232,22 @@
   }
 
   .btn-primary {
-    @apply bg-primary text-background hover:bg-primary-bright;
+    background-image: var(--primary-fill);
+    color: var(--text);
+    box-shadow: 0 14px 34px -16px
+      color-mix(in srgb, var(--primary-fill-from) 90%, transparent);
+  }
+
+  .btn-primary:hover {
+    filter: brightness(1.1);
+  }
+
+  .btn-primary:active {
+    transform: translateY(1px);
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.7;
   }
 
   .btn-secondary {
@@ -222,4 +285,75 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* --------------------------------------------------------------------------
+   Native control overrides
+   Unlayered on purpose: these have to win over the Tailwind utilities applied
+   to the same elements.
+   -------------------------------------------------------------------------- */
+
+/*
+ * A native date input announces itself with "dd/mm/yyyy", which breaks the
+ * placeholder rhythm of the fields stacked around it. Blank the native text
+ * while the field is empty and float our own placeholder over it; the picker
+ * indicator is stretched across the whole control so a tap anywhere opens it.
+ */
+.date-input::-webkit-calendar-picker-indicator {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.date-input[data-empty="true"],
+.date-input[data-empty="true"]::-webkit-datetime-edit {
+  color: transparent;
+}
+
+/* Radio: hollow ring when idle, brand ring with a dot inside when chosen. */
+.control-radio {
+  appearance: none;
+  -webkit-appearance: none;
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 9999px;
+  border: 2px solid color-mix(in srgb, var(--text) 32%, transparent);
+  background-color: transparent;
+  transition:
+    border-color 200ms,
+    background-color 200ms,
+    box-shadow 200ms;
+}
+
+.control-radio:checked {
+  border-color: var(--primary);
+  background-color: var(--primary);
+  /* The inner ring is the field's own ground, leaving a brand dot centred. */
+  box-shadow: inset 0 0 0 3px var(--background);
+}
+
+/* Checkbox: the tick itself is drawn in React, this is the box around it. */
+.control-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  flex-shrink: 0;
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 0.4rem;
+  border: 2px solid color-mix(in srgb, var(--text) 32%, transparent);
+  background-color: transparent;
+  transition:
+    border-color 200ms,
+    background-color 200ms;
+}
+
+.control-checkbox:checked {
+  border-color: var(--primary);
+  background-color: var(--primary);
 }
