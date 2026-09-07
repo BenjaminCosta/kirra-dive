@@ -157,13 +157,13 @@ function QuickAction({
       target={external ? "_blank" : undefined}
       rel={external ? "noopener noreferrer" : undefined}
       className={cn(
-        "group relative flex min-w-0 items-center gap-1 rounded-2xl border p-2 pr-3.5 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-[2px] transition-[border-color,background-color,transform] duration-200 active:translate-y-px sm:gap-2.5 sm:p-3.5 sm:pr-7",
+        "group relative flex min-w-0 items-center gap-1.5 rounded-2xl border p-2.5 pr-4 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-[2px] transition-[border-color,background-color,transform] duration-200 active:translate-y-px sm:gap-2.5 sm:p-3.5 sm:pr-7",
         styles.card,
       )}
     >
       <span
         className={cn(
-          "flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border sm:h-9 sm:w-9",
+          "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border sm:h-9 sm:w-9",
           styles.iconBox,
         )}
       >
@@ -172,7 +172,7 @@ function QuickAction({
       <span className="min-w-0">
         <span
           className={cn(
-            "block text-[0.63rem] leading-[1.15] font-bold sm:text-[0.82rem]",
+            "block text-[0.72rem] leading-[1.15] font-bold sm:text-[0.82rem]",
             styles.label,
           )}
         >
@@ -180,7 +180,7 @@ function QuickAction({
         </span>
         <span
           className={cn(
-            "mt-0.5 block text-[0.56rem] leading-[1.25] sm:mt-1 sm:text-xs sm:leading-snug",
+            "mt-1 block text-[0.63rem] leading-[1.25] sm:text-xs sm:leading-snug",
             styles.detail,
           )}
         >
@@ -189,7 +189,7 @@ function QuickAction({
       </span>
       <ChevronRight
         className={cn(
-          "absolute top-1/2 right-1 h-3 w-3 -translate-y-1/2 transition-transform duration-200 group-hover:translate-x-0.5 sm:right-3 sm:h-4 sm:w-4",
+          "absolute top-1/2 right-1.5 h-3.5 w-3.5 -translate-y-1/2 transition-transform duration-200 group-hover:translate-x-0.5 sm:right-3 sm:h-4 sm:w-4",
           styles.chevron,
         )}
         aria-hidden
@@ -386,7 +386,7 @@ export function CourseDatesForm() {
             <div className="mt-7 grid grid-cols-3 gap-1.5 sm:gap-3">
               <QuickAction
                 href={courseDates.quickActions.dates.href}
-                icon={<CalendarDays className="h-3.5 w-3.5 sm:h-4.5 sm:w-4.5" aria-hidden />}
+                icon={<CalendarDays className="h-4 w-4 sm:h-4.5 sm:w-4.5" aria-hidden />}
                 label={courseDates.quickActions.dates.label}
                 detail={courseDates.quickActions.dates.detail}
                 tone="outline"
@@ -394,14 +394,14 @@ export function CourseDatesForm() {
               />
               <QuickAction
                 href={courseDates.quickActions.contact.href}
-                icon={<WhatsAppIcon className="h-3.5 w-3.5 sm:h-4.5 sm:w-4.5" />}
+                icon={<WhatsAppIcon className="h-4 w-4 sm:h-4.5 sm:w-4.5" />}
                 label={courseDates.quickActions.contact.label}
                 detail={courseDates.quickActions.contact.detail}
                 tone="whatsapp"
               />
               <QuickAction
                 href={courseDates.quickActions.booking.href}
-                icon={<CreditCard className="h-3.5 w-3.5 sm:h-4.5 sm:w-4.5" aria-hidden />}
+                icon={<CreditCard className="h-4 w-4 sm:h-4.5 sm:w-4.5" aria-hidden />}
                 label={courseDates.quickActions.booking.label}
                 detail={courseDates.quickActions.booking.detail}
                 tone="solid"

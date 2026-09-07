@@ -4,7 +4,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { useEffect, useState } from "react";
-import { ExternalLink, Flag, Quote, Star } from "lucide-react";
+import { ExternalLink, Quote, Star } from "lucide-react";
 
 import { contact, reviews as reviewCopy } from "@/data/landing-content";
 import { cn } from "@/lib/cn";
@@ -14,6 +14,8 @@ type GoogleReview = {
   rating: number | null;
   relativePublishTimeDescription: string | null;
   googleMapsUri: string | null;
+  /* Google's reporting route for a review. Still fetched — their review policy
+     expects one to be reachable — but not surfaced on the card. */
   flagContentUri: string | null;
   author: {
     name: string;
@@ -196,19 +198,6 @@ function ReviewCard({ review, mapsUrl, featured = false }: {
         aria-hidden
       />
       <ReviewerAttribution review={review} compact={!featured} />
-      {review.flagContentUri ? (
-        <div className="mt-3">
-          <a
-            href={review.flagContentUri}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-xs text-muted transition-colors hover:text-text"
-          >
-            <Flag className="h-3.5 w-3.5" aria-hidden />
-            Report review
-          </a>
-        </div>
-      ) : null}
     </article>
   );
 }

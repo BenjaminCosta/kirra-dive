@@ -16,14 +16,22 @@ const signalIcons: Record<Exclude<HeroSignalIcon, "since">, typeof Globe> = {
 
 export function Hero() {
   return (
-    <section id="top" className="scene pb-14 sm:pb-16">
-      {/* Scene 1 of 3. AI-generated stock photo — replace with real Kirra Dive photography. */}
-      <img
-        src={hero.image.src}
-        alt=""
+    <section id="top" className="scene min-h-[100dvh]">
+      {/* Scene 1 of 3. Footage behind the scrims, with the still as its poster:
+          what shows on first paint and wherever autoplay is refused.
+          Highest-priority media on the page, so it loads eagerly. */}
+      <video
         aria-hidden
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        poster={hero.image.src}
         className="scene-photo object-[75%_20%]"
-      />
+      >
+        <source src={hero.video.src} type={hero.video.type} />
+      </video>
       {/* Diagonal scrim: keeps the text column legible, leaves the diver visible on the right. */}
       <div
         aria-hidden
@@ -42,7 +50,7 @@ export function Hero() {
         className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(65%_45%_at_82%_0%,color-mix(in_srgb,var(--aqua)_14%,transparent)_0%,transparent_70%)]"
       />
 
-      <div className="container-page relative pt-[calc(var(--header-height)+2rem)]">
+      <div className="container-page relative flex min-h-[100dvh] flex-col justify-end pt-[calc(var(--header-height)+4rem)] pb-14 sm:pt-[calc(var(--header-height)+6rem)] sm:pb-16 lg:pt-[calc(var(--header-height)+8rem)]">
         <div className="max-w-xl">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
             <p className="eyebrow">{hero.eyebrow}</p>

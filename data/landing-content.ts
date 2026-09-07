@@ -94,8 +94,15 @@ export const hero = {
   },
   reassurance:
     "Runs over 3–4 days, with flexible scheduling available.",
+  video: {
+    // Same treatment as the Cook Island scene: footage behind the scrims, so
+    // the opening is moving water rather than a still.
+    src: "/video/video1.mp4",
+    type: "video/mp4",
+  },
   image: {
     // STOCK IMAGE: AI-generated placeholder, replace with real Kirra Dive photography.
+    // Doubles as the video's poster, so the first paint is never an empty frame.
     src: "/images/hero-diver-sunbeams.jpg",
     alt: "Diver descending through sunbeams above a coral reef.",
   },
@@ -191,8 +198,15 @@ export const cookIsland = {
   },
   disclaimer:
     "Conditions and wildlife sightings vary. The Cook Island upgrade is subject to weather and diver confidence.",
+  video: {
+    // Plays behind the copy in place of the still, with the same scrims over it
+    // so it stays a background rather than a clip the visitor watches.
+    src: "/video/video2.mp4",
+    type: "video/mp4",
+  },
   image: {
     // STOCK IMAGE: AI-generated placeholder, replace with real Cook Island Aquatic Reserve photography.
+    // Now also the poster: what shows while the video loads, and if it cannot play.
     src: "/images/cook-island-turtle.jpg",
     alt: "Sea turtle swimming past a sunlit reef, fish trailing behind it.",
   },
@@ -253,8 +267,15 @@ export const goodHands = {
     { icon: "users", label: "For ages 10 and over" },
     { icon: "heart", label: "Learn basic skills in the pool" },
   ] as ReadonlyArray<{ icon: IconName; label: string }>,
+  video: {
+    // Runs as a plain rectangle — no frame, no rounded corners — so the footage
+    // itself is the edge of the block.
+    src: "/video/video3.mp4",
+    type: "video/mp4",
+  },
   image: {
     // STOCK IMAGE: AI-generated placeholder, replace with a real instructor photo.
+    // Kept as the video's poster: the first frame the visitor sees.
     src: "/images/divers-pair-reef-drift.jpg",
     alt: "Two divers swimming side by side over a shallow, sunlit reef.",
   },

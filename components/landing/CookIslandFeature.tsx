@@ -17,21 +17,40 @@ export function CookIslandFeature() {
       id="the-experience"
       className="scene section-overlap flex min-h-[92svh] items-end"
     >
-      {/* Scene 2 of 3. AI-generated stock photo — replace with real Cook Island reef photography. */}
-      <img
-        src={cookIsland.image.src}
-        alt=""
+      {/* Scene 2 of 3. Reef footage in place of the still, carried by the same
+          scrims below: it reads as moving water behind the copy, not as a clip.
+          The still stays as the poster for the first paint and for anyone whose
+          browser refuses to autoplay. */}
+      <video
         aria-hidden
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        poster={cookIsland.image.src}
         className="scene-photo object-[50%_30%]"
-      />
-      {/* Resolves out of the dark above it, and back into it below. */}
-      <div aria-hidden className="scene-fade-in" />
-      <div aria-hidden className="scene-fade-out" />
-      <div aria-hidden className="scene-glow" />
-      {/* Extra weight at the foot of the scene, where the type sits. */}
+      >
+        <source src={cookIsland.video.src} type={cookIsland.video.type} />
+      </video>
+      {/* Resolves out of the dark above it, and back into it below. Both fades
+          are shorter and lighter than the shared `.scene-*` recipe: the footage
+          carries its own motion, so it only needs enough scrim to meet the dark
+          at the seams, not a veil over the whole frame. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-linear-to-t from-background via-background/80 to-transparent"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,var(--background)_0%,color-mix(in_srgb,var(--background)_42%,transparent)_9%,transparent_26%)]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,transparent_55%,color-mix(in_srgb,var(--background)_55%,transparent)_82%,var(--background)_100%)]"
+      />
+      <div aria-hidden className="scene-glow" />
+      {/* Extra weight at the foot of the scene, where the type sits — held to
+          the lower third so the reef above it stays visible. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_top,var(--background)_0%,color-mix(in_srgb,var(--background)_66%,transparent)_26%,transparent_58%)]"
       />
 
       <div className="container-page relative pb-16 sm:pb-20">
