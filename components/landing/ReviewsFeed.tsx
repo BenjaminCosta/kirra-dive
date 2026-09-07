@@ -184,7 +184,7 @@ function ReviewCard({ review, mapsUrl, featured = false }: {
           featured ? "mt-4 text-lg sm:text-xl" : "mt-3 text-sm sm:text-base",
         )}
       >
-        <span className={cn("block", featured ? "line-clamp-4" : "line-clamp-3")}>
+        <span className={featured ? "line-clamp-3" : "line-clamp-2"}>
           “{review.text}”
         </span>
       </blockquote>
