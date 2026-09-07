@@ -7,6 +7,7 @@ import {
   type HeroSignalIcon,
 } from "@/data/landing-content";
 import { trackingEvents } from "@/data/tracking";
+import { HeroVideo } from "./HeroVideo";
 
 const signalIcons: Record<Exclude<HeroSignalIcon, "since">, typeof Globe> = {
   globe: Globe,
@@ -20,22 +21,20 @@ export function Hero() {
       {/* Scene 1 of 3. Footage behind the scrims, with the still as its poster:
           what shows on first paint and wherever autoplay is refused.
           Highest-priority media on the page, so it loads eagerly. */}
-      <video
-        aria-hidden
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
+      <HeroVideo
+        src={hero.video.src}
+        type={hero.video.type}
         poster={hero.image.src}
         className="scene-photo object-[75%_20%]"
-      >
-        <source src={hero.video.src} type={hero.video.type} />
-      </video>
-      {/* Diagonal scrim: keeps the text column legible, leaves the diver visible on the right. */}
+        playLabel={hero.video.playLabel}
+      />
+      {/* Diagonal scrim: keeps the text column legible, leaves the diver visible
+          on the right. Lighter than a flat wash — it never reaches full opacity,
+          so the footage still reads through the left side; the bottom fade below
+          does the rest of the work under the type. */}
       <div
         aria-hidden
-        className="absolute inset-0 -z-10 bg-[linear-gradient(115deg,var(--background)_12%,color-mix(in_srgb,var(--background)_78%,transparent)_34%,color-mix(in_srgb,var(--background)_25%,transparent)_58%,transparent_78%)]"
+        className="absolute inset-0 -z-10 bg-[linear-gradient(115deg,color-mix(in_srgb,var(--background)_86%,transparent)_5%,color-mix(in_srgb,var(--background)_60%,transparent)_32%,color-mix(in_srgb,var(--background)_18%,transparent)_58%,transparent_74%)]"
       />
       {/* Top scrim: keeps the header and eyebrow readable against bright water. */}
       <div
@@ -50,7 +49,7 @@ export function Hero() {
         className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(65%_45%_at_82%_0%,color-mix(in_srgb,var(--aqua)_14%,transparent)_0%,transparent_70%)]"
       />
 
-      <div className="container-page relative flex min-h-[100dvh] flex-col justify-end pt-[calc(var(--header-height)+4rem)] pb-14 sm:pt-[calc(var(--header-height)+6rem)] sm:pb-16 lg:pt-[calc(var(--header-height)+8rem)]">
+      <div className="container-page relative flex min-h-[100dvh] flex-col justify-end pt-[calc(var(--header-height)+6rem)] pb-14 sm:pt-[calc(var(--header-height)+8rem)] sm:pb-16 lg:pt-[calc(var(--header-height)+10rem)]">
         <div className="max-w-xl">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
             <p className="eyebrow">{hero.eyebrow}</p>
@@ -92,6 +91,8 @@ export function Hero() {
             </a>
             <a
               href={hero.secondaryCta.href}
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn btn-secondary w-full py-4"
               data-event={trackingEvents.heroSecondaryCta}
             >

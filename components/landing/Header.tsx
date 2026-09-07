@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Menu, MessageCircle, X } from "lucide-react";
-import { contact, header, navLinks } from "@/data/landing-content";
+import { header, navLinks, whatsappHref } from "@/data/landing-content";
 import { trackingEvents } from "@/data/tracking";
 import { cn } from "@/lib/cn";
 import { KirraLogo } from "./KirraLogo";
@@ -36,7 +36,6 @@ export function Header() {
   }, [menuOpen]);
 
   const solid = scrolled || menuOpen;
-  const whatsappHref = contact.whatsappUrl ?? contact.fallbackAnchors.whatsapp;
   const closeMenu = () => setMenuOpen(false);
 
   return (
@@ -148,6 +147,8 @@ export function Header() {
             </a>
             <a
               href={whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={closeMenu}
               className="btn btn-secondary w-full"
               data-event={trackingEvents.whatsappClick}

@@ -94,6 +94,8 @@ export function IncludedSection() {
               </a>
               <a
                 href={valuePanel.secondaryCta.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="btn btn-secondary w-full"
                 data-event={trackingEvents.whatsappClick}
               >

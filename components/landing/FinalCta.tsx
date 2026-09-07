@@ -57,6 +57,8 @@ export function FinalCta() {
               </a>
               <a
                 href={finalCta.secondaryCta.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="btn btn-secondary w-full py-4"
                 data-event={trackingEvents.whatsappClick}
               >

@@ -41,7 +41,9 @@ export const contact = {
   locationNote: "Opposite the boat ramp, near Tweed Marina.",
   mapUrl:
     "https://maps.google.com/?cid=2530544569852056384&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAMYASAF&hl=en&gl=US&source=embed",
-  whatsappUrl: null as string | null,
+  // +54 9 11 6932-8343. wa.me takes digits only — no plus, spaces or dashes.
+  whatsappNumber: "5491169328343",
+  whatsappUrl: "https://wa.me/5491169328343" as string | null,
   bookingUrl: "https://kirradive.com/courses/open-water-scuba-course-3days-",
   courseCalendarUrl: "https://kirradive.com/calendar",
   fallbackAnchors: {
@@ -49,6 +51,16 @@ export const contact = {
     booking: "#course-dates",
   },
 } as const;
+
+/**
+ * Where every "Contact Kirra Dive" button points. One resolved value so the
+ * header, the hero, the value panel, the enquiry section and the closing CTA
+ * can never drift apart: the WhatsApp chat while a number is published, and
+ * the enquiry form further down the page if `whatsappUrl` is ever set back to
+ * null.
+ */
+export const whatsappHref: string =
+  contact.whatsappUrl ?? contact.fallbackAnchors.whatsapp;
 
 /** Shown next to the price everywhere it appears. */
 export const pricing = {
@@ -90,7 +102,7 @@ export const hero = {
   primaryCta: { label: "Book PADI Open Water", href: contact.bookingUrl },
   secondaryCta: {
     label: "Contact Kirra Dive",
-    href: "#contact",
+    href: whatsappHref,
   },
   reassurance:
     "Runs over 3–4 days, with flexible scheduling available.",
@@ -99,6 +111,7 @@ export const hero = {
     // the opening is moving water rather than a still.
     src: "/video/video1.mp4",
     type: "video/mp4",
+    playLabel: "Play video",
   },
   image: {
     // STOCK IMAGE: AI-generated placeholder, replace with real Kirra Dive photography.
@@ -242,7 +255,7 @@ export const included = {
     ctaHref: contact.bookingUrl,
     secondaryCta: {
       label: "Contact Kirra Dive",
-      href: "#contact",
+      href: whatsappHref,
     },
     image: {
       // STOCK IMAGE: AI-generated placeholder, replace with real photography.
@@ -312,7 +325,7 @@ export const courseDates = {
     contact: {
       label: "Contact team",
       detail: "Talk with Kirra Dive",
-      href: contact.fallbackAnchors.whatsapp,
+      href: whatsappHref,
     },
     booking: {
       label: "Book online",
@@ -385,7 +398,7 @@ export const finalCta = {
   primaryCta: { label: "Book PADI Open Water", href: contact.bookingUrl },
   secondaryCta: {
     label: "Contact Kirra Dive",
-    href: "#contact",
+    href: whatsappHref,
   },
   image: {
     // STOCK IMAGE: AI-generated placeholder, replace with real photography.

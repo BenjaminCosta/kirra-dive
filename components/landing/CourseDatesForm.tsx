@@ -13,7 +13,7 @@ import {
   Send,
   User,
 } from "lucide-react";
-import { contact, courseDates } from "@/data/landing-content";
+import { contact, courseDates, whatsappHref } from "@/data/landing-content";
 import { trackingEvents } from "@/data/tracking";
 import { cn } from "@/lib/cn";
 import type { LeadExperience, LeadFormErrors, LeadPayload } from "@/types/lead";
@@ -275,7 +275,6 @@ export function CourseDatesForm() {
   const fieldId = (name: string) => `${baseId}-${name}`;
   const errorId = (name: string) => `${baseId}-${name}-error`;
 
-  const whatsappHref = contact.whatsappUrl ?? contact.fallbackAnchors.whatsapp;
   const bookingHref = contact.bookingUrl ?? contact.fallbackAnchors.booking;
   const whatsappContinueHref = savedLead
     ? buildWhatsAppHref(savedLead.payload)
@@ -398,6 +397,7 @@ export function CourseDatesForm() {
                 label={courseDates.quickActions.contact.label}
                 detail={courseDates.quickActions.contact.detail}
                 tone="whatsapp"
+                external
               />
               <QuickAction
                 href={courseDates.quickActions.booking.href}
@@ -532,7 +532,6 @@ export function CourseDatesForm() {
                     {form.fields.preferredDate.label}
                   </label>
                   <div className="relative">
-                    <CalendarDays className={fieldIconClass} aria-hidden />
                     <input
                       id={fieldId("preferredDate")}
                       name="preferredDate"
@@ -551,14 +550,14 @@ export function CourseDatesForm() {
                       ).trim()}
                       className={cn(
                         fieldClass,
-                        "date-input pr-12 [color-scheme:dark]",
+                        "date-input pl-4 pr-12 [color-scheme:dark]",
                         errors.preferredDate && "border-aqua",
                       )}
                     />
                     {values.preferredDate ? null : (
                       <span
                         aria-hidden
-                        className="pointer-events-none absolute top-1/2 left-12 -translate-y-1/2 text-base text-white/45"
+                        className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-base text-white/45"
                       >
                         {form.fields.preferredDate.label}
                       </span>
@@ -665,6 +664,8 @@ export function CourseDatesForm() {
               </button>
               <a
                 href={whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="btn btn-secondary w-full rounded-[1.1rem] py-4"
                 data-event={trackingEvents.whatsappClick}
               >
