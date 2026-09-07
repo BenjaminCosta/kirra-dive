@@ -167,7 +167,7 @@ function ReviewCard({ review, mapsUrl, featured = false }: {
   const reviewUrl = review.googleMapsUri ?? mapsUrl;
 
   return (
-    <article className={cn("surface-panel relative", featured ? "p-7 sm:p-9" : "p-4 sm:p-6")}>
+    <article className={cn("surface-panel relative", featured ? "p-5 sm:p-8" : "p-4 sm:p-5")}>
       <span
         className="absolute right-4 top-4 font-sans text-xs font-normal tracking-normal text-[#5e5e5e] sm:right-7 sm:top-7"
         translate="no"
@@ -181,19 +181,23 @@ function ReviewCard({ review, mapsUrl, featured = false }: {
       <blockquote
         className={cn(
           "pr-10 font-semibold text-text",
-          featured ? "mt-4 text-xl sm:text-2xl" : "mt-3 text-sm sm:text-base",
+          featured ? "mt-4 text-lg sm:text-xl" : "mt-3 text-sm sm:text-base",
         )}
       >
-        “{review.text}”
+        <span className={cn("block", featured ? "line-clamp-4" : "line-clamp-3")}>
+          “{review.text}”
+        </span>
       </blockquote>
+      <div className="mt-3">
+        <MapsLink href={reviewUrl} label="Read full review" />
+      </div>
       <div
-        className={cn("h-px bg-primary/40", featured ? "mt-5 w-10" : "mt-3 w-6")}
+        className={cn("h-px bg-primary/40", featured ? "mt-4 w-10" : "mt-3 w-6")}
         aria-hidden
       />
       <ReviewerAttribution review={review} compact={!featured} />
-      <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
-        <MapsLink href={reviewUrl} label="View review" />
-        {review.flagContentUri ? (
+      {review.flagContentUri ? (
+        <div className="mt-3">
           <a
             href={review.flagContentUri}
             target="_blank"
@@ -203,8 +207,8 @@ function ReviewCard({ review, mapsUrl, featured = false }: {
             <Flag className="h-3.5 w-3.5" aria-hidden />
             Report review
           </a>
-        ) : null}
-      </div>
+        </div>
+      ) : null}
     </article>
   );
 }
