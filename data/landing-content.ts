@@ -282,6 +282,23 @@ export const courseDates = {
     label: "Open the live course calendar",
     href: contact.courseCalendarUrl,
   },
+  quickActions: {
+    dates: {
+      label: "View dates",
+      detail: "See upcoming courses",
+      href: contact.courseCalendarUrl,
+    },
+    contact: {
+      label: "Contact team",
+      detail: "Talk with Kirra Dive",
+      href: contact.fallbackAnchors.whatsapp,
+    },
+    booking: {
+      label: "Book online",
+      detail: "Secure your spot",
+      href: contact.bookingUrl,
+    },
+  },
   form: {
     legend: "Course enquiry",
     introNote: "Fill in your details and we'll be in touch soon.",

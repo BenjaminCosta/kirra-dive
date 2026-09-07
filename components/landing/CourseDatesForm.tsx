@@ -15,6 +15,7 @@ import { contact, courseDates } from "@/data/landing-content";
 import { trackingEvents } from "@/data/tracking";
 import { cn } from "@/lib/cn";
 import type { LeadExperience, LeadFormErrors, LeadPayload } from "@/types/lead";
+import { KirraLogo } from "./KirraLogo";
 
 type FormValues = {
   fullName: string;
@@ -84,6 +85,46 @@ function SectionIntro({
         ) : null}
       </div>
     </div>
+  );
+}
+
+function QuickAction({
+  href,
+  icon,
+  label,
+  detail,
+  external = false,
+}: {
+  href: string;
+  icon: ReactNode;
+  label: string;
+  detail: string;
+  external?: boolean;
+}) {
+  return (
+    <a
+      href={href}
+      target={external ? "_blank" : undefined}
+      rel={external ? "noopener noreferrer" : undefined}
+      className="group relative flex min-w-0 flex-col gap-2 rounded-2xl border border-primary/55 bg-background/60 p-3 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-[2px] transition-[border-color,background-color,transform] duration-200 hover:border-primary hover:bg-background/75 active:translate-y-px sm:flex-row sm:items-center sm:gap-3 sm:p-4"
+    >
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-primary/35 text-primary sm:h-10 sm:w-10">
+        {icon}
+      </span>
+      <span className="min-w-0 pr-3 sm:pr-4">
+        <span className="block text-[0.68rem] leading-tight font-semibold text-text sm:text-sm">
+          {label}
+        </span>
+        <span className="mt-1 hidden text-xs leading-snug text-muted sm:block">
+          {detail}
+        </span>
+      </span>
+      <ArrowRight
+        className="absolute top-3 right-2.5 h-3.5 w-3.5 text-primary transition-transform duration-200 group-hover:translate-x-0.5 sm:top-1/2 sm:right-3.5 sm:h-4 sm:w-4 sm:-translate-y-1/2"
+        aria-hidden
+      />
+      {external ? <span className="sr-only"> (opens in a new tab)</span> : null}
+    </a>
   );
 }
 
@@ -233,73 +274,127 @@ export function CourseDatesForm() {
   return (
     <section
       id="course-dates"
-      className="relative pt-8 pb-20 sm:pt-10 sm:pb-28 lg:pb-32"
+      className="relative py-8 sm:py-12 lg:py-16"
       data-event={trackingEvents.courseDatesView}
     >
-      <div className="container-page grid gap-10 lg:grid-cols-2 lg:gap-16">
-        <div>
-          <p className="eyebrow">{courseDates.eyebrow}</p>
-          <h2 className="heading-lg mt-4">
-            {courseDates.headingLines.map((line) => (
-              <span key={line} className="block">
-                {line}
-              </span>
-            ))}
-          </h2>
-          <p className="mt-6 max-w-lg text-muted sm:text-lg">{courseDates.body}</p>
+      <div className="container-page">
+        <div className="relative isolate overflow-hidden rounded-[2rem] border border-white/20 bg-surface shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] sm:rounded-[2.5rem]">
+          <div
+            className="pointer-events-none absolute inset-0 -z-20 bg-cover bg-top bg-no-repeat"
+            style={{ backgroundImage: "url('/images/form.png')" }}
+            aria-hidden
+          />
+          <div
+            className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(2,7,12,0.42)_0%,rgba(2,7,12,0.7)_37%,rgba(2,7,12,0.88)_100%)]"
+            aria-hidden
+          />
+          <div
+            className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(75%_42%_at_88%_0%,rgba(84,160,201,0.24),transparent_72%)]"
+            aria-hidden
+          />
 
-          <div className="surface-panel mt-9 p-6">
-            <SectionIntro
-              icon={<CalendarDays className="h-5 w-5" aria-hidden />}
-              label={courseDates.upcomingLabel}
-              description={
-                courseDates.upcoming.length > 0
-                  ? undefined
-                  : courseDates.upcomingFallback
-              }
-            />
-            {courseDates.upcoming.length > 0 ? (
-              <ul className="mt-4 divide-y divide-white/10">
-                {courseDates.upcoming.map((date) => (
-                  <li
-                    key={date.id}
-                    className="flex flex-wrap items-baseline justify-between gap-2 py-3"
-                  >
-                    <span className="font-semibold text-text">{date.label}</span>
-                    <span className="text-sm text-muted">{date.note}</span>
-                  </li>
+          <div className="grid gap-6 px-5 py-7 sm:px-8 sm:py-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-10 lg:px-12 lg:py-14">
+            <div>
+              <div className="flex items-center gap-3">
+                <KirraLogo decorative className="h-12 w-12 shrink-0" />
+                <span className="leading-tight">
+                  <span className="block text-sm font-bold tracking-[0.2em] text-text uppercase">
+                    Kirra Dive
+                  </span>
+                  <span className="block mt-1 text-[0.65rem] font-semibold tracking-[0.3em] text-primary uppercase">
+                    Since 1988
+                  </span>
+                </span>
+              </div>
+
+              <p className="eyebrow mt-8">{courseDates.eyebrow}</p>
+              <h2 className="mt-3 text-[clamp(2.15rem,10vw,4rem)] leading-[0.96] font-bold tracking-[-0.02em] text-text uppercase">
+                {courseDates.headingLines.map((line) => (
+                  <span key={line} className="block">
+                    {line}
+                  </span>
                 ))}
-              </ul>
-            ) : (
-              <a
-                href={courseDates.calendarCta.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-5 inline-flex text-sm font-semibold text-primary transition-colors hover:text-primary-bright"
-              >
-                {courseDates.calendarCta.label}
-                <span className="sr-only"> (opens in a new tab)</span>
-              </a>
-            )}
-          </div>
-        </div>
+              </h2>
+              <p className="mt-4 max-w-xl text-base leading-relaxed text-white/82 sm:text-lg">
+                {courseDates.body}
+              </p>
 
-        <form
+              <div className="mt-6 grid grid-cols-3 gap-2 sm:gap-3">
+                <QuickAction
+                  href={courseDates.quickActions.dates.href}
+                  icon={<CalendarDays className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden />}
+                  label={courseDates.quickActions.dates.label}
+                  detail={courseDates.quickActions.dates.detail}
+                  external
+                />
+                <QuickAction
+                  href={courseDates.quickActions.contact.href}
+                  icon={<MessageCircle className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden />}
+                  label={courseDates.quickActions.contact.label}
+                  detail={courseDates.quickActions.contact.detail}
+                />
+                <QuickAction
+                  href={courseDates.quickActions.booking.href}
+                  icon={<CalendarDays className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden />}
+                  label={courseDates.quickActions.booking.label}
+                  detail={courseDates.quickActions.booking.detail}
+                  external
+                />
+              </div>
+
+              <div className="mt-5 rounded-2xl border border-primary/45 bg-background/55 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-[2px] sm:p-5">
+                <SectionIntro
+                  icon={<CalendarDays className="h-5 w-5" aria-hidden />}
+                  label={courseDates.upcomingLabel}
+                  description={
+                    courseDates.upcoming.length > 0
+                      ? undefined
+                      : courseDates.upcomingFallback
+                  }
+                />
+                {courseDates.upcoming.length > 0 ? (
+                  <ul className="mt-4 divide-y divide-white/10">
+                    {courseDates.upcoming.map((date) => (
+                      <li
+                        key={date.id}
+                        className="flex flex-wrap items-baseline justify-between gap-2 py-3"
+                      >
+                        <span className="font-semibold text-text">{date.label}</span>
+                        <span className="text-sm text-muted">{date.note}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <a
+                    href={courseDates.calendarCta.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 inline-flex text-sm font-semibold text-primary transition-colors hover:text-primary-bright"
+                  >
+                    {courseDates.calendarCta.label}
+                    <span className="sr-only"> (opens in a new tab)</span>
+                  </a>
+                )}
+              </div>
+            </div>
+
+            <form
           onSubmit={handleSubmit}
           noValidate
           data-event={trackingEvents.leadSubmit}
-          className="surface-panel p-6 sm:p-8"
+          className="rounded-[1.65rem] border border-primary/45 bg-background/75 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-[3px] sm:p-7"
         >
-          <SectionIntro
-            icon={<Mail className="h-5 w-5" aria-hidden />}
-            label={form.legend}
-            description={form.introNote}
-          />
+          <div>
+            <p className="text-lg font-bold tracking-[0.12em] text-text uppercase sm:text-xl">
+              {form.legend}
+            </p>
+            <p className="mt-1.5 text-sm text-white/75 sm:text-base">{form.introNote}</p>
+          </div>
 
-          <fieldset className="mt-7 border-0 p-0">
+          <fieldset className="mt-6 border-0 p-0">
             <legend className="sr-only">{form.legend}</legend>
 
-            <div className="grid gap-4">
+            <div className="grid gap-3">
               <div>
                 <label className="sr-only" htmlFor={fieldId("fullName")}>
                   {form.fields.fullName.label}
@@ -321,7 +416,7 @@ export function CourseDatesForm() {
                     aria-invalid={Boolean(errors.fullName)}
                     aria-describedby={errors.fullName ? errorId("fullName") : undefined}
                     className={cn(
-                      "field-input py-4 pl-12",
+                      "field-input border-white/25 bg-background/55 py-3 pl-12",
                       errors.fullName && "border-aqua",
                     )}
                   />
@@ -350,7 +445,7 @@ export function CourseDatesForm() {
                     aria-invalid={Boolean(errors.phone)}
                     aria-describedby={errors.phone ? errorId("phone") : undefined}
                     className={cn(
-                      "field-input py-4 pl-12",
+                      "field-input border-white/25 bg-background/55 py-3 pl-12",
                       errors.phone && "border-aqua",
                     )}
                   />
@@ -379,7 +474,7 @@ export function CourseDatesForm() {
                     aria-invalid={Boolean(errors.email)}
                     aria-describedby={errors.email ? errorId("email") : undefined}
                     className={cn(
-                      "field-input py-4 pl-12",
+                      "field-input border-white/25 bg-background/55 py-3 pl-12",
                       errors.email && "border-aqua",
                     )}
                   />
@@ -409,7 +504,7 @@ export function CourseDatesForm() {
                       errors.preferredDate ? errorId("preferredDate") : "",
                     ).trim()}
                     className={cn(
-                      "field-input py-4 pl-12 [color-scheme:dark]",
+                      "field-input border-white/25 bg-background/55 py-3 pl-12 [color-scheme:dark]",
                       errors.preferredDate && "border-aqua",
                     )}
                   />
@@ -436,7 +531,7 @@ export function CourseDatesForm() {
                     <label
                       key={option.value}
                       className={cn(
-                        "flex cursor-pointer items-center gap-3 rounded-full border px-4 py-3.5 text-sm transition-colors",
+                        "flex cursor-pointer items-center gap-3 rounded-full border bg-background/45 px-4 py-3 text-sm transition-colors",
                         values.experience === option.value
                           ? "border-primary bg-primary/10 text-text"
                           : "border-white/15 text-muted hover:border-white/30",
@@ -482,10 +577,10 @@ export function CourseDatesForm() {
             </div>
           </fieldset>
 
-          <div className="mt-7 flex flex-col gap-3">
+          <div className="mt-6 flex flex-col gap-3">
             <button
               type="submit"
-              className="btn btn-primary w-full"
+              className="btn btn-primary w-full rounded-2xl py-4"
               data-event={trackingEvents.leadSubmit}
               disabled={isSubmitting}
             >
@@ -494,7 +589,7 @@ export function CourseDatesForm() {
             </button>
             <a
               href={whatsappHref}
-              className="btn btn-secondary w-full"
+              className="btn btn-secondary w-full rounded-2xl py-4"
               data-event={trackingEvents.whatsappClick}
             >
               <MessageCircle className="h-4 w-4" aria-hidden />
@@ -502,7 +597,7 @@ export function CourseDatesForm() {
             </a>
           </div>
 
-          <div className="mt-6 flex items-center gap-3" aria-hidden>
+          <div className="mt-5 flex items-center gap-3" aria-hidden>
             <span className="h-px flex-1 bg-white/10" />
             <span className="text-xs font-semibold tracking-[0.16em] text-muted uppercase">
               Or
@@ -512,7 +607,7 @@ export function CourseDatesForm() {
 
           <a
             href={bookingHref}
-            className="mt-6 flex items-center justify-center gap-1.5 text-sm font-semibold text-primary transition-colors hover:text-primary-bright"
+            className="mt-5 flex items-center justify-center gap-1.5 text-sm font-semibold text-primary transition-colors hover:text-primary-bright"
             data-event={trackingEvents.bookOnlineClick}
           >
             {form.bookingLabel}
@@ -552,6 +647,8 @@ export function CourseDatesForm() {
             ) : null}
           </div>
         </form>
+          </div>
+        </div>
       </div>
     </section>
   );
