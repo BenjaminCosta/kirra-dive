@@ -47,7 +47,7 @@ export const contact = {
   bookingUrl: "https://kirradive.com/courses/open-water-scuba-course-3days-",
   courseCalendarUrl: "https://kirradive.com/calendar",
   fallbackAnchors: {
-    whatsapp: "#contact",
+    whatsapp: "#course-dates",
     booking: "#course-dates",
   },
 } as const;
@@ -82,7 +82,7 @@ export const navLinks = [
   { label: "The Course", href: "#the-course" },
   { label: "Cook Island", href: "#the-experience" },
   { label: "Reviews", href: "#reviews" },
-  { label: "Contact", href: "#contact" },
+  { label: "Contact", href: "#course-dates" },
 ] as const;
 
 export const header = {
@@ -425,7 +425,7 @@ export const footer = {
     { label: "The Course", href: "#the-course" },
     { label: "Cook Island", href: "#the-experience" },
     { label: "Reviews", href: "#reviews" },
-    { label: "Contact", href: "#contact" },
+    { label: "Contact", href: "#course-dates" },
   ],
   whatsappLabel: "Call or email the team",
   phoneLabel: "Phone",

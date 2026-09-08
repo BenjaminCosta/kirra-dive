@@ -65,7 +65,13 @@ export function CourseJourney() {
                       src={stage.video.src}
                       type={stage.video.type}
                       poster={stage.image.src}
-                      className="absolute inset-0 h-full w-full object-cover"
+                      className={cn(
+                        "absolute inset-0 h-full w-full object-cover",
+                        // This source contains horizontal footage inside a
+                        // portrait canvas. Scaling only this stage crops those
+                        // baked-in black bands while preserving the frame's edge.
+                        stage.id === "ocean-dives" && "scale-[1.35]",
+                      )}
                       playLabel={`Play ${stage.title} video`}
                       playButtonClassName="right-3 bottom-3"
                       iconOnly

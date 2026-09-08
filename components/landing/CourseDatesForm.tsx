@@ -363,7 +363,7 @@ export function CourseDatesForm() {
   return (
     <section
       id="course-dates"
-      className="relative isolate overflow-hidden"
+      className="relative isolate scroll-mt-[calc(var(--header-height)+1rem)] overflow-hidden"
       data-event={trackingEvents.courseDatesView}
     >
       {/*
