@@ -283,10 +283,10 @@ export const goodHands = {
   headingLines: ["That's exactly", "who this is for."],
   body: "Kirra Dive also runs a beginner Discover Scuba Diving experience at the Tweed Regional Aquatic Centre indoor pool. No prior experience is needed.",
   points: [
-    { icon: "graduation-cap", label: "No experience" },
-    { icon: "users", label: "Ages 10+" },
-    { icon: "waves", label: "Pool skills" },
-  ] as ReadonlyArray<{ icon: IconName; label: string }>,
+    { label: "No experience", detail: "Beginner friendly" },
+    { label: "Ages 10+", detail: "Minimum age" },
+    { label: "Pool skills", detail: "Learn safely first" },
+  ] as const,
   video: {
     // Runs as a plain rectangle — no frame, no rounded corners — so the footage
     // itself is the edge of the block.

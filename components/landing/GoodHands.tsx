@@ -1,12 +1,5 @@
-import { GraduationCap, Users, Waves, type LucideIcon } from "lucide-react";
-import { goodHands, type IconName } from "@/data/landing-content";
+import { goodHands } from "@/data/landing-content";
 import { AutoplayVideo } from "./HeroVideo";
-
-const pointIcons: Partial<Record<IconName, LucideIcon>> = {
-  "graduation-cap": GraduationCap,
-  users: Users,
-  waves: Waves,
-};
 
 /**
  * The page's fourth and quietest visual moment. The copy opens the section and
@@ -51,13 +44,12 @@ export function GoodHands() {
 
         <ul className="mx-auto mt-9 grid max-w-xl grid-cols-3 divide-x divide-white/10">
           {goodHands.points.map((point) => {
-            const Icon = pointIcons[point.icon] ?? Waves;
             return (
               <li key={point.label} className="flex min-w-0 flex-col items-center px-2 py-1 text-center">
-                <Icon className="h-6 w-6 text-primary" aria-hidden />
-                <p className="mt-3 text-xs font-semibold uppercase tracking-[0.12em] text-text sm:text-sm">
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-text sm:text-sm">
                   {point.label}
                 </p>
+                <p className="mt-2 text-xs leading-snug text-muted sm:text-sm">{point.detail}</p>
               </li>
             );
           })}
