@@ -165,8 +165,12 @@ export const courseJourney = {
       title: "Online theory & pool skills",
       description:
         "Complete the theory online at your own pace, then build core scuba skills with a certified instructor at the Tweed Regional Aquatic Centre indoor pool.",
+      video: {
+        src: "/video/pileta.mp4",
+        type: "video/mp4",
+      },
       image: {
-        // STOCK IMAGE: AI-generated placeholder, replace with a real training photo.
+        // STOCK IMAGE: AI-generated placeholder. Now only the video's poster.
         src: "/images/pool-training-skills.jpg",
         alt: "Student diver practising skills in calm, shallow training water.",
       },
@@ -178,8 +182,12 @@ export const courseJourney = {
       title: "Ocean dives",
       description:
         "Take those skills into the calm, shallow waters of Jack Evans Boat Harbour for your open-water training dives.",
+      video: {
+        src: "/video/divers.mp4",
+        type: "video/mp4",
+      },
       image: {
-        // STOCK IMAGE: AI-generated placeholder, replace with a real open-water dive photo.
+        // STOCK IMAGE: AI-generated placeholder. Now only the video's poster.
         src: "/images/divers-pair-descending.jpg",
         alt: "Two divers descending together along a reef wall on an open-water dive.",
       },
@@ -191,10 +199,11 @@ export const courseJourney = {
       title: "Certified to dive",
       description:
         "On completion, qualify as a PADI Open Water Diver — certified to dive independently to 18 metres around the world.",
+      video: null,
       image: {
-        // STOCK IMAGE: AI-generated placeholder, replace with a real certification / post-dive shot.
-        src: "/images/reef-canyon-turtle-beams.jpg",
-        alt: "Sunlit reef canyon opening onto open water, a turtle crossing it.",
+        // Real Kirra Dive photography, not stock.
+        src: "/video/certified.jpg",
+        alt: "Kirra Dive students at the surface beside the boat line, waving and grinning after their dive, with the headland behind them.",
       },
     },
   ],
@@ -283,6 +292,9 @@ export const goodHands = {
   video: {
     // Runs as a plain rectangle — no frame, no rounded corners — so the footage
     // itself is the edge of the block.
+    // Remuxed from the source .mov without re-encoding: same H.264 stream, but
+    // an MP4 container every browser accepts, served as `video/mp4` rather than
+    // the `video/quicktime` that Firefox refuses.
     src: "/video/video3.mp4",
     type: "video/mp4",
   },

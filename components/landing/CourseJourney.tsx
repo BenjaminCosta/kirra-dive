@@ -55,13 +55,30 @@ export function CourseJourney() {
                   {stage.step}
                 </span>
 
-                {/* AI-generated stock photo — replace with real course photography. */}
+                {/* Footage where a stage has it, a photograph where it does not.
+                    Both fill the same frame, so the timeline keeps its rhythm.
+                    The stills double as the videos' posters. */}
                 <div className="relative aspect-4/3 w-full overflow-hidden rounded-2xl border border-white/10">
-                  <img
-                    src={stage.image.src}
-                    alt={stage.image.alt}
-                    className="absolute inset-0 h-full w-full object-cover"
-                  />
+                  {stage.video ? (
+                    <video
+                      aria-label={stage.image.alt}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="metadata"
+                      poster={stage.image.src}
+                      className="absolute inset-0 h-full w-full object-cover"
+                    >
+                      <source src={stage.video.src} type={stage.video.type} />
+                    </video>
+                  ) : (
+                    <img
+                      src={stage.image.src}
+                      alt={stage.image.alt}
+                      className="absolute inset-0 h-full w-full object-cover"
+                    />
+                  )}
                 </div>
 
                 <Icon className="mt-5 h-5 w-5 text-primary" aria-hidden />
