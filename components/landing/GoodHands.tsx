@@ -1,5 +1,6 @@
 import { Heart, ShieldCheck, Users, Waves, type LucideIcon } from "lucide-react";
 import { goodHands, type IconName } from "@/data/landing-content";
+import { AutoplayVideo } from "./HeroVideo";
 
 const pointIcons: Partial<Record<IconName, LucideIcon>> = {
   "shield-check": ShieldCheck,
@@ -31,18 +32,15 @@ export function GoodHands() {
             on small screens it runs to both edges of the viewport rather than
             floating inside the container's padding. */}
         <div className="scene -mx-5 mt-9 aspect-16/9 sm:-mx-8 lg:mx-0 lg:aspect-21/9">
-          <video
-            aria-label={goodHands.image.alt}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
+          <AutoplayVideo
+            src={goodHands.video.src}
+            type={goodHands.video.type}
             poster={goodHands.image.src}
             className="scene-photo object-[50%_45%]"
-          >
-            <source src={goodHands.video.src} type={goodHands.video.type} />
-          </video>
+            playLabel="Play beginner diving video"
+            playButtonClassName="right-4 bottom-4"
+            iconOnly
+          />
           {/* Holds the footage a stop below the surrounding sections so it
               reads as part of the same water, not as a bright inset. */}
           <div

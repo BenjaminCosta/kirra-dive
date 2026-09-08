@@ -114,10 +114,9 @@ export const hero = {
     playLabel: "Play video",
   },
   image: {
-    // STOCK IMAGE: AI-generated placeholder, replace with real Kirra Dive photography.
-    // Doubles as the video's poster, so the first paint is never an empty frame.
-    src: "/images/hero-diver-sunbeams.jpg",
-    alt: "Diver descending through sunbeams above a coral reef.",
+    // Frame taken from video1.mp4, so the fallback is the exact same scene.
+    src: "/images/video-hero-poster.jpg",
+    alt: "Manta ray gliding over a reef at Cook Island.",
   },
 } as const;
 
@@ -170,9 +169,9 @@ export const courseJourney = {
         type: "video/mp4",
       },
       image: {
-        // STOCK IMAGE: AI-generated placeholder. Now only the video's poster.
-        src: "/images/pool-training-skills.jpg",
-        alt: "Student diver practising skills in calm, shallow training water.",
+        // Frame taken from pileta.mp4 for an authentic fallback.
+        src: "/images/video-pool-poster.jpg",
+        alt: "Student diver practising skills in the indoor training pool.",
       },
     },
     {
@@ -187,9 +186,9 @@ export const courseJourney = {
         type: "video/mp4",
       },
       image: {
-        // STOCK IMAGE: AI-generated placeholder. Now only the video's poster.
-        src: "/images/divers-pair-descending.jpg",
-        alt: "Two divers descending together along a reef wall on an open-water dive.",
+        // Frame taken from divers.mp4 for an authentic fallback.
+        src: "/images/video-ocean-dives-poster.jpg",
+        alt: "Kirra Dive students practising together during an open-water dive.",
       },
     },
     {
@@ -227,10 +226,9 @@ export const cookIsland = {
     type: "video/mp4",
   },
   image: {
-    // STOCK IMAGE: AI-generated placeholder, replace with real Cook Island Aquatic Reserve photography.
-    // Now also the poster: what shows while the video loads, and if it cannot play.
-    src: "/images/cook-island-turtle.jpg",
-    alt: "Sea turtle swimming past a sunlit reef, fish trailing behind it.",
+    // Frame taken from video2.mp4, shown if iOS does not autoplay the clip.
+    src: "/images/video-cook-island-poster.jpg",
+    alt: "Fish swimming through blue water beside the Cook Island reef wall.",
   },
 } as const;
 
@@ -299,10 +297,9 @@ export const goodHands = {
     type: "video/mp4",
   },
   image: {
-    // STOCK IMAGE: AI-generated placeholder, replace with a real instructor photo.
-    // Kept as the video's poster: the first frame the visitor sees.
-    src: "/images/divers-pair-reef-drift.jpg",
-    alt: "Two divers swimming side by side over a shallow, sunlit reef.",
+    // Frame taken from video3.mp4 for a faithful video fallback.
+    src: "/images/video-beginner-diving-poster.jpg",
+    alt: "Diver swimming through blue water during a beginner dive.",
   },
 } as const;
 

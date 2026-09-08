@@ -2,6 +2,7 @@ import { GraduationCap, LifeBuoy, Waves, type LucideIcon } from "lucide-react";
 import { courseJourney, type IconName } from "@/data/landing-content";
 import { trackingEvents } from "@/data/tracking";
 import { cn } from "@/lib/cn";
+import { AutoplayVideo } from "./HeroVideo";
 
 const stageIcons: Partial<Record<IconName, LucideIcon>> = {
   "life-buoy": LifeBuoy,
@@ -55,23 +56,20 @@ export function CourseJourney() {
                   {stage.step}
                 </span>
 
-                {/* Footage where a stage has it, a photograph where it does not.
-                    Both fill the same frame, so the timeline keeps its rhythm.
-                    The stills double as the videos' posters. */}
+                {/* The iOS-safe clip keeps the same retry logic as the hero.
+                    Its poster is a frame from that exact clip, not a stock
+                    substitute, so it remains authentic if autoplay is withheld. */}
                 <div className="relative aspect-4/3 w-full overflow-hidden rounded-2xl border border-white/10">
                   {stage.video ? (
-                    <video
-                      aria-label={stage.image.alt}
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      preload="metadata"
+                    <AutoplayVideo
+                      src={stage.video.src}
+                      type={stage.video.type}
                       poster={stage.image.src}
                       className="absolute inset-0 h-full w-full object-cover"
-                    >
-                      <source src={stage.video.src} type={stage.video.type} />
-                    </video>
+                      playLabel={`Play ${stage.title} video`}
+                      playButtonClassName="right-3 bottom-3"
+                      iconOnly
+                    />
                   ) : (
                     <img
                       src={stage.image.src}

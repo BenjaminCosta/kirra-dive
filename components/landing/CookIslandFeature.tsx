@@ -4,6 +4,7 @@ import {
   cookIslandAttributes,
   type IconName,
 } from "@/data/landing-content";
+import { AutoplayVideo } from "./HeroVideo";
 
 const attributeIcons: Partial<Record<IconName, LucideIcon>> = {
   waves: Waves,
@@ -17,22 +18,17 @@ export function CookIslandFeature() {
       id="the-experience"
       className="scene section-overlap flex min-h-[92svh] items-end"
     >
-      {/* Scene 2 of 3. Reef footage in place of the still, carried by the same
-          scrims below: it reads as moving water behind the copy, not as a clip.
-          The still stays as the poster for the first paint and for anyone whose
-          browser refuses to autoplay. */}
-      <video
-        aria-hidden
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
+      {/* The manual control appears in the open upper corner, above the copy,
+          only if iOS withholds playback. */}
+      <AutoplayVideo
+        src={cookIsland.video.src}
+        type={cookIsland.video.type}
         poster={cookIsland.image.src}
         className="scene-photo object-[50%_30%]"
-      >
-        <source src={cookIsland.video.src} type={cookIsland.video.type} />
-      </video>
+        playLabel="Play Cook Island video"
+        playButtonClassName="top-5 right-5 sm:top-8 sm:right-8"
+        iconOnly
+      />
       {/* Resolves out of the dark above it, and back into it below. Both fades
           are shorter and lighter than the shared `.scene-*` recipe: the footage
           carries its own motion, so it only needs enough scrim to meet the dark
