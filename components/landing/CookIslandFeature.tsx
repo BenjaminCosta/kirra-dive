@@ -1,16 +1,6 @@
-import { Info, Shell, Sun, Waves, type LucideIcon } from "lucide-react";
-import {
-  cookIsland,
-  cookIslandAttributes,
-  type IconName,
-} from "@/data/landing-content";
+import { Info } from "lucide-react";
+import { cookIsland, cookIslandAttributes } from "@/data/landing-content";
 import { AutoplayVideo } from "./HeroVideo";
-
-const attributeIcons: Partial<Record<IconName, LucideIcon>> = {
-  waves: Waves,
-  shell: Shell,
-  sun: Sun,
-};
 
 export function CookIslandFeature() {
   return (
@@ -73,17 +63,18 @@ export function CookIslandFeature() {
             {cookIsland.disclaimer}
           </p>
 
-          <ul className="mt-9 grid grid-cols-3 divide-x divide-white/10">
+          <ul className="mt-9 grid max-w-xl grid-cols-3 divide-x divide-white/10">
             {cookIslandAttributes.map((attribute) => {
-              const Icon = attributeIcons[attribute.icon] ?? Waves;
               return (
                 <li
                   key={attribute.label}
-                  className="flex flex-col gap-2 px-3 first:pl-0 last:pr-0"
+                  className="flex min-w-0 flex-col items-center px-2 py-1 text-center"
                 >
-                  <Icon className="h-5 w-5 text-primary" aria-hidden />
-                  <p className="text-xs leading-tight font-bold tracking-[0.04em] text-text uppercase">
+                  <p className="text-[0.55rem] leading-tight font-bold tracking-[0.06em] text-text uppercase sm:text-xs">
                     {attribute.label}
+                  </p>
+                  <p className="mt-2 text-xs leading-snug text-muted sm:text-sm">
+                    {attribute.detail}
                   </p>
                 </li>
               );

@@ -1,28 +1,10 @@
 import {
-  Award,
   CalendarDays,
-  Droplets,
-  Glasses,
-  GraduationCap,
   Info,
-  LifeBuoy,
   MessageCircle,
-  Users,
-  Waves,
-  type LucideIcon,
 } from "lucide-react";
-import { included, pricing, type IconName } from "@/data/landing-content";
+import { included, pricing } from "@/data/landing-content";
 import { trackingEvents } from "@/data/tracking";
-
-const itemIcons: Partial<Record<IconName, LucideIcon>> = {
-  "graduation-cap": GraduationCap,
-  waves: Waves,
-  droplets: Droplets,
-  glasses: Glasses,
-  award: Award,
-  users: Users,
-  "life-buoy": LifeBuoy,
-};
 
 export function IncludedSection() {
   const { valuePanel } = included;
@@ -30,7 +12,7 @@ export function IncludedSection() {
   return (
     <section id="whats-included" className="section-overlap section-y">
       <div className="container-page">
-        <div className="max-w-2xl">
+        <div className="max-w-2xl lg:ml-auto">
           <p className="eyebrow">{included.eyebrow}</p>
           <h2 className="heading-lg mt-4">{included.heading}</h2>
           <p className="mt-6 max-w-lg text-muted sm:text-lg">
@@ -38,22 +20,24 @@ export function IncludedSection() {
           </p>
         </div>
 
-        <ul className="mt-10 max-w-2xl border-y border-white/10">
-          {included.items.map((item) => {
-            const Icon = itemIcons[item.icon] ?? Waves;
-            return (
-              <li
-                key={item.label}
-                className="flex items-center gap-4 border-b border-white/10 py-4 last:border-b-0"
-              >
-                <Icon className="h-5 w-5 shrink-0 text-primary" aria-hidden />
-                <span className="text-text">{item.label}</span>
-              </li>
-            );
-          })}
+        <ul className="mt-10 max-w-2xl divide-y divide-white/10 border-y border-white/10 lg:ml-auto">
+          {included.items.map((item, index) => (
+            <li
+              key={item.label}
+              className="grid grid-cols-[3.5rem_minmax(0,1fr)] gap-x-3 py-5 sm:grid-cols-[5rem_minmax(0,1fr)] sm:gap-x-5 sm:py-6"
+            >
+              <span className="pt-0.5 text-4xl leading-none font-light tabular-nums text-primary sm:text-5xl">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <div>
+                <p className="text-sm font-semibold text-text sm:text-base">{item.label}</p>
+                <p className="mt-1 text-sm leading-relaxed text-muted">{item.detail}</p>
+              </div>
+            </li>
+          ))}
         </ul>
 
-        <p className="mt-6 flex max-w-2xl items-start gap-2.5 text-sm text-muted">
+        <p className="mt-6 flex max-w-2xl items-start gap-2.5 text-sm text-muted lg:ml-auto">
           <Info className="mt-px h-4 w-4 shrink-0 text-primary" aria-hidden />
           {included.itemsNote}
         </p>

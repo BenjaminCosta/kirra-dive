@@ -71,34 +71,6 @@ function FieldError({ id, message }: { id: string; message?: string }) {
   );
 }
 
-/** Icon box + divider + label, used for the upcoming-dates strip. */
-function SectionIntro({
-  icon,
-  label,
-  description,
-}: {
-  icon: ReactNode;
-  label: string;
-  description?: string;
-}) {
-  return (
-    <div className="flex items-start gap-4">
-      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-primary/40 text-primary">
-        {icon}
-      </span>
-      <span className="h-11 w-px shrink-0 bg-white/12" aria-hidden />
-      <div className="min-w-0">
-        <p className="text-[0.72rem] font-bold tracking-[0.18em] text-text uppercase sm:text-sm">
-          {label}
-        </p>
-        {description ? (
-          <p className="mt-1.5 text-sm leading-relaxed text-white/72">{description}</p>
-        ) : null}
-      </div>
-    </div>
-  );
-}
-
 /**
  * The three shortcuts above the form. All three keep the same shape — icon,
  * label, detail, chevron — and differ only in weight: outline for the calendar,
@@ -423,32 +395,6 @@ export function CourseDatesForm() {
               />
             </div>
 
-            <div className="mt-4 rounded-[1.4rem] border border-primary/45 bg-background/45 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-[2px] sm:mt-5 sm:p-5">
-              <SectionIntro
-                icon={<CalendarDays className="h-5 w-5" aria-hidden />}
-                label={courseDates.upcomingLabel}
-                description={
-                  courseDates.upcoming.length > 0
-                    ? undefined
-                    : courseDates.upcomingFallback
-                }
-              />
-              {/* No second link to the calendar here: the "View dates" shortcut
-                  above already points at the same URL. */}
-              {courseDates.upcoming.length > 0 ? (
-                <ul className="mt-4 divide-y divide-white/10">
-                  {courseDates.upcoming.map((date) => (
-                    <li
-                      key={date.id}
-                      className="flex flex-wrap items-baseline justify-between gap-2 py-3"
-                    >
-                      <span className="font-semibold text-text">{date.label}</span>
-                      <span className="text-sm text-muted">{date.note}</span>
-                    </li>
-                  ))}
-                </ul>
-              ) : null}
-            </div>
           </div>
 
           <form

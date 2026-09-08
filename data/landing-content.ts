@@ -232,14 +232,14 @@ export const cookIsland = {
   },
 } as const;
 
-/** Compact attribute row shown under the immersive Cook Island break. */
+/** Editorial facts shown under the immersive Cook Island break. */
 export const cookIslandAttributes: ReadonlyArray<{
-  icon: IconName;
   label: string;
+  detail: string;
 }> = [
-  { icon: "waves", label: "Optional boat dive" },
-  { icon: "shell", label: "800m off the coast" },
-  { icon: "sun", label: "Weather dependent" },
+  { label: "Optional boat dive", detail: "Final dive upgrade" },
+  { label: "800m offshore", detail: "Cook Island" },
+  { label: "Weather dependent", detail: "Conditions apply" },
 ];
 
 export const included = {
@@ -248,13 +248,31 @@ export const included = {
   intro:
     "The official course includes the essentials needed to learn, train and qualify.",
   items: [
-    { icon: "graduation-cap", label: "Online theory and training materials" },
-    { icon: "glasses", label: "Use of scuba equipment" },
-    { icon: "waves", label: "Indoor-pool training" },
-    { icon: "droplets", label: "Shore-based open-water training dives" },
-    { icon: "life-buoy", label: "Flexible dates where available" },
-    { icon: "award", label: "PADI certification on completion" },
-  ] as ReadonlyArray<{ icon: IconName; label: string }>,
+    {
+      label: "Online theory and training materials",
+      detail: "Learn the fundamentals at your own pace.",
+    },
+    {
+      label: "Use of scuba equipment",
+      detail: "Quality training gear supplied for your course.",
+    },
+    {
+      label: "Indoor-pool training",
+      detail: "Build confidence in a controlled environment.",
+    },
+    {
+      label: "Shore-based open-water training dives",
+      detail: "Put your skills into real diving conditions.",
+    },
+    {
+      label: "Flexible dates where available",
+      detail: "Choose from the next available course dates.",
+    },
+    {
+      label: "PADI certification on completion",
+      detail: "Qualify to dive independently to 18 metres.",
+    },
+  ] as const,
   itemsNote:
     "Review the PADI medical questionnaire before booking. A “Yes” response may require medical clearance.",
   valuePanel: {
@@ -317,10 +335,6 @@ export const courseDates = {
   headingLines: ["Ready to take", "your first breath?"],
   body:
     "Check live availability on Kirra Dive's official booking calendar, or send the team an enquiry.",
-  upcomingLabel: "Live course dates",
-  upcoming: [] as ReadonlyArray<{ id: string; label: string; note: string }>,
-  upcomingFallback:
-    "Live course dates and availability are shown on Kirra Dive's official booking calendar. All times are Queensland time.",
   calendarCta: {
     label: "Open the live course calendar",
     href: contact.courseCalendarUrl,

@@ -11,15 +11,17 @@ export function GoodHands() {
   return (
     <section id="good-hands" className="pb-20 sm:pb-28 lg:pb-32">
       <div className="container-page">
-        <p className="eyebrow">{goodHands.eyebrow}</p>
-        <h2 className="heading-lg mt-3 max-w-xl">
+        <p className="eyebrow lg:text-center">{goodHands.eyebrow}</p>
+        <h2 className="heading-lg mt-3 max-w-xl lg:mx-auto lg:text-center">
           {goodHands.headingLines.map((line) => (
             <span key={line} className="block">
               {line}
             </span>
           ))}
         </h2>
-        <p className="mt-5 max-w-xl text-muted sm:text-lg">{goodHands.body}</p>
+        <p className="mt-5 max-w-xl text-muted sm:text-lg lg:mx-auto lg:text-center">
+          {goodHands.body}
+        </p>
 
         {/* A plain rectangle of footage: no frame and no rounded corners, and
             on small screens it runs to both edges of the viewport rather than

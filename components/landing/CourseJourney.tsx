@@ -1,14 +1,7 @@
-import { GraduationCap, LifeBuoy, Waves, type LucideIcon } from "lucide-react";
-import { courseJourney, type IconName } from "@/data/landing-content";
+import { courseJourney } from "@/data/landing-content";
 import { trackingEvents } from "@/data/tracking";
 import { cn } from "@/lib/cn";
 import { AutoplayVideo } from "./HeroVideo";
-
-const stageIcons: Partial<Record<IconName, LucideIcon>> = {
-  "life-buoy": LifeBuoy,
-  waves: Waves,
-  "graduation-cap": GraduationCap,
-};
 
 export function CourseJourney() {
   return (
@@ -34,7 +27,6 @@ export function CourseJourney() {
           />
 
           {courseJourney.stages.map((stage, index) => {
-            const Icon = stageIcons[stage.icon] ?? LifeBuoy;
             const isFirst = index === 0;
             const isLast = index === courseJourney.stages.length - 1;
 
@@ -85,8 +77,7 @@ export function CourseJourney() {
                   )}
                 </div>
 
-                <Icon className="mt-5 h-5 w-5 text-primary" aria-hidden />
-                <h3 className="heading-sm mt-3">{stage.title}</h3>
+                <h3 className="heading-sm mt-5">{stage.title}</h3>
                 <p className="mt-2 text-muted">{stage.description}</p>
               </li>
             );

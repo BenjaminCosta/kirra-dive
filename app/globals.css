@@ -44,6 +44,15 @@
   }
 }
 
+/* Desktop sections retain the visual handoff but leave enough breathing room
+   that the lower edge of one section never crowds the next. Mobile keeps its
+   denser, unchanged rhythm. */
+@media (min-width: 1024px) {
+  :root {
+    --overlap: 5rem;
+  }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-surface: var(--surface);
