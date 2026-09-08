@@ -1,11 +1,11 @@
-import { Heart, ShieldCheck, Users, Waves, type LucideIcon } from "lucide-react";
+import { GraduationCap, Users, Waves, type LucideIcon } from "lucide-react";
 import { goodHands, type IconName } from "@/data/landing-content";
 import { AutoplayVideo } from "./HeroVideo";
 
 const pointIcons: Partial<Record<IconName, LucideIcon>> = {
-  "shield-check": ShieldCheck,
+  "graduation-cap": GraduationCap,
   users: Users,
-  heart: Heart,
+  waves: Waves,
 };
 
 /**
