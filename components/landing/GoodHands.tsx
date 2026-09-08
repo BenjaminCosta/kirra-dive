@@ -49,13 +49,15 @@ export function GoodHands() {
           />
         </div>
 
-        <ul className="mt-9 grid gap-4 sm:grid-cols-3 sm:gap-8">
+        <ul className="mx-auto mt-9 grid max-w-xl grid-cols-3 divide-x divide-white/10">
           {goodHands.points.map((point) => {
             const Icon = pointIcons[point.icon] ?? Waves;
             return (
-              <li key={point.label} className="flex flex-col gap-2.5">
-                <Icon className="h-5 w-5 text-primary" aria-hidden />
-                <p className="text-sm leading-snug text-muted">{point.label}</p>
+              <li key={point.label} className="flex min-w-0 flex-col items-center px-2 py-1 text-center">
+                <Icon className="h-6 w-6 text-primary" aria-hidden />
+                <p className="mt-3 text-xs font-semibold uppercase tracking-[0.12em] text-text sm:text-sm">
+                  {point.label}
+                </p>
               </li>
             );
           })}
