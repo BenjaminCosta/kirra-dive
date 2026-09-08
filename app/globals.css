@@ -293,28 +293,6 @@
    to the same elements.
    -------------------------------------------------------------------------- */
 
-/*
- * A native date input announces itself with "dd/mm/yyyy", which breaks the
- * placeholder rhythm of the fields stacked around it. Blank the native text
- * while the field is empty and float our own placeholder over it; the picker
- * indicator is stretched across the whole control so a tap anywhere opens it.
- */
-.date-input::-webkit-calendar-picker-indicator {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.date-input[data-empty="true"],
-.date-input[data-empty="true"]::-webkit-datetime-edit {
-  color: transparent;
-}
-
 /* Radio: hollow ring when idle, brand ring with a dot inside when chosen. */
 .control-radio {
   appearance: none;

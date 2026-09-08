@@ -263,6 +263,20 @@ const fieldClass =
 const fieldIconClass =
   "pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-white/55";
 
+function formatPreferredDate(value: string) {
+  if (!value) return form.fields.preferredDate.label;
+
+  const [year, month, day] = value.split("-").map(Number);
+  if (!year || !month || !day) return value;
+
+  return new Intl.DateTimeFormat("en-AU", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(Date.UTC(year, month - 1, day)));
+}
+
 export function CourseDatesForm() {
   const baseId = useId();
   const [values, setValues] = useState<FormValues>(initialValues);
@@ -531,14 +545,30 @@ export function CourseDatesForm() {
                   <label className="sr-only" htmlFor={fieldId("preferredDate")}>
                     {form.fields.preferredDate.label}
                   </label>
-                  <div className="relative">
+                  <div
+                    className={cn(
+                      "relative flex min-h-14 items-center rounded-[1.1rem] border border-white/20 bg-background/55 px-4 pr-12 text-base transition-colors duration-200 hover:border-white/30 focus-within:border-primary",
+                      errors.preferredDate && "border-aqua",
+                    )}
+                  >
+                    <span
+                      aria-hidden
+                      className={cn(
+                        "pointer-events-none",
+                        values.preferredDate ? "text-text" : "text-white/45",
+                      )}
+                    >
+                      {formatPreferredDate(values.preferredDate)}
+                    </span>
+                    <CalendarDays
+                      className="pointer-events-none absolute top-1/2 right-4 h-5 w-5 -translate-y-1/2 text-white/55"
+                      aria-hidden
+                    />
                     <input
                       id={fieldId("preferredDate")}
                       name="preferredDate"
                       type="date"
                       required
-                      // Drives the CSS that blanks the native "dd/mm/yyyy".
-                      data-empty={values.preferredDate ? "false" : "true"}
                       value={values.preferredDate}
                       onChange={(event) =>
                         update("preferredDate", event.target.value)
@@ -548,23 +578,7 @@ export function CourseDatesForm() {
                         `${baseId}-date-hint`,
                         errors.preferredDate ? errorId("preferredDate") : "",
                       ).trim()}
-                      className={cn(
-                        fieldClass,
-                        "date-input pl-4 pr-12 [color-scheme:dark]",
-                        errors.preferredDate && "border-aqua",
-                      )}
-                    />
-                    {values.preferredDate ? null : (
-                      <span
-                        aria-hidden
-                        className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-base text-white/45"
-                      >
-                        {form.fields.preferredDate.label}
-                      </span>
-                    )}
-                    <CalendarDays
-                      className="pointer-events-none absolute top-1/2 right-4 h-5 w-5 -translate-y-1/2 text-white/55"
-                      aria-hidden
+                      className="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
                     />
                   </div>
                   <p
