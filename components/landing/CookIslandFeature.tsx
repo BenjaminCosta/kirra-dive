@@ -14,7 +14,7 @@ export function CookIslandFeature() {
         src={cookIsland.video.src}
         type={cookIsland.video.type}
         poster={cookIsland.image.src}
-        className="scene-photo object-[50%_30%]"
+        className="scene-photo object-[50%_30%] lg:object-[50%_42%]"
         playLabel="Play Cook Island video"
         playButtonClassName="top-5 right-5 sm:top-8 sm:right-8"
         iconOnly
@@ -25,18 +25,18 @@ export function CookIslandFeature() {
           at the seams, not a veil over the whole frame. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,var(--background)_0%,color-mix(in_srgb,var(--background)_42%,transparent)_9%,transparent_26%)]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,var(--background)_0%,color-mix(in_srgb,var(--background)_42%,transparent)_9%,transparent_26%)] lg:bg-[linear-gradient(to_bottom,var(--background)_0%,color-mix(in_srgb,var(--background)_24%,transparent)_9%,transparent_26%)]"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,transparent_55%,color-mix(in_srgb,var(--background)_55%,transparent)_82%,var(--background)_100%)]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,transparent_55%,color-mix(in_srgb,var(--background)_55%,transparent)_82%,var(--background)_100%)] lg:bg-[linear-gradient(to_bottom,transparent_55%,color-mix(in_srgb,var(--background)_40%,transparent)_82%,var(--background)_100%)]"
       />
       <div aria-hidden className="scene-glow" />
       {/* Extra weight at the foot of the scene, where the type sits — held to
           the lower third so the reef above it stays visible. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_top,var(--background)_0%,color-mix(in_srgb,var(--background)_66%,transparent)_26%,transparent_58%)]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_top,var(--background)_0%,color-mix(in_srgb,var(--background)_66%,transparent)_26%,transparent_58%)] lg:bg-[linear-gradient(to_top,var(--background)_0%,color-mix(in_srgb,var(--background)_48%,transparent)_26%,transparent_58%)]"
       />
 
       <div className="container-page relative pb-16 sm:pb-20">

@@ -25,7 +25,7 @@ export function Hero() {
         src={hero.video.src}
         type={hero.video.type}
         poster={hero.image.src}
-        className="scene-photo object-[75%_20%]"
+        className="scene-photo object-[75%_20%] lg:object-[75%_42%]"
         playLabel={hero.video.playLabel}
       />
       {/* Diagonal scrim: keeps the text column legible, leaves the diver visible
@@ -34,16 +34,19 @@ export function Hero() {
           does the rest of the work under the type. */}
       <div
         aria-hidden
-        className="absolute inset-0 -z-10 bg-[linear-gradient(115deg,color-mix(in_srgb,var(--background)_86%,transparent)_5%,color-mix(in_srgb,var(--background)_60%,transparent)_32%,color-mix(in_srgb,var(--background)_18%,transparent)_58%,transparent_74%)]"
+        className="absolute inset-0 -z-10 bg-[linear-gradient(115deg,color-mix(in_srgb,var(--background)_86%,transparent)_5%,color-mix(in_srgb,var(--background)_60%,transparent)_32%,color-mix(in_srgb,var(--background)_18%,transparent)_58%,transparent_74%)] lg:bg-[linear-gradient(115deg,color-mix(in_srgb,var(--background)_72%,transparent)_5%,color-mix(in_srgb,var(--background)_44%,transparent)_32%,color-mix(in_srgb,var(--background)_10%,transparent)_58%,transparent_74%)]"
       />
       {/* Top scrim: keeps the header and eyebrow readable against bright water. */}
       <div
         aria-hidden
-        className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,color-mix(in_srgb,var(--background)_55%,transparent)_0%,transparent_24%)]"
+        className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,color-mix(in_srgb,var(--background)_55%,transparent)_0%,transparent_24%)] lg:bg-[linear-gradient(180deg,color-mix(in_srgb,var(--background)_34%,transparent)_0%,transparent_24%)]"
       />
       {/* Shared fade-out: the water dissolves into the page ground behind the
           trust row, so the next section can start inside it. */}
-      <div aria-hidden className="scene-fade-out" />
+      <div
+        aria-hidden
+        className="scene-fade-out lg:bg-[linear-gradient(to_bottom,transparent_52%,color-mix(in_srgb,var(--background)_50%,transparent)_84%,var(--background)_100%)]"
+      />
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(65%_45%_at_82%_0%,color-mix(in_srgb,var(--aqua)_14%,transparent)_0%,transparent_70%)]"
